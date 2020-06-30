@@ -176,7 +176,7 @@ class Grid:
 
     def find_neighbors (self, ij, show=False):
         
-        stencil = np.zeros((3,3), dtype=bool)
+        stencil = np.zeros([3,3], dtype=bool)
         
         # Find where node has neighbors
         
@@ -204,6 +204,32 @@ class Grid:
         
         return stencil
 
+
+    def find_derivs (self, ij, show=False):
+  
+        Teff = self.Teff_axis[ij[0]]
+        logg = self.logg_axis[ij[1]]
+
+        node = self.nodes[ij[0],ij[1]]
+
+        nbrs = self.find_neighbors(ij)
+
+        for j in [-1,1]:
+
+            for i in [-1,1]:
+                
+                Teff_i = self.Teff_axis[ ij[0]+i ]
+                logg_j = self.logg_axis[ ij[1]+j ]
+
+                
+
+                
+                if show:
+                    if j==0 and i==0:  print(f'({nbrs[i+1,j+1]})', end=' ')
+                    else: print(nbrs[i+1,j+1], end=' ')
+            
+            if show: print('\n')
+
             
 if __name__ == '__main__':
 
@@ -217,11 +243,18 @@ if __name__ == '__main__':
     grid.show_topology()
 
     try:
-        user_Teff = float(input('Enter Teff [K]: '))
-        user_logg = float(input('Enter logg [dex]: '))
+        #user_Teff = float(input('Enter Teff [K]: '))
+        #user_logg = float(input('Enter logg [dex]: '))
+        
+        #grid.locate(user_Teff, user_logg)
+        # Note: use (7,3) for point (30000,4.0)
+        
+        print('Entering i=7 for Teff=30000K \nEntering j=3 for logg=4.0')
+        user_i = 7 #int(input('Enter i=7 for Teff=30000K: '))
+        user_j = 3 #int(input('Enter j=3 for logg=4.0: '))
+        
+        grid.find_derivs((user_i,user_j), show=True)
 
-        grid.locate(user_Teff, user_logg)
-    
     except IndexError:
         print("\nOpe, that right there's gonna be a problem. How's 'bout we try a different (Teff,logg)?\n")
         raise
