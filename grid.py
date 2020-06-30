@@ -247,7 +247,6 @@ if __name__ == '__main__':
         #user_logg = float(input('Enter logg [dex]: '))
         
         #grid.locate(user_Teff, user_logg)
-        # Note: use (7,3) for point (30000,4.0)
         
         print('Entering i=7 for Teff=30000K \nEntering j=3 for logg=4.0')
         user_i = 7 #int(input('Enter i=7 for Teff=30000K: '))
