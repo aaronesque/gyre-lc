@@ -223,7 +223,7 @@ class Grid:
         return nbrs
 
 
-    def take_first_deriv (self, node, neighbor_0, neighbor_1, axis):
+    def take_first_deriv2 (self, node, neighbor_0, neighbor_1, axis):
 
         x_0 = getattr(neighbor_0, axis)
         x = getattr(node, axis)
@@ -237,6 +237,32 @@ class Grid:
         b = np.abs( (x_0 - x)/(x_1 - x_0) )
 
         return a*(I - I_0)/(x - x_0) + b*(I - I_1)/(x - x_1)
+
+    
+    def take_first_deriv2 (self, node, neighbor_0, neighbor_1, axis):
+
+        x_0 = getattr(neighbor_0, axis)
+        x = getattr(node, axis)
+        x_1 = getattr(neighbor_1, axis)
+
+        I_0 = neighbor_0.data
+        I = node.data
+        I_1 = neighbor_1.data
+
+        a = np.abs( (x_1 - x)/(x_1 - x_0) )
+
+
+    def take_cross_deriv (self, node, neighbors):
+
+        dx = neighbors[2][1].Teff - neighbors[0][1].Teff
+        dy = neighbors[1][2].logg - neighbors[1][0].logg
+
+        I_a = neighbors[2][2].data
+        I_b = neighbors[0][2].data
+        I_c = neighbors[0][0].data
+        I_d = neighbors[2][0].data
+
+        return (I_a - I_b + I_c - I_d)/(dx*dy)
 
 
     def find_first_derivs (self, ij, show=False):
@@ -253,7 +279,9 @@ class Grid:
         dIdTeff = self.take_first_deriv(node, nbrs[0][1], nbrs[2][1], 'Teff')        
         dIdlogg = self.take_first_deriv(node, nbrs[1][0], nbrs[1][2], 'logg')    
         
-        print(dIdTeff, dIdlogg)
+        dIdcross = self.take_cross_deriv(node, nbrs)
+
+        print(dIdTeff, dIdlogg, dIdcross)
 
             
 if __name__ == '__main__':
