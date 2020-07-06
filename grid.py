@@ -205,83 +205,41 @@ class Grid:
         return stencil
 
 
-    def lookup_neighbors (self, ij):
-
-        stencil = self.find_neighbors(ij)
-
-        nbrs = np.empty([3,3], dtype=object)
-
-        for nj in range(-1,2):
-
-            for ni in range(-1,2):
-
-                Teff_i = self.Teff_axis[ij[0]+ni]
-                logg_j = self.logg_axis[ij[1]+nj]
-
-                nbrs[ni+1,nj+1] = self.lookup(Teff_i,logg_j)
-
-        return nbrs
-
-
-    def take_first_deriv2 (self, node, neighbor_0, neighbor_1, axis):
-
-        x_0 = getattr(neighbor_0, axis)
-        x = getattr(node, axis)
-        x_1 = getattr(neighbor_1, axis)
-
-        I_0 = neighbor_0.data
-        I = node.data
-        I_1 = neighbor_1.data
-
-        a = np.abs( (x_1 - x)/(x_1 - x_0) )
-        b = np.abs( (x_0 - x)/(x_1 - x_0) )
-
-        return a*(I - I_0)/(x - x_0) + b*(I - I_1)/(x - x_1)
-
-    
-    def take_first_deriv2 (self, node, neighbor_0, neighbor_1, axis):
-
-        x_0 = getattr(neighbor_0, axis)
-        x = getattr(node, axis)
-        x_1 = getattr(neighbor_1, axis)
-
-        I_0 = neighbor_0.data
-        I = node.data
-        I_1 = neighbor_1.data
-
-        a = np.abs( (x_1 - x)/(x_1 - x_0) )
-
-
-    def take_cross_deriv (self, node, neighbors):
-
-        dx = neighbors[2][1].Teff - neighbors[0][1].Teff
-        dy = neighbors[1][2].logg - neighbors[1][0].logg
-
-        I_a = neighbors[2][2].data
-        I_b = neighbors[0][2].data
-        I_c = neighbors[0][0].data
-        I_d = neighbors[2][0].data
-
-        return (I_a - I_b + I_c - I_d)/(dx*dy)
-
-
-    def find_first_derivs (self, ij, show=False):
+    def find_derivs (self, ij, show=False):
   
-        i,j = ij
+        nbrs_stencil, nbrs_Teff, nbrs_logg  = self.recon_stencil(ij)
 
-        Teff = self.Teff_axis[i]
-        logg = self.logg_axis[j]
+        def take_first_deriv (nbrs_data, nbrs_axis):
 
-        node = self.nodes[i,j]
+            x_0 = nbrs_axis[0]
+            x_1 = nbrs_axis[-1]
 
-        nbrs = self.lookup_neighbors(ij) 
+            I_0 = nbrs_data[0]
+            I_1 = nbrs_data[-1]
+
+            return (I_1 - I_0)/(x_1 - x_0)
+
+        def take_cross_deriv (nbrs_data, nbrs_Teff, nbrs_logg):
+
+            dx = nbrs_Teff[-1] - nbrs_Teff[0]
+            dy = nbrs_logg[-1] - nbrs_logg[0]
+
+            I_a = nbrs_data[2][2]
+            I_b = nbrs_data[0][2]
+            I_c = nbrs_data[0][0]
+            I_d = nbrs_data[2][0]
+
+            return (I_a - I_b + I_c - I_d)/(dx*dy)
         
-        dIdTeff = self.take_first_deriv(node, nbrs[0][1], nbrs[2][1], 'Teff')        
-        dIdlogg = self.take_first_deriv(node, nbrs[1][0], nbrs[1][2], 'logg')    
+        dIdTeff = take_first_deriv(nbrs_stencil[:,1], nbrs_Teff)        
+        dIdlogg = take_first_deriv(nbrs_stencil[1,:], nbrs_logg)    
         
-        dIdcross = self.take_cross_deriv(node, nbrs)
+        dIdcross = take_cross_deriv(nbrs_stencil, nbrs_Teff, nbrs_logg)
 
-        print(dIdTeff, dIdlogg, dIdcross)
+        dIdlnTeff = take_first_deriv(nbrs_stencil[:,1], np.log(nbrs_Teff))
+        dIdlng = dIdlogg*np.log10(np.e)
+
+        return dIdTeff, dIdlogg, dIdcross, dIdlnTeff, dIdlng
 
 
     def recon_stencil (self, ij, show=False):
@@ -495,22 +453,20 @@ if __name__ == '__main__':
     grid.show_topology()
 
     try:
-        #user_Teff = float(input('Enter Teff [K]: '))
-        #user_logg = float(input('Enter logg [dex]: '))
-        
-        #grid.locate(user_Teff, user_logg)
         
         user_i = 7 #int(input('Enter i=7 for Teff=30000K: '))
-        user_j = 1 #int(input('Enter j=3 for logg=4.0: '))
+        user_j = 3 #int(input('Enter j=3 for logg=4.0: '))
         print('Entering i={:d} for Teff={:.0f}K \nEntering j={:d} for logg={:3.1f}'.format(user_i, grid.Teff_axis[user_i], user_j, grid.logg_axis[user_j]))
 
-        #grid.find_first_derivs((user_i,user_j), show=True)
+        derivs = grid.find_derivs((user_i,user_j))
+        
+        print(derivs)
 
         # Do data stenciling
 
-        data, Teff_axis, logg_axis = grid.recon_stencil([user_i,user_j], show=True)
+        #data, Teff_axis, logg_axis = grid.recon_stencil([user_i,user_j], show=True)
 
-        print('Data from stenciling:\n', data)
+        #print('Data from stenciling:\n', data)
 
     except IndexError:
         print("\nOpe, that right there's gonna be a problem. How's 'bout we try a different (Teff,logg)?\n")
