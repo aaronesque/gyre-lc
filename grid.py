@@ -237,7 +237,7 @@ class Grid:
         dIdcross = take_cross_deriv(nbrs_stencil, nbrs_Teff, nbrs_logg)
 
         dIdlnTeff = take_first_deriv(nbrs_stencil[:,1], np.log(nbrs_Teff))
-        dIdlng = dIdlogg*np.log10(np.e)
+        dIdlng = dIdlogg/np.log(10)
 
         return dIdTeff, dIdlogg, dIdcross, dIdlnTeff, dIdlng
 
