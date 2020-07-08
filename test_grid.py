@@ -94,20 +94,15 @@ def test_find_neighbors (grid, verbose=True):
 
 
 
-def take_weighted_deriv (node, neighbor_0, neighbor_1, axis):
+def take_first_deriv (nbrs_data, nbrs_axis):
 
-    x_0 = getattr(neighbor_0, axis)
-    x = getattr(node, axis)
-    x_1 = getattr(neighbor_1, axis)
+    x_0 = nbrs_axis[0]
+    x_1 = nbrs_axis[-1]
 
-    I_0 = neighbor_0.data
-    I = node.data
-    I_1 = neighbor_1.data
+    I_0 = nbrs_data[0]
+    I_1 = nbrs_data[-1]
 
-    a = np.abs( (x_1 - x)/(x_1 - x_0) )
-    b = np.abs( (x_0 - x)/(x_1 - x_0) )
-
-    return a*(I - I_0)/(x - x_0) + b*(I - I_1)/(x - x_1)
+    return (I_1 - I_0)/(x_1 - x_0)
 
 
 
@@ -124,24 +119,9 @@ def test_find_derivs (grid, ij):
 
     print('Testing find_derivs()')
 
-    dI_dTeff, dI_dlogg, dI_cross, dI_dlnTeff, dI_dlng = grid.find_derivs(ij)
-
     # Testing against true deriv of data_function() in create_grid.py
 
     nbrs_stencil, nbrs_Teff, nbrs_logg = grid.recon_stencil(ij)
-
-    df_dTeff = 2*nbrs_Teff[1]*nbrs_logg[1]**2
-    df_dlogg = 2*nbrs_logg[1]*nbrs_Teff[1]**2
-    df_cross = 4*nbrs_logg[1]*nbrs_Teff[1]
-        
-    df_dlnTeff = 2*(nbrs_Teff[1]*nbrs_logg[1])**2
-    df_dlng = dI_dlogg/np.log(10)
-
-    print( (dI_dTeff-df_dTeff)/df_dTeff )
-    print( (dI_dlogg-df_dlogg)/df_dlogg )
-    print( (dI_cross-df_cross)/df_cross )
-    print( (dI_dlnTeff-df_dlnTeff)/df_dlnTeff )
-    print( (dI_dlng-df_dlng)/df_dlng )
 
     return
 
