@@ -21,6 +21,15 @@ class Node:
 
         self.data = f['data'][...][0]
 
+        # "Lazy" attribute declaration, to be assigned later
+
+        self.dI_dTeff = 0.
+        self.dI_dlogg = 0.
+        self.dI_cross = 0.
+
+        self.dI_dlnTeff = 0.
+        self.dI_dlng = 0.
+
         f.close()
 
 # Grid class
@@ -62,17 +71,23 @@ class Grid:
 
             self.nodes[i_Teff,i_logg] = node
 
-        # Set up the 2-D (Teff,logg) neighbors array
+        # Assign derivatives for each node
         
-        self.neighbors = np.empty((self.n_Teff,self.n_logg), dtype=np.ndarray)
-        
-        for i_logg in range(self.n_logg):
+        #for i_logg in range(self.n_logg):
             
-            for i_Teff in range(self.n_Teff):
+            #for i_Teff in range(self.n_Teff):
                 
                 # Identify node neighbors
                 
-                self.neighbors[i_Teff,i_logg] = self.find_neighbors((i_Teff,i_logg))
+                #self.nodes[i_Teff,i_logg].dI_dTeff = self.find_derivs( (i_Teff,i_logg), 'dTeff')
+                #self.nodes[i_Teff,i_logg].dI_dlogg = self.find_derivs( (i_Teff,i_logg), 'dlogg') 
+                #self.nodes[i_Teff,i_logg].dI_cross = self.find_derivs( (i_Teff,i_logg), 'cross')
+
+                #self.nodes[i_Teff,i_logg].dI_dlnTeff = self.find_derivs( (i_Teff,i_logg), 'dlnTeff')
+                #self.nodes[i_Teff,i_logg].dI_dlng = self.find_derivs( (i_Teff,i_logg), 'dlng')
+                #print(i_Teff,i_logg)
+                #print(self.find_derivs( (i_Teff,i_logg), 'dTeff'))
+
 
         # Set the debug flag
 
@@ -204,10 +219,11 @@ class Grid:
         
         return stencil
 
+    
 
-    def find_derivs (self, ij, show=False):
+    def find_derivs (self, ij, which_deriv, show=False):
   
-        nbrs_stencil, nbrs_Teff, nbrs_logg  = self.recon_stencil(ij)
+        nbrs_stencil, nbrs_Teff, nbrs_logg  = self.recon_stencil(ij, show)
 
         def take_first_deriv (nbrs_data, nbrs_axis):
 
@@ -231,15 +247,23 @@ class Grid:
 
             return (I_a - I_b + I_c - I_d)/(dx*dy)
         
-        dIdTeff = take_first_deriv(nbrs_stencil[:,1], nbrs_Teff)        
-        dIdlogg = take_first_deriv(nbrs_stencil[1,:], nbrs_logg)    
+        if which_deriv=='dTeff':
+            return take_first_deriv(nbrs_stencil[:,1], nbrs_Teff)        
         
-        dIdcross = take_cross_deriv(nbrs_stencil, nbrs_Teff, nbrs_logg)
+        elif which_deriv=='dlogg': 
+            return take_first_deriv(nbrs_stencil[1,:], nbrs_logg)    
+        
+        elif which_deriv=='cross':
+            return take_cross_deriv(nbrs_stencil, nbrs_Teff, nbrs_logg)
 
-        dIdlnTeff = take_first_deriv(nbrs_stencil[:,1], np.log(nbrs_Teff))
-        dIdlng = dIdlogg/np.log(10)
+        elif which_deriv=='dlnTeff':
+            return take_first_deriv(nbrs_stencil[:,1], np.log(nbrs_Teff))
+        
+        elif which_deriv=='dlng':
+            return take_first_deriv(nbrs_stencil[1,:], nbrs_logg)/np.log(10)
 
-        return dIdTeff, dIdlogg, dIdcross, dIdlnTeff, dIdlng
+        else:
+            raise Exception("Specify which deriv for find_deriv(): 'dTeff','dlogg','cross','dlnTeff','dlng'.")
 
 
     def recon_stencil (self, ij, show=False):
@@ -418,7 +442,7 @@ class Grid:
                 print('Extrapolated [0,0] corner along both')
         elif not nbrs_ex[2,0]:
             data_ex[2,0] = extrap_in_both([0,1], [1,2], 2,  0)
-            data_ex[2,0] = True
+            nbrs_ex[2,0] = True
             if show:
                 print('Extrapolated [2,0] corner along both')
         elif not nbrs_ex[2,2]:
@@ -433,7 +457,7 @@ class Grid:
                 print('Extrapolated [0,2] corner along both')
 
         # Sanity check
-
+        
         assert np.all(nbrs_ex)
 
         # Return the data and axes
@@ -454,11 +478,11 @@ if __name__ == '__main__':
 
     try:
         
-        user_i = 7 #int(input('Enter i=7 for Teff=30000K: '))
-        user_j = 3 #int(input('Enter j=3 for logg=4.0: '))
+        user_i = 9 #int(input('Enter i=7 for Teff=30000K: '))
+        user_j = 0 #int(input('Enter j=3 for logg=4.0: '))
         print('Entering i={:d} for Teff={:.0f}K \nEntering j={:d} for logg={:3.1f}'.format(user_i, grid.Teff_axis[user_i], user_j, grid.logg_axis[user_j]))
 
-        derivs = grid.find_derivs((user_i,user_j))
+        derivs = grid.find_derivs((user_i,user_j), 'dTeff', True)
         
         print(derivs)
 
