@@ -8,8 +8,8 @@ import numpy as np
 
 # Set up axes
 
-Teffs = [2500., 5000., 7500., 10000., 15000., 20000., 25000., 30000., 40000., 50000.]
-loggs = [2.5, 3.0, 3.5, 4.0, 4.5]
+Teff_axis = [2500., 5000., 7500., 10000., 15000., 20000., 25000., 30000., 40000., 50000.]
+logg_axis = [2.5, 3.0, 3.5, 4.0, 4.5]
 
 # Create function for testing
 
@@ -21,8 +21,8 @@ def data_function(Teff, logg):
 
 # Create nodes
 
-for Teff in Teffs:
-    for logg in loggs:
+for Teff in Teff_axis:
+    for logg in logg_axis:
 
         # Decide whether to create a node
 
