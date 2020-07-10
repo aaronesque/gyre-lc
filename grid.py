@@ -1,54 +1,22 @@
-#!/usr/bin/env python
+# grid class
 
-import h5py
 import numpy as np
-import sys
 
-# Node class
+import node as nd
 
-class Node:
-
-    def __init__ (self, filename):
-
-        self.filename = filename
-
-        # Read data from file
-
-        f = h5py.File(filename, 'r')
-
-        self.Teff = f.attrs['Teff']
-        self.logg = f.attrs['logg']
-
-        self.data = f['data'][...][0]
-
-        # "Lazy" attribute declaration, to be assigned later
-
-        self.dI_dTeff = 0.
-        self.dI_dlogg = 0.
-        self.dI_cross = 0.
-
-        self.dI_dlnTeff = 0.
-        self.dI_dlng = 0.
-
-        f.close()
-
-# Grid class
+### Class definition
 
 class Grid:
 
-    def __init__ (self, filenames, debug=False):
+    def __init__ (self, nodes_list, debug=False):
 
         # Sanity check
 
-        if len(filenames) == 0:
-            raise Exception('Empty grid')
+        if len(nodes_list) == 0:
+            raise Exception('Empty nodes list')
 
-        # Read nodes
-
-        nodes_list = np.empty_like(filenames, dtype=object)
-
-        for i, filename in enumerate(filenames):
-            nodes_list[i] = Node(filename)
+        if not all(isinstance(node, nd.Node) for node in nodes_list):
+            raise Exception('Nodes list contains invalid instance')
 
         # Extract axes
 
@@ -58,7 +26,7 @@ class Grid:
         self.n_Teff = len(self.Teff_axis)
         self.n_logg = len(self.logg_axis)
 
-        # Set up the 2-D (Teff,logg) node array
+        # Store the nodes
 
         self.nodes = np.empty([self.n_Teff,self.n_logg], dtype=object)
 
@@ -71,29 +39,11 @@ class Grid:
 
             self.nodes[i_Teff,i_logg] = node
 
-        # Assign derivatives for each node
-        
-        #for i_logg in range(self.n_logg):
-            
-            #for i_Teff in range(self.n_Teff):
-                
-                # Identify node neighbors
-                
-                #self.nodes[i_Teff,i_logg].dI_dTeff = self.find_derivs( (i_Teff,i_logg), 'dTeff')
-                #self.nodes[i_Teff,i_logg].dI_dlogg = self.find_derivs( (i_Teff,i_logg), 'dlogg') 
-                #self.nodes[i_Teff,i_logg].dI_cross = self.find_derivs( (i_Teff,i_logg), 'cross')
-
-                #self.nodes[i_Teff,i_logg].dI_dlnTeff = self.find_derivs( (i_Teff,i_logg), 'dlnTeff')
-                #self.nodes[i_Teff,i_logg].dI_dlng = self.find_derivs( (i_Teff,i_logg), 'dlng')
-                #print(i_Teff,i_logg)
-                #print(self.find_derivs( (i_Teff,i_logg), 'dTeff'))
-
-
         # Set the debug flag
 
         self.debug = debug
 
-            
+        
     def lookup (self, Teff, logg):
 
         if Teff in self.Teff_axis and logg in self.logg_axis:
@@ -107,7 +57,7 @@ class Grid:
 
             node = self.nodes[i_Teff,i_logg]
             
-            if isinstance(node, Node):
+            if isinstance(node, nd.Node):
                 return node
             else:
                 return None
@@ -123,7 +73,7 @@ class Grid:
 
             for i_Teff in range(self.n_Teff):
 
-                if isinstance(self.nodes[i_Teff,i_logg], Node):
+                if isinstance(self.nodes[i_Teff,i_logg], nd.Node):
                     print("X", end=' ')
                 else:
                     print(".", end=' ')
@@ -207,7 +157,7 @@ class Grid:
                 if ((0 <= j_Teff) and (j_Teff < self.n_Teff)) and \
                 ((0 <= j_logg) and (j_logg < self.n_logg)):
                 
-                    if isinstance(self.nodes[j_Teff,j_logg], Node):
+                    if isinstance(self.nodes[j_Teff,j_logg], nd.Node):
                         if show==True: print("X", end=' ')
                         stencil[h+1, k+1] = True
                     else:
@@ -464,37 +414,17 @@ class Grid:
 
         return data_ex, Teff_axis, logg_axis
 
-            
-if __name__ == '__main__':
+### Factory methods
 
-    filenames = sys.argv[1:]
+def from_file (filenames_list, debug=False):
 
-    if len(filenames) == 0:
-        raise Exception("Syntax: grid.py [filename list]")
+    # Read the nodes
 
-    grid = Grid(filenames, debug=True)
+    nodes_list = []
 
-    grid.show_topology()
+    for filename in filenames_list:
+        nodes_list += [nd.from_file(filename)]
 
-    try:
-        
-        user_i = 9 #int(input('Enter i=7 for Teff=30000K: '))
-        user_j = 0 #int(input('Enter j=3 for logg=4.0: '))
-        print('Entering i={:d} for Teff={:.0f}K \nEntering j={:d} for logg={:3.1f}'.format(user_i, grid.Teff_axis[user_i], user_j, grid.logg_axis[user_j]))
+    # Return a new Grid
 
-        derivs = grid.find_derivs((user_i,user_j), 'dTeff', True)
-        
-        print(derivs)
-
-        # Do data stenciling
-
-        #data, Teff_axis, logg_axis = grid.recon_stencil([user_i,user_j], show=True)
-
-        #print('Data from stenciling:\n', data)
-
-    except IndexError:
-        print("\nOpe, that right there's gonna be a problem. How's 'bout we try a different (Teff,logg)?\n")
-        raise
-    
-
-    
+    return Grid(nodes_list, debug)
