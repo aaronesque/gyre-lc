@@ -428,3 +428,18 @@ def from_file (filenames_list, debug=False):
     # Return a new Grid
 
     return Grid(nodes_list, debug)
+
+
+def from_func (Teff_axis, logg_axis, func, debug=False):
+
+    # Create the nodes
+
+    nodes_list = []
+
+    for Teff in Teff_axis:
+        for logg in logg_axis:
+            nodes_list += [nd.Node(Teff, logg, func(Teff, logg))]
+
+    # Return a new Grid
+
+    return Grid(nodes_list, debug)
