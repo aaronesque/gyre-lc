@@ -5,10 +5,37 @@
 import sys
 import numpy as np
 import grid as gr
+import node as nd
 
-def test_locate_nodes (grid):
+def build_grid ():
+
+    # Set up axes
+
+    Teff_axis = [2500., 5000., 7500., 10000., 15000., 20000., 25000., 30000., 40000., 50000.]
+    logg_axis = [2.5, 3.0, 3.5, 4.0, 4.5]
+
+    # Define data funcs
+
+    def func (Teff, logg):
+        return Teff*logg**3 + logg**2
+
+    def bound_func (Teff, logg):
+        return Teff**4/10**logg/1E15 < 1.
+
+    # Build the grid
+
+    grid = gr.from_func(Teff_axis, logg_axis, func, bound_func=bound_func)
+
+    return grid
+    
+
+def test_locate_nodes ():
 
     print('Testing locate() at nodes')
+
+    # Build the grid
+
+    grid = build_grid()
 
     # Check locate at nodes
 
@@ -24,9 +51,13 @@ def test_locate_nodes (grid):
             if i_loc != i_chk or j_loc != j_chk:
                 raise Exception(f'locate() index mismatch: ({i_loc},{j_loc}) != ({i_chk},{j_chk})')
 
-def test_locate_centers (grid):
+def test_locate_centers ():
 
     print('Testing locate() at centers')
+
+    # Build the grid
+
+    grid = build_grid()
 
     # Check locate at centers
 
@@ -47,9 +78,13 @@ def test_locate_centers (grid):
                 raise Exception(f'locate() index mismatch: ({i_loc},{j_loc}) != ({i_chk},{j_chk})')
 
 
-def test_find_neighbors (grid, verbose=True):
+def test_find_neighbors (verbose=True):
 
     print('Testing find_neighbors()')
+
+    # Build the grid
+
+    grid = build_grid()
 
     # Check locate at neighbors
     
@@ -75,7 +110,7 @@ def test_find_neighbors (grid, verbose=True):
                         if verbose:  print(f'checking neighbor({ni+1},{nj+1}):', end=' ')
 
                         if (i_chk >= 0) and (i_chk < grid.n_Teff) and (j_chk >= 0) and (j_chk < grid.n_logg)\
-                                and isinstance(grid.nodes[i_chk,j_chk], gr.Node):  correct = True
+                                and isinstance(grid.nodes[i_chk,j_chk], nd.Node):  correct = True
                         
                         else:  correct = False
 
@@ -115,9 +150,13 @@ def test_recon_stencil(ij):
     return
 
 
-def test_find_derivs (grid, ij):
+def test_find_derivs (ij):
 
     print('Testing find_derivs()')
+
+    # Build the grid
+
+    grid = build_grid()
 
     # Testing against true deriv of data_function() in create_grid.py
 
@@ -128,19 +167,10 @@ def test_find_derivs (grid, ij):
 
 if __name__ == '__main__':
 
-    filenames = sys.argv[1:]
-
-    if len(filenames) == 0:
-        raise Exception("Syntax: grid.py [filename list]")
-
-    # Construct grid
-
-    grid = gr.Grid(filenames)
-
     # Run tests
 
-    test_locate_nodes(grid)
-    test_locate_centers(grid)
-    test_find_neighbors(grid, verbose=False)
-    test_find_derivs(grid, (7,3))
+    test_locate_nodes()
+    test_locate_centers()
+    test_find_neighbors(verbose=False)
+    test_find_derivs((7,3))
 
