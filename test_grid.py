@@ -167,7 +167,7 @@ def test_find_derivs (verbose=False):
 
     grid = build_grid(type='fine')
 
-    # Set the derivatives tolerances
+    # Set the error tolerances
 
     tol_dTeff = 1E-2
     tol_dlogg = 1E-2
@@ -175,10 +175,6 @@ def test_find_derivs (verbose=False):
 
     # Check find_derivs
 
-    max_err_dTeff = 0.
-    max_err_dlogg = 0.
-    max_err_cross = 0.
-    
     for i in range(grid.n_Teff):
 
         for j in range(grid.n_logg):
@@ -200,16 +196,17 @@ def test_find_derivs (verbose=False):
                 err_dlogg = (ddata_dlogg - ddata_dlogg_chk)/ddata_dlogg_chk
                 err_cross = (ddata_cross - ddata_cross_chk)/ddata_cross_chk
 
-                max_err_dTeff = max(err_dTeff, max_err_dTeff)
-                max_err_dlogg = max(err_dlogg, max_err_dlogg)
-                max_err_cross = max(err_cross, max_err_cross)
-
+                if err_dTeff > tol_dTeff:
+                    raise Exception(f'dTeff derivative error {err_dTeff} exceeds tolerance at node ({i},{j})')
+                
+                if err_dlogg > tol_dlogg:
+                    raise Exception(f'dlogg derivative error {err_dlogg} exceeds tolerance at node ({i},{j})')
+                
+                if err_cross > tol_cross:
+                    raise Exception(f'cross derivative error {err_cross} exceeds tolerance at node ({i},{j})')
+                
                 if verbose:
                     print('  errs:', err_dTeff, err_dlogg, err_cross)
-
-    print('  Max err (dTeff):', max_err_dTeff)
-    print('  Max err (dTeff):', max_err_dlogg)
-    print('  Max err (cross):', max_err_cross)
 
 
 if __name__ == '__main__':
