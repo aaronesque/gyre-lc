@@ -5,10 +5,48 @@
 import sys
 import numpy as np
 import grid as gr
+import node as nd
 
-def test_locate_nodes (grid):
+def data_func (Teff, logg):
+
+    return Teff*logg**3 + logg**2
+
+
+def deriv_func (Teff, logg):
+
+    return logg**3, 3*Teff*logg**2 + 2*logg, 3*logg**2
+
+
+def bound_func (Teff, logg):
+
+    return Teff**4/10**logg/1E15 < 1.
+
+
+def build_grid (type=None):
+
+    # Set up axes
+
+    if type == 'fine':
+        Teff_axis = np.linspace(2500., 50000., 100)
+        logg_axis = np.linspace(2.5, 4.5, 100)
+    else:
+        Teff_axis = [2500., 5000., 7500., 10000., 15000., 20000., 25000., 30000., 40000., 50000.]
+        logg_axis = [2.5, 3.0, 3.5, 4.0, 4.5]
+
+    # Build the grid
+
+    grid = gr.from_func(Teff_axis, logg_axis, data_func, bound_func=bound_func)
+
+    return grid
+    
+
+def test_locate_nodes ():
 
     print('Testing locate() at nodes')
+
+    # Build the grid
+
+    grid = build_grid()
 
     # Check locate at nodes
 
@@ -24,9 +62,14 @@ def test_locate_nodes (grid):
             if i_loc != i_chk or j_loc != j_chk:
                 raise Exception(f'locate() index mismatch: ({i_loc},{j_loc}) != ({i_chk},{j_chk})')
 
-def test_locate_centers (grid):
+            
+def test_locate_centers ():
 
     print('Testing locate() at centers')
+
+    # Build the grid
+
+    grid = build_grid()
 
     # Check locate at centers
 
@@ -47,11 +90,15 @@ def test_locate_centers (grid):
                 raise Exception(f'locate() index mismatch: ({i_loc},{j_loc}) != ({i_chk},{j_chk})')
 
 
-def test_find_neighbors (grid, verbose=True):
+def test_find_neighbors (verbose=False):
 
     print('Testing find_neighbors()')
 
-    # Check locate at neighbors
+    # Build the grid
+
+    grid = build_grid()
+
+    # Check find_neighbors
     
     for i in range(grid.n_Teff):
 
@@ -75,7 +122,7 @@ def test_find_neighbors (grid, verbose=True):
                         if verbose:  print(f'checking neighbor({ni+1},{nj+1}):', end=' ')
 
                         if (i_chk >= 0) and (i_chk < grid.n_Teff) and (j_chk >= 0) and (j_chk < grid.n_logg)\
-                                and isinstance(grid.nodes[i_chk,j_chk], gr.Node):  correct = True
+                                and isinstance(grid.nodes[i_chk,j_chk], nd.Node):  correct = True
                         
                         else:  correct = False
 
@@ -93,54 +140,82 @@ def test_find_neighbors (grid, verbose=True):
             if verbose:  print(' ')
 
 
-
-def take_first_deriv (nbrs_data, nbrs_axis):
-
-    x_0 = nbrs_axis[0]
-    x_1 = nbrs_axis[-1]
-
-    I_0 = nbrs_data[0]
-    I_1 = nbrs_data[-1]
-
-    return (I_1 - I_0)/(x_1 - x_0)
-
-
-
-def test_recon_stencil(ij):
+def test_recon_stencil(verbose=False):
 
     print('Testing recon_stencil()')
 
-    nbrs_stencil, nbrs_Teff, nbrs_logg = grid.recon_stencil(ij)
+    # Build the grid
 
-    return
+    grid = build_grid()
+
+    # Check recon_stencil
+    
+    for i in range(grid.n_Teff):
+
+        for j in range(grid.n_logg):
+            
+            if verbose:  print(f'Node({i},{j})')
+
+            data, Teff_axis, logg_axis = grid.recon_stencil((i,j))
 
 
-def test_find_derivs (grid, ij):
+def test_find_derivs (verbose=False):
 
     print('Testing find_derivs()')
 
-    # Testing against true deriv of data_function() in create_grid.py
+    # Build the grid
 
-    nbrs_stencil, nbrs_Teff, nbrs_logg = grid.recon_stencil(ij)
+    grid = build_grid(type='fine')
 
-    return
+    # Set the error tolerances
+
+    tol_dTeff = 1E-2
+    tol_dlogg = 1E-2
+    tol_cross = 1E-2
+
+    # Check find_derivs
+
+    for i in range(grid.n_Teff):
+
+        for j in range(grid.n_logg):
+            
+            if verbose:  print(f'Node({i},{j})')
+
+            if isinstance(grid.nodes[i,j], nd.Node):
+
+                ddata_dTeff = grid.find_derivs((i,j), 'dTeff')
+                ddata_dlogg = grid.find_derivs((i,j), 'dlogg')
+                ddata_cross = grid.find_derivs((i,j), 'cross')
+
+                Teff = grid.Teff_axis[i]
+                logg = grid.logg_axis[j]
+
+                ddata_dTeff_chk, ddata_dlogg_chk, ddata_cross_chk = deriv_func(Teff, logg)
+
+                err_dTeff = (ddata_dTeff - ddata_dTeff_chk)/ddata_dTeff_chk
+                err_dlogg = (ddata_dlogg - ddata_dlogg_chk)/ddata_dlogg_chk
+                err_cross = (ddata_cross - ddata_cross_chk)/ddata_cross_chk
+
+                if err_dTeff > tol_dTeff:
+                    raise Exception(f'dTeff derivative error {err_dTeff} exceeds tolerance at node ({i},{j})')
+                
+                if err_dlogg > tol_dlogg:
+                    raise Exception(f'dlogg derivative error {err_dlogg} exceeds tolerance at node ({i},{j})')
+                
+                if err_cross > tol_cross:
+                    raise Exception(f'cross derivative error {err_cross} exceeds tolerance at node ({i},{j})')
+                
+                if verbose:
+                    print('  errs:', err_dTeff, err_dlogg, err_cross)
 
 
 if __name__ == '__main__':
 
-    filenames = sys.argv[1:]
-
-    if len(filenames) == 0:
-        raise Exception("Syntax: grid.py [filename list]")
-
-    # Construct grid
-
-    grid = gr.Grid(filenames)
-
     # Run tests
 
-    test_locate_nodes(grid)
-    test_locate_centers(grid)
-    test_find_neighbors(grid, verbose=False)
-    test_find_derivs(grid, (7,3))
+    test_locate_nodes()
+    test_locate_centers()
+    test_find_neighbors()
+    test_recon_stencil()
+    test_find_derivs()
 

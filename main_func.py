@@ -15,9 +15,12 @@ if __name__ == '__main__':
     def func (Teff, logg):
         return Teff*logg**3 + logg**2
 
+    def bound_func (Teff, logg):
+        return Teff**4/10**logg/1E15 < 1.
+
     # Build the grid
 
-    grid = gr.from_func(Teff_axis, logg_axis, func, debug=True)
+    grid = gr.from_func(Teff_axis, logg_axis, func, bound_func=bound_func, debug=True)
 
     grid.show_topology()
 
