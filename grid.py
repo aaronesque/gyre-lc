@@ -430,7 +430,7 @@ def from_file (filenames_list, debug=False):
     return Grid(nodes_list, debug)
 
 
-def from_func (Teff_axis, logg_axis, func, debug=False):
+def from_func (Teff_axis, logg_axis, func, bound_func=None, debug=False):
 
     # Create the nodes
 
@@ -438,7 +438,11 @@ def from_func (Teff_axis, logg_axis, func, debug=False):
 
     for Teff in Teff_axis:
         for logg in logg_axis:
-            nodes_list += [nd.Node(Teff, logg, func(Teff, logg))]
+            if bound_func is not None:
+                if bound_func(Teff, logg):
+                    nodes_list += [nd.Node(Teff, logg, func(Teff, logg))]
+            else:
+                nodes_list += [nd.Node(Teff, logg, func(Teff, logg))]
 
     # Return a new Grid
 
