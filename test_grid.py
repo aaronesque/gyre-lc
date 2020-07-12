@@ -128,19 +128,6 @@ def test_find_neighbors (verbose=True):
             if verbose:  print(' ')
 
 
-
-def take_first_deriv (nbrs_data, nbrs_axis):
-
-    x_0 = nbrs_axis[0]
-    x_1 = nbrs_axis[-1]
-
-    I_0 = nbrs_data[0]
-    I_1 = nbrs_data[-1]
-
-    return (I_1 - I_0)/(x_1 - x_0)
-
-
-
 def test_recon_stencil(ij):
 
     print('Testing recon_stencil()')
