@@ -171,46 +171,48 @@ class Grid:
 
     
 
+    def take_first_deriv (self, nbrs_data, nbrs_axis):
+
+        x_0 = nbrs_axis[0]
+        x_1 = nbrs_axis[2]
+
+        I_0 = nbrs_data[0]
+        I_1 = nbrs_data[2]
+
+        return (I_1 - I_0)/(x_1 - x_0)
+
+    def take_cross_deriv (self, nbrs_data, nbrs_Teff, nbrs_logg):
+
+        dx = nbrs_Teff[2] - nbrs_Teff[0]
+        dy = nbrs_logg[2] - nbrs_logg[0]
+
+        I_a = nbrs_data[2][2]
+        I_b = nbrs_data[0][2]
+        I_c = nbrs_data[2][0]
+        I_d = nbrs_data[0][0]
+
+        return (I_a - I_b - I_c + I_d)/(dx*dy)
+        
+    
+
     def find_derivs (self, ij, which_deriv, show=False):
   
         nbrs_stencil, nbrs_Teff, nbrs_logg  = self.recon_stencil(ij, show)
-
-        def take_first_deriv (nbrs_data, nbrs_axis):
-
-            x_0 = nbrs_axis[0]
-            x_1 = nbrs_axis[-1]
-
-            I_0 = nbrs_data[0]
-            I_1 = nbrs_data[-1]
-
-            return (I_1 - I_0)/(x_1 - x_0)
-
-        def take_cross_deriv (nbrs_data, nbrs_Teff, nbrs_logg):
-
-            dx = nbrs_Teff[-1] - nbrs_Teff[0]
-            dy = nbrs_logg[-1] - nbrs_logg[0]
-
-            I_a = nbrs_data[2][2]
-            I_b = nbrs_data[0][2]
-            I_c = nbrs_data[0][0]
-            I_d = nbrs_data[2][0]
-
-            return (I_a - I_b + I_c - I_d)/(dx*dy)
         
         if which_deriv=='dTeff':
-            return take_first_deriv(nbrs_stencil[:,1], nbrs_Teff)        
+            return self.take_first_deriv(nbrs_stencil[:,1], nbrs_Teff)        
         
         elif which_deriv=='dlogg': 
-            return take_first_deriv(nbrs_stencil[1,:], nbrs_logg)    
+            return self.take_first_deriv(nbrs_stencil[1,:], nbrs_logg)    
         
         elif which_deriv=='cross':
-            return take_cross_deriv(nbrs_stencil, nbrs_Teff, nbrs_logg)
+            return self.take_cross_deriv(nbrs_stencil, nbrs_Teff, nbrs_logg)
 
         elif which_deriv=='dlnTeff':
-            return take_first_deriv(nbrs_stencil[:,1], np.log(nbrs_Teff))
+            return self.take_first_deriv(nbrs_stencil[:,1], np.log(nbrs_Teff))
         
         elif which_deriv=='dlng':
-            return take_first_deriv(nbrs_stencil[1,:], nbrs_logg)/np.log(10)
+            return self.take_first_deriv(nbrs_stencil[1,:], nbrs_logg)/np.log(10)
 
         else:
             raise Exception("Specify which deriv for find_deriv(): 'dTeff','dlogg','cross','dlnTeff','dlng'.")
@@ -438,11 +440,13 @@ def from_func (Teff_axis, logg_axis, func, bound_func=None, debug=False):
 
     for Teff in Teff_axis:
         for logg in logg_axis:
-            if bound_func is not None:
-                if bound_func(Teff, logg):
-                    nodes_list += [nd.Node(Teff, logg, func(Teff, logg))]
-            else:
-                nodes_list += [nd.Node(Teff, logg, func(Teff, logg))]
+            #if bound_func:# is not None:
+            #    if bound_func(Teff, logg):
+            #        nodes_list += [nd.Node(Teff, logg, func(Teff, logg))]
+            #else:
+            #    nodes_list += [nd.Node(Teff, logg, func(Teff, logg))]
+            nodes_list += [nd.Node(Teff, logg, func(Teff, logg))]
+
 
     # Return a new Grid
 

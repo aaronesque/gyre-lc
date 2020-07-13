@@ -19,7 +19,9 @@ def deriv_func (Teff, logg):
 
 def bound_func (Teff, logg):
 
-    return Teff**4/10**logg/1E15 < 1.
+    #return Teff**4/10**logg/1E15 < 1.
+
+    return 0. < 1.
 
 
 def build_grid (type=None):
@@ -203,6 +205,7 @@ def test_find_derivs (verbose=False):
                     raise Exception(f'dlogg derivative error {err_dlogg} exceeds tolerance at node ({i},{j})')
                 
                 if err_cross > tol_cross:
+                    print(ddata_cross, ddata_cross_chk)
                     raise Exception(f'cross derivative error {err_cross} exceeds tolerance at node ({i},{j})')
                 
                 if verbose:

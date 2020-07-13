@@ -20,9 +20,9 @@ if __name__ == '__main__':
         user_j = 3 #int(input('Enter j=3 for logg=4.0: '))
         print('Entering i={:d} for Teff={:.0f}K \nEntering j={:d} for logg={:3.1f}'.format(user_i, grid.Teff_axis[user_i], user_j, grid.logg_axis[user_j]))
 
-        #derivs = grid.find_derivs((user_i,user_j), 'dTeff', True)
+        derivs = grid.find_derivs((user_i,user_j), 'cross', True)
         
-        #print(derivs)
+        print(derivs)
 
         # Do data stenciling
 
