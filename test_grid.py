@@ -42,8 +42,8 @@ def build_grid (type=None, ragged=True):
     # Set up axes
 
     if type == 'fine':
-        Teff_axis = np.linspace(2500., 50000., 1000)
-        logg_axis = np.linspace(2.5, 4.5, 1000)
+        Teff_axis = np.linspace(2500., 50000., 100)
+        logg_axis = np.linspace(2.5, 4.5, 100)
     elif type == '3x3':
         Teff_axis = [9000., 10000., 11000.]
         logg_axis = [3.9, 4.0, 4.1]
@@ -249,12 +249,6 @@ def test_find_derivs (verbose=False):
 
     grid = build_grid(type='fine')
 
-    # Set the error tolerances
-
-    tol_dTeff = 1E-2
-    tol_dlogg = 1E-2
-    tol_cross = 1E-2
-
     # Check find_derivs
 
     for i in range(grid.n_Teff):
@@ -272,20 +266,44 @@ def test_find_derivs (verbose=False):
                 Teff = grid.Teff_axis[i]
                 logg = grid.logg_axis[j]
 
-                ddata_dTeff_chk, ddata_dlogg_chk, ddata_cross_chk = deriv_func(Teff, logg)
+                derivs = derivs_func(Teff, logg)
 
-                err_dTeff = (ddata_dTeff - ddata_dTeff_chk)/ddata_dTeff_chk
-                err_dlogg = (ddata_dlogg - ddata_dlogg_chk)/ddata_dlogg_chk
-                err_cross = (ddata_cross - ddata_cross_chk)/ddata_cross_chk
+                # Evaluate errors
 
-                if err_dTeff > tol_dTeff:
+                err_dTeff = np.abs(ddata_dTeff - derivs['T'])
+                err_dlogg = np.abs(ddata_dlogg - derivs['g'])
+                err_cross = np.abs(ddata_cross - derivs['Tg'])
+
+                # Evaluate the expected error (using second-order
+                # Taylor series estimates)
+
+                if i > 0:
+                    if i < grid.n_Teff-1:
+                        dTeff = 0.5*(grid.Teff_axis[i+1] - grid.Teff_axis[i-1])
+                    else:
+                        dTeff = grid.Teff_axis[i] - grid.Teff_axis[i-1]
+                else:
+                    dTeff = grid.Teff_axis[i+1] - grid.Teff_axis[i]
+
+                if j > 0:
+                    if j < grid.n_logg-1:
+                        dlogg = grid.logg_axis[j+1] - grid.logg_axis[j-1]
+                    else:
+                        dlogg = grid.logg_axis[j] - grid.logg_axis[j-1]
+                else:
+                    dlogg = grid.logg_axis[j+1] - grid.logg_axis[j]
+
+                err_dTeff_chk = derivs['T_scale']**2*dTeff/2
+                err_dlogg_chk = derivs['g_scale']**2*dlogg/2
+                err_cross_chk = derivs['T_scale']*derivs['g_scale']*dTeff*dlogg + derivs['T_scale']**2*dTeff/2 + derivs['g_scale']**2*dlogg/2
+
+                if err_dTeff > err_dTeff_chk:
                     raise Exception(f'dTeff derivative error {err_dTeff} exceeds tolerance at node ({i},{j})')
                 
-                if err_dlogg > tol_dlogg:
+                if err_dlogg > err_dlogg_chk:
                     raise Exception(f'dlogg derivative error {err_dlogg} exceeds tolerance at node ({i},{j})')
                 
-                if err_cross > tol_cross:
-                    print(ddata_cross, ddata_cross_chk)
+                if err_cross > err_cross_chk:
                     raise Exception(f'cross derivative error {err_cross} exceeds tolerance at node ({i},{j})')
                 
                 if verbose:
@@ -300,5 +318,5 @@ if __name__ == '__main__':
     test_locate_centers()
     test_find_neighbors()
     test_recon_stencil()
-#    test_find_derivs()
+    test_find_derivs()
 
