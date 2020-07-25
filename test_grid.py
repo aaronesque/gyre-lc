@@ -6,38 +6,57 @@ import sys
 import numpy as np
 import grid as gr
 import node as nd
+import copy as cp
 
 def data_func (Teff, logg):
 
-    return Teff*logg**3 + logg**2
+    t = Teff/1e4
+    g = logg
+
+    return np.sin(t)*np.cos(g)
 
 
-def deriv_func (Teff, logg):
+def derivs_func (Teff, logg):
 
-    return logg**3, 3*Teff*logg**2 + 2*logg, 3*logg**2
+    t = Teff/1e4
+    g = logg
+
+    dt = 1./1e4
+    dg = 1.
+
+    return {
+        'T': np.cos(t)*np.cos(g)*dt,
+        'g': -np.sin(t)*np.sin(g)*dg,
+        'Tg': -np.cos(t)*np.sin(g)*dt*dg,
+        'T_scale': dt,
+        'g_scale': dg }
 
 
 def bound_func (Teff, logg):
 
-    #return Teff**4/10**logg/1E15 < 1.
-
-    return 0. < 1.
+    return Teff**4/10**logg/1E15 < 1.
 
 
-def build_grid (type=None):
+def build_grid (type=None, ragged=True):
 
     # Set up axes
 
     if type == 'fine':
-        Teff_axis = np.linspace(2500., 50000., 100)
-        logg_axis = np.linspace(2.5, 4.5, 100)
+        Teff_axis = np.linspace(2500., 50000., 1000)
+        logg_axis = np.linspace(2.5, 4.5, 1000)
+    elif type == '3x3':
+        Teff_axis = [9000., 10000., 11000.]
+        logg_axis = [3.9, 4.0, 4.1]
     else:
         Teff_axis = [2500., 5000., 7500., 10000., 15000., 20000., 25000., 30000., 40000., 50000.]
         logg_axis = [2.5, 3.0, 3.5, 4.0, 4.5]
 
     # Build the grid
 
-    grid = gr.from_func(Teff_axis, logg_axis, data_func, bound_func=bound_func)
+    if ragged:
+        grid = gr.from_func(Teff_axis, logg_axis, data_func, bound_func=bound_func)
+    else:
+        grid = gr.from_func(Teff_axis, logg_axis, data_func)
 
     return grid
     
@@ -48,7 +67,7 @@ def test_locate_nodes ():
 
     # Build the grid
 
-    grid = build_grid()
+    grid = build_grid(ragged=True)
 
     # Check locate at nodes
 
@@ -71,7 +90,7 @@ def test_locate_centers ():
 
     # Build the grid
 
-    grid = build_grid()
+    grid = build_grid(ragged=True)
 
     # Check locate at centers
 
@@ -98,7 +117,7 @@ def test_find_neighbors (verbose=False):
 
     # Build the grid
 
-    grid = build_grid()
+    grid = build_grid(ragged=True)
 
     # Check find_neighbors
     
@@ -132,7 +151,6 @@ def test_find_neighbors (verbose=False):
 
                         if nbrs[ni+1,nj+1] == correct:  
                             if verbose:  print(f'{nbrs[ni+1,nj+1]}=={correct}')
-                        
                         else:  raise Exception(f'Invalid result: {nbrs[ni+1,nj+1]} != {correct}')
 
                     except Exception as err_i:
@@ -148,17 +166,79 @@ def test_recon_stencil(verbose=False):
 
     # Build the grid
 
-    grid = build_grid()
+    grid = build_grid('3x3')
 
     # Check recon_stencil
-    
-    for i in range(grid.n_Teff):
 
-        for j in range(grid.n_logg):
-            
-            if verbose:  print(f'Node({i},{j})')
+    for k in range(512):
 
-            data, Teff_axis, logg_axis = grid.recon_stencil((i,j))
+        # Copy the grid
+
+        grid_copy = cp.deepcopy(grid)
+
+        # Delete selected nodes
+
+        for i in range(3):
+            for j in range(3):
+                if 2**(i+3*j) & k:
+                    grid_copy.nodes[i,j] = None
+
+        # Do the stencil reconstruction
+
+        data, Teff_axis, logg_axis = grid_copy.recon_stencil((1,1))
+
+        if data is not None:
+
+            # Check the reconstructed values
+
+            for i in range(3):
+                for j in range(3):
+
+                    # Calculate what the data should be
+
+                    data_chk = data_func(Teff_axis[i], logg_axis[j])
+
+                    # Evaluate the error
+
+                    err = np.abs(data[i,j] - data_chk)
+
+                    # Evaluate the expected error (using 2nd-order
+                    # Taylor series estimates)
+
+                    derivs = derivs_func(Teff_axis[1], logg_axis[1])
+
+                    dTeff = np.abs(Teff_axis[i] - Teff_axis[1])
+                    dlogg = np.abs(logg_axis[j] - logg_axis[1])
+
+                    if i == 1 and j == 1:
+
+                        # Center point; always should have zero error
+
+                        err_chk = 0.
+
+                    elif i == 1 and (j == 0 or j == 2):
+
+                        # Face
+
+                        err_chk = derivs['g_scale']**2*dlogg**2
+
+                    elif (i == 0 or i == 2) and j == 1:
+
+                        # Face
+
+                        err_chk = derivs['T_scale']**2*dTeff**2
+
+                    else:
+
+                        # Corner
+
+                        err_chk = 2*derivs['T_scale']*derivs['g_scale']*dTeff*dlogg + derivs['T_scale']**2*dTeff**2 + derivs['g_scale']**2*dlogg**2
+
+                    # Check it is within tolerances
+
+                    if err > err_chk:
+                        raise Exception(f'Error {err} outside toerance {err_chk} at k={k},  i={i}, j={j}')
+
 
 
 def test_find_derivs (verbose=False):
@@ -220,5 +300,5 @@ if __name__ == '__main__':
     test_locate_centers()
     test_find_neighbors()
     test_recon_stencil()
-    test_find_derivs()
+#    test_find_derivs()
 
