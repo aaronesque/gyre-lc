@@ -403,7 +403,7 @@ class Grid:
             if show:
                 print('Extrapolated [2,2] corner along both')
         elif not nbrs_ex[0,2]:
-            data_ex[0,2] = extrap_in_both([0,1], [1,2], 2,  0)
+            data_ex[0,2] = extrap_in_both([1,2], [0,1], 0, 2)
             nbrs_ex[0,2] = True
             if show:
                 print('Extrapolated [0,2] corner along both')
@@ -440,13 +440,11 @@ def from_func (Teff_axis, logg_axis, func, bound_func=None, debug=False):
 
     for Teff in Teff_axis:
         for logg in logg_axis:
-            #if bound_func:# is not None:
-            #    if bound_func(Teff, logg):
-            #        nodes_list += [nd.Node(Teff, logg, func(Teff, logg))]
-            #else:
-            #    nodes_list += [nd.Node(Teff, logg, func(Teff, logg))]
-            nodes_list += [nd.Node(Teff, logg, func(Teff, logg))]
-
+            if bound_func is not None:
+                if bound_func(Teff, logg):
+                    nodes_list += [nd.Node(Teff, logg, func(Teff, logg))]
+            else:
+                nodes_list += [nd.Node(Teff, logg, func(Teff, logg))]
 
     # Return a new Grid
 
