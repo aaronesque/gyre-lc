@@ -9,32 +9,32 @@ class resp_coeffs:
     
     def __init__ (self, response_file):
         
-        data = self.read_response(response_file[0])
+        self.data = self.read_response(response_file)
         
         # Sanity check
         
-        if len(data) == 0:
+        if len(self.data) == 0:
             raise Exception('Empty response file')
-        if not isinstance(data, dict):
+        if not isinstance(self.data, dict):
             raise Exception('Response file type error')
             
         # Setup axes
         
-        n_l = data['l_max'] + 1
-        n_m = 2*data['l_max'] + 1
-        n_k = data['k_max'] + 1
+        n_l = self.data['l_max']
+        n_m = 2*n_l + 1
+        n_k = self.data['k_max']
         
-        self.R_coeffs = np.empty([n_l, n_m, n_k], dtype=complex)
-        self.T_coeffs = np.empty([n_l, n_m, n_k], dtype=complex)
-        self.G_coeffs = np.empty([n_l, n_m, n_k], dtype=complex)
-
-        for i_l in range(2, n_l):
-            for i_m in range(0, n_m):
-                for i_k in range(0, n_k):
-
-                    self.R_coeffs[i_l,i_m,i_k] = self.Delta_R(data, i_l,i_m,i_k)
-                    self.T_coeffs[i_l,i_m,i_k] = self.Delta_T(data, i_l,i_m,i_k)
-                    self.G_coeffs[i_l,i_m,i_k] = self.Delta_g(data, i_l,i_m,i_k)
+        self.R_lmk = np.empty([n_l+1, n_m+1, n_k+1], dtype=complex)
+        self.T_lmk = np.empty([n_l+1, n_m+1, n_k+1], dtype=complex)
+        self.G_lmk = np.empty([n_l+1, n_m+1, n_k+1], dtype=complex)
+        
+        for i_l, l in enumerate(range(2, n_l+1)):
+            for i_m, m in enumerate(range(-n_l, n_l+1)):
+                for i_k, k in enumerate(range(0, n_k+1)):
+                    
+                    self.R_lmk[i_l,i_m,i_k] = self.find_Delta_R(i_l,i_m,i_k)
+                    self.T_lmk[i_l,i_m,i_k] = self.find_Delta_T(i_l,i_m,i_k)
+                    self.G_lmk[i_l,i_m,i_k] = self.find_Delta_G(i_l,i_m,i_k, m,k)
         
         
     def read_response(self, filename):
@@ -65,24 +65,24 @@ class resp_coeffs:
                 'Omega_orb': Omega_orb}
     
     
-    def Delta_R(self, data, l,m,k):
+    def find_Delta_R(self, i_l,i_m,i_k):
+    
+        return np.sqrt(4.*np.pi) * self.data['xi_r_ref'][i_k,i_m,i_l]
         
-        return np.sqrt(4.*np.pi) * data['xi_r_ref'][k,m,l]
-       
         
-    def Delta_T(self, data, l,m,k):
+    def find_Delta_T(self, i_l,i_m,i_k):
             
-        xi_r_ref = data['xi_r_ref'][k,m,l]
-
-        lag_L_ref = data['lag_L_ref'][k,m,l]
+        xi_r_ref = self.data['xi_r_ref'][i_k,i_m,i_l]
+        
+        lag_L_ref = self.data['lag_L_ref'][i_k,i_m,i_l]
         
         return np.sqrt(4.*np.pi)*(lag_L_ref - 2*xi_r_ref)/4.
       
     
-    def Delta_g(self, gyre_data, l,m,k):
+    def find_Delta_G(self, i_l,i_m,i_k, m,k):
     
-        xi_r_ref = gyre_data['xi_r_ref'][k,m,l]
+        xi_r_ref = self.data['xi_r_ref'][i_k,i_m,i_l]
         
-        omega = -k*gyre_data['Omega_orb'] - m*gyre_data['Omega_rot']
+        omega = -k*self.data['Omega_orb'] - m*self.data['Omega_rot']
         
         return np.sqrt(4*np.pi)*(-omega**2 - 2)*xi_r_ref
