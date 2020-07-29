@@ -86,3 +86,4 @@ class resp_coeffs:
         omega = -k*self.data['Omega_orb'] - m*self.data['Omega_rot']
         
         return np.sqrt(4*np.pi)*(-omega**2 - 2)*xi_r_ref
+
