@@ -16,8 +16,8 @@ if __name__ == '__main__':
 
     try:
         
-        user_i = 3 #int(input('Enter i=7 for Teff=30000K: '))
-        user_j = 3 #int(input('Enter j=3 for logg=4.0: '))
+        user_i = 3 
+        user_j = 3 
         print('Entering i={:d} for Teff={:.0f}K \nEntering j={:d} for logg={:3.1f}'.format(user_i, grid.Teff_axis[user_i], user_j, grid.logg_axis[user_j]))
 
         derivs = grid.find_derivs((user_i,user_j), 'cross', True)
@@ -31,5 +31,5 @@ if __name__ == '__main__':
         print('Data from stenciling:\n', data)
 
     except IndexError:
-        print("\nOpe, that right there's gonna be a problem. How's 'bout we try a different (Teff,logg)?\n")
+        print("\nIndex Error: Try a different (Teff,logg)\n")
         raise
