@@ -11,19 +11,24 @@ class observer:
     
     def __init__ (self, resp_data, atm_data):
     
-        inc = 62.9
-        omega = 122.2
+        self.resp_data = resp_data
+        self.atm_data = atm_data
+    
+    
+    def convert_coords (self, inc, omega):
 
         theta = inc/180 * np.pi
         phi = (90-omega)/180 * np.pi
         
-        self.eval_fourier (resp_data, atm_data,'B', theta,phi)
+        return theta, phi
     
     
-    def eval_fourier (resp_data, atm_data, x, theta_0, phi_0):
+    def eval_fourier (self, x, inc, omega):
         
-        resp = resp_data
-        atm = atm_data
+        resp = self.resp_data
+        atm = self.atm_data
+        
+        theta, phi = self.convert_coords(inc, omega)
         
         # Initialize the frequencies/amplitudes arrays
         f = np.arange(resp.data['k_max']+1)*resp.data['Omega_orb']
@@ -43,7 +48,7 @@ class observer:
                     dT_lmk = resp.T_lmk[i_l,i_m,i_k]
                     dG_lmk = resp.G_lmk[i_l,i_m,i_k]
                 
-                    Y_lm = sph_harm(m, l, phi_0, theta_0)
+                    Y_lm = sph_harm(m, l, phi, theta)
 
                     R_xlm = atm.R_xl[x][l] * Y_lm
                     T_xlm = atm.T_xl[x][l] * Y_lm
@@ -66,4 +71,37 @@ class observer:
         # Return data
         
         return f, A
+    
+    
+    def find_flux (self, x, inc, omega, t):
+        
+        resp = self.resp_data
+        Omega_orb = resp.data['Omega_orb']
+        
+        f, A = self.eval_fourier(x, inc, omega)
+        
+        # Initialize the frequencies/amplitudes arrays
+        
+        if isinstance(t, np.ndarray):
+            
+            diff_flux = np.zeros_like(t)
+        
+        elif isinstance(t, list):
+            
+            t = np.array(t)
+            diff_flux = np.zeros_like(t)
+            
+        else: #How to isinstance any mathable t? float, int, etc?
+            
+            diff_flux = 0.
 
+        # Add contributions from each frequency component
+
+        n = len(A)
+
+        for i in range(n):
+            
+            diff_flux += np.real(A[i] * np.exp(1j*f[i]*2*np.pi*t/Omega_orb))
+            
+        return diff_flux
+    
