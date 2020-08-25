@@ -1,5 +1,3 @@
-# grid class
-
 import numpy as np
 import h5py
 
@@ -21,16 +19,20 @@ class resp_coeffs:
         # Setup axes
         
         n_l = self.data['l_max']
-        n_m = 2*n_l + 1
+        n_m = 2*n_l
         n_k = self.data['k_max']
         
         self.R_lmk = np.empty([n_l+1, n_m+1, n_k+1], dtype=complex)
         self.T_lmk = np.empty([n_l+1, n_m+1, n_k+1], dtype=complex)
         self.G_lmk = np.empty([n_l+1, n_m+1, n_k+1], dtype=complex)
         
-        for i_l, l in enumerate(range(2, n_l+1)):
-            for i_m, m in enumerate(range(-n_l, n_l+1)):
-                for i_k, k in enumerate(range(0, n_k+1)):
+        for l in range(2, n_l+1):
+            for m in range(-n_l, n_l+1):
+                for k in range(0, n_k+1):
+                    
+                    i_l = l
+                    i_m = m + n_l
+                    i_k = k                    
                     
                     self.R_lmk[i_l,i_m,i_k] = self.find_Delta_R(i_l,i_m,i_k)
                     self.T_lmk[i_l,i_m,i_k] = self.find_Delta_T(i_l,i_m,i_k)

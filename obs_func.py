@@ -1,5 +1,3 @@
-# grid class
-
 import numpy as np
 import h5py
 from scipy.special import legendre, sph_harm

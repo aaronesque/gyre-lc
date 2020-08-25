@@ -19,4 +19,4 @@ if __name__ == '__main__':
 
     obs = observer(resp, atm)
 
-    obs.find_flux('B', inc,omega, -2.2)
+    print(obs.find_flux(x, inc,omega, -2.2))

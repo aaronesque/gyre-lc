@@ -1,5 +1,3 @@
-# grid class
-
 import numpy as np
 import h5py
 from scipy.special import legendre, sph_harm
@@ -14,8 +12,6 @@ class atm_coeffs:
         self.data = self.read_intensity(intensity_file)
         
         self.info = self.read_inlist(inlist_file)
-        
-        # Y = sph_harm(m,l, phi,theta) in obs_func
         
         self.R_xl = {}
         self.T_xl = {}
