@@ -71,13 +71,13 @@ class atm_coeffs:
             C_x = np.empty([n_l+1], dtype=complex)
         
             for l in np.arange(n_l+1,dtype=int):
-                C_x[l] = find_coeffs_C(I,C,x,l)
+                C_x[l] = find_coeffs_C(I,C,x,l)[0]
             
             return C_x
         
         elif isinstance(l,int):
-            return find_coeffs_C(I,C,x,l)
+            return find_coeffs_C(I,C,x,l)[0]
         
         else:
             raise Exception('TypeError: l must be int or int array')
-            
+
