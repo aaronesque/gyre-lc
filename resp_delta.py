@@ -32,8 +32,8 @@ class resp_coeffs:
                     
                     i_l = l
                     i_m = m + n_l
-                    i_k = k                    
-                    
+                    i_k = k
+
                     self.R_lmk[i_l,i_m,i_k] = self.find_Delta_R(i_l,i_m,i_k)
                     self.T_lmk[i_l,i_m,i_k] = self.find_Delta_T(i_l,i_m,i_k)
                     self.G_lmk[i_l,i_m,i_k] = self.find_Delta_G(i_l,i_m,i_k, m,k)
