@@ -27,7 +27,7 @@ class resp_coeffs:
         self.G_lmk = np.empty([n_l+1, n_m+1, n_k+1], dtype=complex)
         
         for l in range(2, n_l+1):
-            for m in range(-n_l, n_l+1):
+            for m in range(-l, l+1):
                 for k in range(0, n_k+1):
                     
                     i_l = l
