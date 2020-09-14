@@ -1,7 +1,6 @@
 import numpy as np
 import h5py
-from scipy.special import legendre, sph_harm
-import f90nml as nml
+from scipy.special import sph_harm
 
 ### Class definition
 
@@ -34,10 +33,10 @@ class observer:
         f = np.arange(resp.data['k_max']+1)*resp.data['Omega_orb']
         
         A = np.zeros(resp.data['k_max']+1, dtype=np.complex)
-        
+            
 
         # Loop over l, m and k
-        
+        I = self.atm_data.data
     
         for l in range(2, resp.data['l_max']+1):
             for m in range(-l, l+1):
@@ -53,10 +52,17 @@ class observer:
 
                     Y_lm = sph_harm(m, l, phi, theta)
                     
-                    R_xl = atm.R_xl[x][i_l]
-                    T_xl = atm.T_xl[x][i_l]
-                    G_xl = atm.T_xl[x][i_l]
-                
+                    #R_xl = atm.R_xl[x][l]
+                    #T_xl = atm.T_xl[x][l]
+                    #G_xl = atm.T_xl[x][l]
+                    
+                    R_xl = (2 + l)*(1 - l)*I[f'I_{x}_{l}'][:] / I[f'I_{x}_0'][:]
+                    T_xl = I[f'dlnTeff_{x}_{l}'][:] / I[f'I_{x}_0'][:] 
+                    G_xl = I[f'dlng_{x}_{l}'][:] / I[f'I_{x}_0'][:]
+                    
+                    #print(f'T_{x}{l}: ', T_xl, type(T_xl))
+                    #print(f'stored: ', atm.T_xl[x][l], type(atm.T_xl[x][l]))
+                    
                     if k == 0:
                         if m == 0:
                             kappa = 0.5
@@ -100,11 +106,10 @@ class observer:
 
         # Add contributions from each frequency component
 
-        n = len(A)
+        n_A = len(A)
 
-        for i in range(n):
+        for i in range(n_A):
             
             diff_flux += np.real(A[i] * np.exp(1j*f[i]*2*np.pi*t))
             
         return diff_flux
-    
