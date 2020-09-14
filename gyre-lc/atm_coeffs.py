@@ -1,6 +1,5 @@
 import numpy as np
 import h5py
-from scipy.special import legendre, sph_harm
 import f90nml as nml
 
 ### Class definition
@@ -64,20 +63,21 @@ class atm_coeffs:
         
             if C=='G':
                 return I[f'dlng_{x}_{l}'][:] / I[f'I_{x}_0'][:]
+            
+        C_x = {} #np.empty([n_l+1], dtype=complex)
         
         if l==None:
-        
-            n_l = self.info[x]['l_max'] - self.info[x]['l_min']
-            C_x = np.empty([n_l+1], dtype=complex)
+
+            n_l = self.info[x]['l_max'] # - self.info[x]['l_min'] 
+            #this may break if l_min =/= 0
         
             for l in np.arange(n_l+1,dtype=int):
                 C_x[l] = find_coeffs_C(I,C,x,l)[0]
-            
             return C_x
         
         elif isinstance(l,int):
-            return find_coeffs_C(I,C,x,l)[0]
+            C_x[l] = find_coeffs_C(I,C,x,l)[0]
+            return C_x
         
         else:
             raise Exception('TypeError: l must be int or int array')
-
