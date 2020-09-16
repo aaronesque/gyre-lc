@@ -2,6 +2,7 @@ import numpy as np
 import h5py
 from scipy.integrate import quad as integrate
 from scipy.special import lpmv, sph_harm
+from scipy.optimize import fsolve
 
 ### Class definition
 
