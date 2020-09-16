@@ -1,0 +1,31 @@
+&orbit
+	omega_orb = 'DEFAULT'
+	omega_orb_units = 'CYC_PER_DAY'
+	a = 132.
+	a_units = 'SOL'
+	e = 0.764
+/
+
+&star1
+	Teff = 31000
+	logg = 4.1
+
+	lum = 68000
+	lum_units = 'SOL'
+	r = 8.3
+	r_units = 'SOL'
+	m = 23.1 
+	m_units = 'SOL'
+/
+
+&star2
+	Teff = 10000
+	logg = 3.5
+	
+	lum = 8630
+	lum_units = 'SOL'
+	r = 5.4
+	r_units = 'SOL'
+	m = 13.1
+	m_units = 'SOL'
+/
