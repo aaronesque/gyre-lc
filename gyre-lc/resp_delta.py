@@ -1,7 +1,7 @@
 import numpy as np
 import h5py
 
-### Class definition
+## Class definition
 
 class resp_coeffs:
     
