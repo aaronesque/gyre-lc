@@ -6,87 +6,134 @@ import f90nml as nml
 
 class binary:
     
-    def __init__ (self, resp_data, bin_data):
-        
-        self.resp_data = resp_data
+    def __init__ (self, list_path):
         
         # should check if 'inlist', this just checks 'str'
         
-        if isinstance(bin_data, str):
-            bin_dict = self.read_inlist(bin_data)
-        else: bin_dict = bin_data
-            
-        self.omega_orb = bin_dict['omega_orb']
-        self.a = bin_dict['a']
-        self.e = bin_dict['e']
+        if isinstance(list_path, str):
+            bin_list = nml.read(list_path)
+            self.nml = bin_list
+        else: raise Exception('Inlist file error')
         
-        self.L1 = bin_dict['L1']
-        self.R1 = bin_dict['R1']
-        self.M1 = bin_dict['M1']
+        self.star = {}
+    
+        self.star = self.read_star(bin_list, 1)
+        self.star.update( self.read_star(bin_list, 2) )
         
-        self.L2 = bin_dict['L2']
-        self.R2 = bin_dict['R2']
-        self.M2 = bin_dict['M2']
-            
-            
-    def read_inlist(self, filename):
+        self.orbit = self.read_orbit(bin_list)
         
-        inlist = nml.read(filename)
+            
+    def read_star(self, inlist, star_number):
         
-        data = {}
-            
-        def read_star(inlist, star_data, star_number):
-            
-            # this needs a better 'defaults' routine
-            # this also needs a more general handling of 'units' 
-            
-            star_list = inlist[f'star{star_number}']
-            
-            star_data[f'Teff{star_number}'] = star_list['teff'] #K
-            star_data[f'logg{star_number}'] = star_list['logg'] #dex
-            
-            if star_list['lum_units']=='SOL':
-                lum_units = 3.839e33 #erg per l_sol
-            else: lum_units = 1
-                
-            if star_list['r_units']=='SOL':
-                r_units = 6.957e10 #cm per r_sol
-            else: r_units = 1
-                    
-            if star_list['m_units']=='SOL':
-                m_units = 1.989e33 #g per m_sol
-            else: m_units = 1
-            
-            star_data[f'L{star_number}'] = star_list['lum']*lum_units
-            star_data[f'R{star_number}'] = star_list['r']*r_units
-            star_data[f'M{star_number}'] = star_list['m']*m_units
-            
-        def read_orbit(inlist, orb_data):
-            
-            orb_list = inlist['orbit']
-            
-            #placeholder unit routine
-            
-            if orb_list['omega_orb_units']=='CYC_PER_DAY':
-                omega_orb_units = 1 
-            else: omega_orb_units = 1
-            
-            if orb_list['Omega_orb']=='DEFAULT':
-                orb_data['omega_orb'] = self.resp_data.data['Omega_orb']
-            else: orb_data['omega_orb'] = orb_list['omega_orb']
-                
-            orb_data['omega_orb'] *= omega_orb_units
-            
-            if orb_list['a_units']=='SOL':
-                a_units = 6.957e10 #cm per r_sol
-            else: a_units = 1
-                
-            orb_data['a'] = orb_list['a']*a_units
-            
-            orb_data['e'] = orb_list['e']
-            
-        read_star(inlist, data, 1)
-        read_star(inlist, data, 2)
-        read_orbit(inlist, data)
+        star_list = inlist[f'star_{star_number}']
+        params = {}
         
-        return data
+        model_path = star_list['star_model_path']
+        
+        params.update( self.read_mesa(model_path) )
+        
+        return {star_number: params}
+        
+        
+    def read_mesa(self, mesa_model_path, units='SOL'):
+        
+        data = ascii.read(mesa_model_path, data_start=0, data_end=1)
+        
+        # cgs constants
+        
+        R_sol = 6.957e10 
+        M_sol = 1.989e33
+        L_sol = 3.839e33
+        G = 6.674079999999999e-08 
+        sigma_sb = 5.6703669999999995e-05
+        
+        # data in cgs
+        
+        r = data[0][1]
+        m = data[0][2]
+        l = data[0][3]
+            
+        # calculate Teff [K], logg [dex]
+        
+        Teff = (l/(sigma_sb * 4*np.pi*r**2))**0.25
+        
+        g_surf = (m/r**2)/(M_sol/R_sol**2)
+        logg = np.log10(g_surf)
+        
+        # convert to solar units
+        
+        if units=='SOL':
+            r = r/R_sol
+            m = m/M_sol
+            l = l/L_sol
+            
+        return {'R': r,
+                'M': m,
+                'L': l,
+                'Teff': Teff,
+                'logg': logg}
+    
+    
+    def read_response(self, filename):
+    
+    # Read data from gyre_response
+    
+        f = h5py.File(filename, 'r')
+        
+        xi_r_ref_re = f['xi_r']['re'][...]
+        xi_r_ref_im = f['xi_r']['im'][...]
+        
+        lag_L_ref_re = f['lag_L']['re'][...]
+        lag_L_ref_im = f['lag_L']['im'][...]
+        
+        k_max = f.attrs['k_max']
+        l_max = f.attrs['l_max']
+        
+        Omega_rot = f.attrs['Omega_rot']
+        Omega_orb = f.attrs['Omega_orb']
+        
+        #q = f.attrs['q']
+        #e = f.attrs['e']
+        
+        f.close()
+        
+        return {'xi_r_ref': xi_r_ref_re + 1j*xi_r_ref_im,
+                'lag_L_ref': lag_L_ref_re + 1j*lag_L_ref_im,
+                'k_max': k_max,
+                'l_max': l_max,
+                'Omega_rot': Omega_rot,
+                'Omega_orb': Omega_orb}#,
+                #'q': q,
+                #'e': e}
+            
+            
+    def read_orbit(self, inlist):
+        
+        orb_list = inlist['orbit']
+        resp_list = self.read_response(inlist['star_1']['tide_model_path'])
+        
+        params = {}
+        
+        #placeholder unit routine
+        
+        if orb_list['omega_orb_units']=='CYC_PER_DAY':
+            omega_orb_units = 1 
+        else: omega_orb_units = 1
+        
+        if orb_list['Omega_orb']=='DEFAULT':
+            params['Omega_orb'] = resp_list['Omega_orb']
+        else: params['Omega_orb'] = orb_list['omega_orb']
+            
+        params['Omega_orb'] *= omega_orb_units
+        
+        if orb_list['a_units']=='CM':
+            a_units = 6.957e10 #cm per r_sol
+        else: a_units = 1
+            
+        # eventually, we want to get these from resp_data
+        # resp_data currently does not contain this output tho
+        
+        params['a'] = orb_list['a']*a_units
+        params['e'] = orb_list['e']
+        
+        return params

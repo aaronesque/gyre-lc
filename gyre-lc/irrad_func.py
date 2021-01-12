@@ -12,17 +12,8 @@ class irradiation:
     
         self.atm_data = atm_data
         self.resp_data = resp_data
+        self.bin_data = bin_data
         self.x = filter_x
-        
-        self.omega_orb = bin_data.omega_orb
-        self.e = bin_data.e
-        self.a = bin_data.a
-        
-        self.L1 = bin_data.L1
-        self.R1 = bin_data.R1
-        
-        self.L2 = bin_data.L2
-        self.R2 = bin_data.R2
         
             
             
@@ -60,19 +51,23 @@ class irradiation:
     
     def find_mean_anom (self, t, t_peri=0):
         
-        return self.omega_orb*(t - t_peri)
+        return self.resp_data.data['Omega_orb']*(t - t_peri)
         
     
     def find_ecce_anom (self, M):
+        
+        e = self.bin_data.orbit['e']
     
-        Keppler = lambda E : E - self.e*np.sin(E) - M
+        Keppler = lambda E : E - e*np.sin(E) - M
         
         return fsolve(Keppler, 0)[0]
         
     
     def find_true_anom (self, E):
+        
+        e = self.bin_data.orbit['e']
     
-        return 2*np.arctan( ((1+self.e)/(1-self.e))*np.tan(E/2) )
+        return 2*np.arctan( ((1+e)/(1-e))*np.tan(E/2) )
     
     
     def convert_t_to_f (self, t, t_peri=0):
@@ -88,14 +83,21 @@ class irradiation:
     
     def find_bin_sep (self, t, t_peri=0):
         
+        e = self.bin_data.orbit['e']
+        a = self.bin_data.orbit['a']
+        
         f = self.convert_t_to_f(t, t_peri)#* 2*np.pi
         
-        D = self.a*(1-self.e**2)/(1+self.e*np.cos(f))
+        D = a*(1-e**2)/(1+e*np.cos(f))
         
         return D
     
     
     def eval_irrad (self, t, t_peri=0):
+        
+        L1 = self.bin_data.star[1]['L']
+        R1 = self.bin_data.star[1]['R']
+        L2 = self.bin_data.star[2]['L']
         
         Dt = self.find_bin_sep(t, t_peri)
         
@@ -108,8 +110,8 @@ class irradiation:
                 
                 Z_lm = self.eval_ramp(l, m)
                 b_l = self.find_disk_intg_factor(l)
-                #rel_dJ += b_l*Z_lm*(self.L2/self.L1)*(self.R1/Dt)**2
-                rel_dJ += b_l*Z_lm*(self.L1/self.L2)*(self.R2/Dt)**2
+                rel_dJ += b_l*Z_lm*(L2/L1)*(R1/Dt)**2
+                #rel_dJ += b_l*Z_lm*(self.L1/self.L2)*(self.R2/Dt)**2
         
         return rel_dJ
         

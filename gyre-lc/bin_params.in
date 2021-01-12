@@ -1,31 +1,42 @@
+&star_1
+	star_model_path = 'data/iori-Aa.mesa'
+	star_model_type = 'MESA'
+
+	tide_model_path = 'data/response.Aa.h5'
+	tide_model_type = 'GYRE'
+/
+
+&star_2
+	star_model_path = 'data/iori-Ab.mesa'
+	star_model_type = 'MESA'
+
+	tide_model_path = 'data/response.Ab.h5'
+	tide_model_type = 'GYRE'
+/
+!	
+!	lum = 8630
+!	lum_units = 'SOL'
+!	r = 5.4
+!	r_units = 'SOL'
+!	m = 13.1
+
 &orbit
-	omega_orb = 'DEFAULT'
-	omega_orb_units = 'CYC_PER_DAY'
 	a = 132.
 	a_units = 'SOL'
+
 	e = 0.764
+
+	omega_orb = 'DEFAULT'
+	omega_orb_units = 'CYC_PER_DAY'
 /
 
-&star1
-	Teff = 31000
-	logg = 4.1
-
-	lum = 68000
-	lum_units = 'SOL'
-	r = 8.3
-	r_units = 'SOL'
-	m = 23.1 
-	m_units = 'SOL'
-/
-
-&star2
-	Teff = 10000
-	logg = 3.5
+&observer
+	bandpass = 'BRITE-B'
 	
-	lum = 8630
-	lum_units = 'SOL'
-	r = 5.4
-	r_units = 'SOL'
-	m = 13.1
-	m_units = 'SOL'
+	inc = 82.9 	! inclination in degrees
+	peri = 122.2 	! argument of periastron in degrees
+
+	t_start = -1.2
+	t_end = 2.2
+	t_units = 'PERIOD'
 /
