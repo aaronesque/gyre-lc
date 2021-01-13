@@ -57,6 +57,9 @@ class resp_coeffs:
         Omega_rot = f.attrs['Omega_rot']
         Omega_orb = f.attrs['Omega_orb']
         
+        #q = f.attrs['q']
+        #e = f.attrs['e']
+        
         f.close()
         
         return {'xi_r_ref': xi_r_ref_re + 1j*xi_r_ref_im,
@@ -64,7 +67,9 @@ class resp_coeffs:
                 'k_max': k_max,
                 'l_max': l_max,
                 'Omega_rot': Omega_rot,
-                'Omega_orb': Omega_orb}
+                'Omega_orb': Omega_orb}#,
+                #'q': q,
+                #'e': e}
     
     
     def find_Delta_R(self, i_l,i_m,i_k):

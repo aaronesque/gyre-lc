@@ -6,11 +6,11 @@ import f90nml as nml
 
 class atm_coeffs:
     
-    def __init__ (self, intensity_file, inlist_file):
+    def __init__ (self, intensity_file):
         
         self.data = self.read_intensity(intensity_file)
         
-        self.info = self.read_inlist(inlist_file)
+        self.info = self.read_info(intensity_file)
         
         self.R_xl = {}
         self.T_xl = {}
@@ -28,23 +28,30 @@ class atm_coeffs:
         return h5py.File(filename, 'r')
     
     
-    def read_inlist(self, filename):
+    def read_info(self, filename):
         
-        inlist = nml.read(filename)
+        moments = self.read_intensity(filename)
+        
+        colors = []
+        ells = []
+
+        for moment in list(moments):
+            words = moment.split('_')
+            
+            if len(words)==2:
+                if words[-1] not in colors:
+                    colors.append(words[-1])
+                    
+            if len(words)==3:
+                if int(words[-1]) not in ells:
+                    ells.append(int(words[-1]))
+                    
+        l_min, l_max = min(ells), max(ells)
         
         info = {}
         
-        if isinstance(inlist['color'], list):
-            
-            for color in inlist['color']:
-                info[color['filter']] = {'l_min':color['l_min'], 'l_max':color['l_max'] }
-            
-        elif isinstance(inlist['color'], type(inlist)):
-            
-            color = inlist['color']
-            info[color['filter']] = {'l_min':color['l_min'], 'l_max':color['l_max'] }
-        
-        else: raise Exception('ope')
+        for color in colors:
+            info[color] = {'l_min':l_min, 'l_max':l_max}
         
         return info
     

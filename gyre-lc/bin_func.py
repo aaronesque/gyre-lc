@@ -11,16 +11,15 @@ class binary:
         # should check if 'inlist', this just checks 'str'
         
         if isinstance(list_path, str):
-            bin_list = nml.read(list_path)
-            self.nml = bin_list
+            self.nml = nml.read(list_path)
         else: raise Exception('Inlist file error')
         
         self.star = {}
     
-        self.star = self.read_star(bin_list, 1)
-        self.star.update( self.read_star(bin_list, 2) )
+        self.star = self.read_star(self.nml, 1)
+        self.star.update( self.read_star(self.nml, 2) )
         
-        self.orbit = self.read_orbit(bin_list)
+        self.orbit = self.read_orbit(self.nml)
         
             
     def read_star(self, inlist, star_number):
