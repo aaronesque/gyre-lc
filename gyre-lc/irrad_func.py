@@ -8,14 +8,32 @@ from scipy.optimize import fsolve
 
 class irradiation:
     
-    def __init__ (self, atm_data, resp_data, bin_data, filter_x):
-    
-        self.atm_data = atm_data
-        self.resp_data = resp_data
-        self.bin_data = bin_data
+    def __init__ (self, bin_data, star_number, filter_x):
+        
         self.x = filter_x
         
-            
+        # prep for find_bin_sep()
+        
+        self.e = bin_data.orbit['e']
+        self.a = bin_data.orbit['a']
+        self.Omega_orb = bin_data.orbit['Omega_orb']
+        
+        # prep for eval_irrad()
+        
+        if int(star_number)==1:
+            star_neighbor = 2
+        elif int(star_number)==2:
+            star_neighbor = 1
+        else:
+            raise Exception('Star unspecified')
+        
+        self.atm_data = bin_data.star[star_number].atm.data
+        self.res_data = bin_data.star[star_number].res.data
+        
+        self.L1 = bin_data.star[star_number].par['L']
+        self.R1 = bin_data.star[star_number].par['R']
+        self.L2 = bin_data.star[star_neighbor].par['L']
+        
             
     def eval_ramp (self, l, m):
         
@@ -27,11 +45,11 @@ class irradiation:
         else:
             term2 = np.cos(m*np.pi/2)/(1-m**2)
         
-        # Can I do this integral using symbolic mu,
+        # Can I do this integral using symbolic mu, (as I do below)
+        # or should I stick to integrating only those mu which I have data for?
         
         term3, term3_err = integrate(lambda mu: np.sqrt(1-mu**2)*lpmv(m,l, mu), -1, 1)
         
-        # or should I stick to integrating only those mu which I have data for?
         Z_lm = term1*term2*term3
         
         return Z_lm
@@ -39,35 +57,29 @@ class irradiation:
     
     def find_disk_intg_factor (self, l):
         
-        atm = self.atm_data
-        
         # I still don't know if I need a bandpass correction, or if defining b_l
         # using the bandpass corrected intensities (as I do here) is sufficient.
     
-        b_l = atm.data[f'I_{self.x}_{l}'][:]/atm.data[f'I_{self.x}_0'][:]
+        b_l = self.atm_data[f'I_{self.x}_{l}'][:]/self.atm_data[f'I_{self.x}_0'][:]
     
         return b_l[0]
         
     
     def find_mean_anom (self, t, t_peri=0):
         
-        return self.resp_data.data['Omega_orb']*(t - t_peri)
+        return self.Omega_orb*(t - t_peri)
         
     
     def find_ecce_anom (self, M):
-        
-        e = self.bin_data.orbit['e']
     
-        Keppler = lambda E : E - e*np.sin(E) - M
+        Keppler = lambda E : E - self.e*np.sin(E) - M
         
         return fsolve(Keppler, 0)[0]
         
     
     def find_true_anom (self, E):
-        
-        e = self.bin_data.orbit['e']
     
-        return 2*np.arctan( ((1+e)/(1-e))*np.tan(E/2) )
+        return 2*np.arctan( ((1+self.e)/(1-self.e))*np.tan(E/2) )
     
     
     def convert_t_to_f (self, t, t_peri=0):
@@ -83,35 +95,27 @@ class irradiation:
     
     def find_bin_sep (self, t, t_peri=0):
         
-        e = self.bin_data.orbit['e']
-        a = self.bin_data.orbit['a']
-        
         f = self.convert_t_to_f(t, t_peri)#* 2*np.pi
         
-        D = a*(1-e**2)/(1+e*np.cos(f))
+        D = self.a*(1-self.e**2)/(1+self.e*np.cos(f))
         
         return D
     
     
     def eval_irrad (self, t, t_peri=0):
         
-        L1 = self.bin_data.star[1]['L']
-        R1 = self.bin_data.star[1]['R']
-        L2 = self.bin_data.star[2]['L']
-        
         Dt = self.find_bin_sep(t, t_peri)
         
         rel_dJ = np.zeros_like(t)
         
-        n_l = self.resp_data.data['l_max']
+        n_l = self.res_data['l_max']
         
         for l in range(2, n_l+1):
             for m in range(-l, l+1):
                 
                 Z_lm = self.eval_ramp(l, m)
                 b_l = self.find_disk_intg_factor(l)
-                rel_dJ += b_l*Z_lm*(L2/L1)*(R1/Dt)**2
-                #rel_dJ += b_l*Z_lm*(self.L1/self.L2)*(self.R2/Dt)**2
+                rel_dJ += b_l*Z_lm*(self.L2/self.L1)*(self.R1/Dt)**2
         
         return rel_dJ
         
