@@ -1,6 +1,10 @@
 import numpy as np
 import h5py
 import f90nml as nml
+from astropy.io import ascii
+
+from resp_coeffs import resp_coeffs
+from atm_coeffs import atm_coeffs
 
 ### Class definition
 

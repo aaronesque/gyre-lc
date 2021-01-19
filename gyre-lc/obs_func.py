@@ -2,6 +2,8 @@ import numpy as np
 import h5py
 from scipy.special import sph_harm
 
+from irrad_func import irradiation
+
 ### Class definition
 
 class observer:

@@ -2,6 +2,8 @@ import numpy as np
 import h5py
 import f90nml as nml
 
+from star_func import star
+
 ### Class definition
 
 class binary:
