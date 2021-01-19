@@ -13,12 +13,6 @@
 	tide_model_path = 'data/response.Ab.h5'
 	tide_model_type = 'GYRE'
 /
-!	
-!	lum = 8630
-!	lum_units = 'SOL'
-!	r = 5.4
-!	r_units = 'SOL'
-!	m = 13.1
 
 &orbit
 	a = 132.
@@ -26,7 +20,7 @@
 
 	e = 0.764
 
-	omega_orb = 'DEFAULT'
+	omega_orb = 0.034324440099733095
 	omega_orb_units = 'CYC_PER_DAY'
 /
 

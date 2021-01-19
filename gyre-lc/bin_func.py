@@ -23,7 +23,6 @@ class binary:
     def read_orbit(self, inlist):
         
         orb_list = inlist['orbit']
-        resp_list = self.star[1].res.data
         
         params = {}
         
@@ -32,12 +31,6 @@ class binary:
         if orb_list['omega_orb_units']=='CYC_PER_DAY':
             omega_orb_units = 1 
         else: omega_orb_units = 1
-        
-        if orb_list['Omega_orb']=='DEFAULT':
-            params['Omega_orb'] = resp_list['Omega_orb']
-        else: params['Omega_orb'] = orb_list['omega_orb']
-            
-        params['Omega_orb'] *= omega_orb_units
         
         if orb_list['a_units']=='CM':
             a_units = 6.957e10 #cm per r_sol
@@ -48,5 +41,6 @@ class binary:
         
         params['a'] = orb_list['a']*a_units
         params['e'] = orb_list['e']
+        params['Omega_orb'] = orb_list['omega_orb']*omega_orb_units
         
         return params
