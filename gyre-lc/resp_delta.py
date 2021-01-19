@@ -41,35 +41,51 @@ class resp_coeffs:
         
     def read_response(self, filename):
     
-    # Read data from gyre_response
-    
-        f = h5py.File(filename, 'r')
+        # Read data from gyre_response
         
-        xi_r_ref_re = f['xi_r']['re'][...]
-        xi_r_ref_im = f['xi_r']['im'][...]
-        
-        lag_L_ref_re = f['lag_L']['re'][...]
-        lag_L_ref_im = f['lag_L']['im'][...]
-        
-        k_max = f.attrs['k_max']
-        l_max = f.attrs['l_max']
-        
-        Omega_rot = f.attrs['Omega_rot']
-        Omega_orb = f.attrs['Omega_orb']
-        
-        #q = f.attrs['q']
-        #e = f.attrs['e']
-        
-        f.close()
+        if filename == '':
+            
+            # Fabricate dummy data
+            
+            xi_r_ref_re = np.zeros((0,0,0))
+            xi_r_ref_im = np.zeros((0,0,0))
+            
+            lag_L_ref_re = np.zeros((0,0,0))
+            lag_L_ref_im = np.zeros((0,0,0))
+            
+            l_max = 0
+            k_max = 0
+            
+            # These may need tweaking; in any case, we should be picking
+            # up Omega_orb from elsewhere
+            
+            Omega_rot = 0.
+            Omega_orb = 0.
+            
+        else:
+            
+            f = h5py.File(filename, 'r')
+            
+            xi_r_ref_re = f['xi_r']['re'][...]
+            xi_r_ref_im = f['xi_r']['im'][...]
+            
+            lag_L_ref_re = f['lag_L']['re'][...]
+            lag_L_ref_im = f['lag_L']['im'][...]
+            
+            k_max = f.attrs['k_max']
+            l_max = f.attrs['l_max']
+            
+            Omega_rot = f.attrs['Omega_rot']
+            Omega_orb = f.attrs['Omega_orb']
+            
+            f.close()
         
         return {'xi_r_ref': xi_r_ref_re + 1j*xi_r_ref_im,
                 'lag_L_ref': lag_L_ref_re + 1j*lag_L_ref_im,
                 'k_max': k_max,
                 'l_max': l_max,
                 'Omega_rot': Omega_rot,
-                'Omega_orb': Omega_orb}#,
-                #'q': q,
-                #'e': e}
+                'Omega_orb': Omega_orb}
     
     
     def find_Delta_R(self, i_l,i_m,i_k):
@@ -93,4 +109,3 @@ class resp_coeffs:
         omega = -k*self.data['Omega_orb'] - m*self.data['Omega_rot']
         
         return np.sqrt(4*np.pi)*(-omega**2 - 2)*xi_r_ref
-

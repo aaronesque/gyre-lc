@@ -8,9 +8,7 @@ from scipy.optimize import fsolve
 
 class irradiation:
     
-    def __init__ (self, bin_data, star_number, filter_x):
-        
-        self.x = filter_x
+    def __init__ (self, bin_data, star_number):
         
         # prep for find_bin_sep()
         
@@ -55,12 +53,12 @@ class irradiation:
         return Z_lm
     
     
-    def find_disk_intg_factor (self, l):
+    def find_disk_intg_factor (self, l, x):
         
         # I still don't know if I need a bandpass correction, or if defining b_l
         # using the bandpass corrected intensities (as I do here) is sufficient.
     
-        b_l = self.atm_data[f'I_{self.x}_{l}'][:]/self.atm_data[f'I_{self.x}_0'][:]
+        b_l = self.atm_data[f'I_{x}_{l}'][:]/self.atm_data[f'I_{x}_0'][:]
     
         return b_l[0]
         
@@ -102,7 +100,7 @@ class irradiation:
         return D
     
     
-    def eval_irrad (self, t, t_peri=0):
+    def find_irrad (self, x, t, t_peri=0):
         
         Dt = self.find_bin_sep(t, t_peri)
         
@@ -114,7 +112,7 @@ class irradiation:
             for m in range(-l, l+1):
                 
                 Z_lm = self.eval_ramp(l, m)
-                b_l = self.find_disk_intg_factor(l)
+                b_l = self.find_disk_intg_factor(l, x)
                 rel_dJ += b_l*Z_lm*(self.L2/self.L1)*(self.R1/Dt)**2
         
         return rel_dJ
