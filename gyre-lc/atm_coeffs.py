@@ -8,6 +8,8 @@ class atm_coeffs:
     
     def __init__ (self, intensity_file):
         
+        # input to be replaced by Teff, logg
+        
         self.data = self.read_intensity(intensity_file)
         
         self.info = self.read_info(intensity_file)
@@ -71,7 +73,7 @@ class atm_coeffs:
             if C=='G':
                 return I[f'dlng_{x}_{l}'][:] / I[f'I_{x}_0'][:]
             
-        C_x = {} #np.empty([n_l+1], dtype=complex)
+        C_x = {} 
         
         if l==None:
 

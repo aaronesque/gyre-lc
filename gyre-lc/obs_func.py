@@ -1,19 +1,25 @@
 import numpy as np
 import h5py
+import f90nml as nml
 from scipy.special import sph_harm
 
 from irrad_func import irradiation
+from bin_func import binary
 
 ### Class definition
 
 class observer:
     
-    def __init__ (self, bin_data):
-    
-        self.bin_data = bin_data
+    def __init__ (self, list_path):
         
-        self.irr = {1: irradiation(bin_data, 1),\
-                    2: irradiation(bin_data, 2)}
+        if isinstance(list_path, str):
+            self.nml = nml.read(list_path)
+        else: raise Exception('Inlist file error')
+    
+        self.bin_data = binary(list_path)
+        
+        self.irr = {1: irradiation(self.bin_data, 1),\
+                    2: irradiation(self.bin_data, 2)}
         
     
     def convert_coords (self, inc, omega):
@@ -22,7 +28,7 @@ class observer:
         phi = (90-omega)/180 * np.pi
         
         return theta, phi
-    
+        
     
     def calc_bol_I (self, I_0, l):
         
@@ -109,7 +115,7 @@ class observer:
     def find_star_flux (self, star_number, inc, omega, x, t, t_peri=0, bol=False):
         
         res = self.bin_data.star[star_number].res
-        Omega_orb = res.data['Omega_orb']
+        Omega_orb = self.bin_data.orbit['Omega_orb']
         
         f, A = self.eval_fourier(star_number, inc, omega, x, bol)
         
