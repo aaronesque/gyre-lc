@@ -5,6 +5,9 @@
 import sys
 import numpy as np
 
+import matplotlib.pyplot as plt
+import f90nml
+
 from obs_func import observer
 
 ####
@@ -31,13 +34,18 @@ def run_observer(bin_list):
 
     return obs.find_flux(inc, omega, x, t_), t_/t_units
 
+
 ####
 
 if __name__ == '__main__':
-    filename = sys.argv[1]
+    
+    if len(sys.argv)==2:
 
-    flux, interval = run_observer(filename)
+        filename = sys.argv[1]
+        flux, interval = run_observer(filename)
 
-    print('flux [10^-3]:', flux*10e3)
-    print('interval [Period]:', interval)
-
+        print('flux [10^-3]:', flux*10e3)
+        print('interval [Period]:', interval)
+    
+    else:
+        raise Exception('Invalid number of inputs. Run as  "./gyre-lc.py [inlist]"')
