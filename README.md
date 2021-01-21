@@ -19,8 +19,13 @@ For unit testing.
 
 ### gyre-lc.py
 
-- takes inlist 'bin_params.py' and returns timeseries flux data to screen.
-- to-do: hook to color grid maker via 'colormoment()' function
-- to-do: print data to file
-- to-do: consolidate objects into fewer (or single) libraries
-- to-do: get 'run_plotter()' to work
+Run with
+> ./gyre-lc.py bin_params.in
+
+- takes inlist 'bin_params.in' and returns timeseries flux data to screen.
+
+To-do:
+- [ ] hook to color grid maker via 'colormoment()' function
+- [ ] print data to file
+- [ ] consolidate objects into fewer (or single) libraries
+- [ ] get 'run_plotter()' to work
