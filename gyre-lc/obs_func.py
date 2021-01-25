@@ -3,8 +3,7 @@ import h5py
 import f90nml as nml
 from scipy.special import sph_harm
 
-from irrad_func import irradiation
-from bin_func import binary
+from orbit_func import binary, irradiation
 
 ### Class definition
 
