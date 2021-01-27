@@ -1,16 +1,18 @@
 # gyre-lc
 
-### gyre-lc.py
 
 Run with
 > ./gyre-lc.py bin_params.in
+
+A description of the various modules follows.
+
+### gyre-lc.py
 
 - takes inlist 'bin_params.in' and returns timeseries flux data to screen.
 
 To-do:
 - [ ] hook to color grid maker via 'colormoment()' function
 - [ ] print data to file
-- [ ] consolidate objects into fewer (or single) libraries
 - [ ] get 'run_plotter()' to work
 
 
