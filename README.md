@@ -1,3 +1,19 @@
+# gyre-lc
+
+### gyre-lc.py
+
+Run with
+> ./gyre-lc.py bin_params.in
+
+- takes inlist 'bin_params.in' and returns timeseries flux data to screen.
+
+To-do:
+- [ ] hook to color grid maker via 'colormoment()' function
+- [ ] print data to file
+- [ ] consolidate objects into fewer (or single) libraries
+- [ ] get 'run_plotter()' to work
+
+
 # atmosphere-grid
 
 ### I_from_grid.py
@@ -14,18 +30,3 @@
 
 ### test_grid.py
 For unit testing.
-
-# gyre-lc
-
-### gyre-lc.py
-
-Run with
-> ./gyre-lc.py bin_params.in
-
-- takes inlist 'bin_params.in' and returns timeseries flux data to screen.
-
-To-do:
-- [ ] hook to color grid maker via 'colormoment()' function
-- [ ] print data to file
-- [ ] consolidate objects into fewer (or single) libraries
-- [ ] get 'run_plotter()' to work
