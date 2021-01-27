@@ -4,8 +4,6 @@
 
 import sys
 import numpy as np
-
-import matplotlib.pyplot as plt
 import f90nml
 
 from obs_func import observer

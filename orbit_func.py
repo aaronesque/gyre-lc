@@ -112,15 +112,19 @@ class irradiation:
     def find_mean_anom (self, t, t_peri=0):
         
         return self.Omega_orb*(t - t_peri)
-        
-    
+   
+
     def find_ecce_anom (self, M):
     
-        Keppler = lambda E : E - self.e*np.sin(E) - M
+        K_soln = np.empty_like(M)
         
-        return fsolve(Keppler, 0)[0]
+        for i, M_val in enumerate(M):         
+            Keppler = lambda E : E - self.e*np.sin(E) - M_val
+            K_soln[i] = fsolve(Keppler, 0)[0]
         
-    
+        return K_soln
+   
+
     def find_true_anom (self, E):
     
         return 2*np.arctan( ((1+self.e)/(1-self.e))*np.tan(E/2) )
