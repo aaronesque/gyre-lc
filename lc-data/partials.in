@@ -1,0 +1,56 @@
+&params
+	input_filename = '../iOri-grid-colors/iOri-xl.h5'
+	input_lower_Teff = '../iOri-grid-colors/iOri-xl-1000K.h5'
+	input_upper_Teff = '../iOri-grid-colors/iOri-xl+1000K.h5'
+	input_lower_logg = '../iOri-grid-colors/iOri-xl-0.10dx.h5'
+	input_upper_logg = '../iOri-grid-colors/iOri-xl+0.05dx.h5'
+	filter_dir = '../../filters/'
+	input_type = 'SYNSPEC'
+	output_filename = 'iOri-partials-2.h5'
+/
+
+&star
+	Teff = 31000
+	logg = 4.1
+/
+
+&grid
+	dTeff = 2000
+	dlogg = 0.15
+/
+
+&color
+	filter = 'U'
+	l_min = 0
+	l_max = 4
+/
+
+&color
+	filter = 'B'
+	l_min = 0
+	l_max = 4
+/
+
+&color
+	filter = 'V'
+	l_min = 0
+	l_max = 4
+/
+
+&color
+	filter = 'BRITE-B'
+	l_min = 0
+	l_max = 4
+/
+
+&color
+	filter = 'BRITE-R'
+	l_min = 0
+	l_max = 4
+/
+
+&color
+	filter = 'bol'
+	l_min = 0
+	l_max = 4
+/
