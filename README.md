@@ -18,8 +18,8 @@ To-do:
 ### obs_func.py
 
 - creates `observer` class with functions
-- - `find_star_flux()`
-- - `find_flux()`
+  - `find_star_flux()`
+  - `find_flux()`
 
 ### orbit_func.py
 
