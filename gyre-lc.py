@@ -16,12 +16,11 @@ def run_observer(bin_list):
 
     obs = observer(bin_list)
 
-    inc = obs.nml['observer']['inc']
-    omega = obs.nml['observer']['omega']
-    x = obs.nml['observer']['bandpass']
-
+    inc = obs.nml['orbit']['inc']
+    omega = obs.nml['orbit']['omega']
     t_units = 1/obs.nml['orbit']['Omega_orb']
 
+    x = obs.nml['observer']['bandpass']
     t_start = obs.nml['observer']['t_start']*t_units
     t_end = obs.nml['observer']['t_end']*t_units
     n = obs.nml['observer']['n']
@@ -30,8 +29,7 @@ def run_observer(bin_list):
 
     # Evaluate fourier terms
 
-    return obs.find_flux(inc, omega, x, t_), t_/t_units
-
+    return obs.find_flux(inc, omega, x, t_)
 
 ####
 
