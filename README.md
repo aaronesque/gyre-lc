@@ -11,6 +11,7 @@ A description of the various modules follows.
 - takes inlist 'bin_params.in' and returns timeseries flux data to screen.
 
 To-do:
+- [ ] write 'How To' section for understanding inlist parameters, data formats, and how to create your very own synthetic lightcurve
 - [ ] hook to color grid maker via 'colormoment()' function
 - [ ] print data to file
 - [ ] get 'run_plotter()' to work
