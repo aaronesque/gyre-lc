@@ -29,7 +29,7 @@ def run_observer(bin_list):
 
     # Evaluate fourier terms
 
-    return obs.find_flux(inc, omega, x, t_)
+    return obs.find_flux(inc, omega, x, t_), t_
 
 ####
 
