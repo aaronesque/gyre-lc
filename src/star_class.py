@@ -50,17 +50,41 @@ class Star:
         
         if isinstance(inlist_path, str):
             self.inlist_path = inlist_path
-            star_inlist = nml.read(inlist_path)[f'star_{star_number}']
-            #observer_inlist = nml.read(inlist_path)[f'observer']
+            self.inlist = nml.read(inlist_path)[f'star_{star_number}']
         else: raise Exception('Inlist file error')
         
-        self.params = self.read_mesa_params(star_inlist['star_model_path'])
-        
-        self.resp_coeffs = rc.resp_coeffs(star_inlist['tide_model_path'])
-        
-        self.phot_coeffs = {}
-        
+        if self.inlist['star_model_type']=='MESA':
             
+            self.params = self.read_mesa_params(self.inlist['star_model_path'])
+            self.resp_coeffs = rc.resp_coeffs(self.inlist['tide_model_path']) 
+            self.phot_coeffs = {}
+        
+        elif self.inlist['star_model_type']=='PT_MASS':
+            
+            self.params = self.read_pt_mass_params(self.inlist)
+            self.resp_coeffs = 0.
+            self.phot_coeffs = {}
+            
+        else: raise Exception("Invalid star_model_type must be 'MESA' or 'PT_MASS'.")
+        
+    
+    def read_pt_mass_params(self, star_inlist):
+        
+        m = star_inlist['mass']
+        m_units = star_inlist['mass_units']
+         
+        M_sol = 1.989e33
+        
+        if m_units=='CGS':
+            m = m/M_sol
+            
+        return {'M': m, 
+                'R': 0,
+                'L': 0,
+                'Teff': 0,
+                'logg': 0}
+            
+        
     def read_mesa_params(self, star_model_path, units='SOLAR'):
         
         data = ascii.read(star_model_path, data_start=0, data_end=1)
@@ -144,7 +168,7 @@ class Star:
         logg = self.params['logg']
 
         dx = {'logT': np.log10(Teff), 'logg': logg}
-        pg = pymsg.PhotGrid(f'pg-demo-{filter_x}.h5')
+        pg = pymsg.PhotGrid(f"{os.environ['GYRELC_DIR']}/pg-demo-{filter_x}.h5")
         
         # Set up intensity moment range
         
@@ -170,16 +194,22 @@ class Star:
                 f'dI_dlng_{filter_x}': dI_dlng_x_l}
     
     
+    def read_phot_coeffs_pt_mass(self, filter_x):
+        return {f'I_{filter_x}': 0., 
+                f'dI_dlnT_{filter_x}': 0., 
+                f'dI_dlng_{filter_x}': .0}
+        
+    
     def read_phot_coeffs(self, filter_x, phot_file=None):
         
-        if phot_file==None:
-            self.phot_coeffs.update( self.read_phot_coeffs_msg(filter_x) )
-        elif phot_file==1:
-            self.phot_coeffs.update( self.read_phot_coeffs_h5(filter_x, 'lc-data/t30890g364.h5') )
-        elif phot_file==2:
-            self.phot_coeffs.update( self.read_phot_coeffs_h5(filter_x, 'lc-data/t29173g423.h5') )
-        else:
-            self.phot_coeffs.update( self.read_phot_coeffs_h5(filter_x, phot_file) )
+        if self.inlist['star_model_type']=='MESA':
+            if phot_file==None:
+                self.phot_coeffs.update( self.read_phot_coeffs_msg(filter_x) )
+            else:
+                self.phot_coeffs.update( self.read_phot_coeffs_h5(filter_x, phot_file) )
+                
+        elif self.inlist['star_model_type']=='PT_MASS':
+            self.phot_coeffs.update( self.read_phot_coeffs_pt_mass(filter_x) ) 
             
         return
     
@@ -246,24 +276,27 @@ class Star:
 
     def eval_fourier (self, filter_x, theta, phi):
         
-        resp_coeffs = self.resp_coeffs
-        I = self.phot_coeffs
-        
-        # Initialize the frequencies/amplitudes arrays
-        
-        f = np.arange(resp_coeffs.data['k_max']+1)*resp_coeffs.data['Omega_orb']
-        
-        A = np.zeros(resp_coeffs.data['k_max']+1, dtype=complex)
+        if self.inlist['star_model_type']=='PT_MASS':
+            f, A = np.array([0]), np.array([0])
+        else:
+            resp_coeffs = self.resp_coeffs
+            I = self.phot_coeffs
             
-        # Loop over l, m and k
-    
-        for l in np.arange(2, resp_coeffs.data['l_max']+1).astype(int):
-            for m in np.arange(-l, l+1).astype(int):
-                for k in np.arange(0, resp_coeffs.data['k_max']+1).astype(int):
-    
-                    # Add the Fourier contribution * spherical harmonic
+            # Initialize the frequencies/amplitudes arrays
+            
+            f = np.arange(resp_coeffs.data['k_max']+1)*resp_coeffs.data['Omega_orb']
+            
+            A = np.zeros(resp_coeffs.data['k_max']+1, dtype=complex)
+                
+            # Loop over l, m and k
         
-                    A[k] += self.eval_fourier_moment(filter_x, theta, phi, l,m,k)
+            for l in np.arange(2, resp_coeffs.data['l_max']+1).astype(int):
+                for m in np.arange(-l, l+1).astype(int):
+                    for k in np.arange(0, resp_coeffs.data['k_max']+1).astype(int):
+        
+                        # Add the Fourier contribution * spherical harmonic
+            
+                        A[k] += self.eval_fourier_moment(filter_x, theta, phi, l,m,k)
                     
         # Return data
         return f, A  
