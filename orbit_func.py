@@ -170,3 +170,4 @@ class irradiation:
             #dJ/unperturbed_observed_flux 
             # = bandpass_correction_coefficient*(L2/L1)*(R1/D(t))**2
             #   * disc_integral_factor_(Burkart_used_Eddington_limb_darkening)
+
