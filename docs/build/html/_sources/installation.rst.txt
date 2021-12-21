@@ -1,0 +1,32 @@
+.. gyre-lc documentation master file, created by
+
+Installation
+===================================
+
+Prerequisits
+-----------------------------------
+``pip install msg``
+
+Clone from git
+-----------------------------------
+
+``git clone https://github.com/aaronesque/gyre-lc.git`` 
+
+
+
+.. make sure you include the build_spectrum script in the bundle
+
+.. note:: This project is under active development.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+
+
+Indices and tables
+==================
+
+- :ref:`genindex`
+- :ref:`modindex`
+- :ref:`search`

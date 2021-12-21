@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &mdash; gyre-lc 0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> gyre-lc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/preliminaries.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/python-walkthrough.html">Python Walkthrough</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gyre-lc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/ref-guide/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
+<p>This chapter discusses MSG installation in detail. If you just want to get up and running, have a look at the Quick Start chapter.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h2>
+<p>To compile and run MSG, you’ll need the following software components:</p>
+<ul class="simple">
+<li><p>A modern (2003+) Fortran compiler</p></li>
+<li><p>The BLAS linear algebra library</p></li>
+<li><p>The LAPACK linear algebra library</p></li>
+<li><p>The LAPACK95 Fortran 95 interface to LAPACK</p></li>
+<li><p>The HDF5 data management library</p></li>
+</ul>
+<p>On Linux and MacOS platforms, these components are bundled together in the MESA Software Development Kit (SDK), which can be downloaded from the MESA SDK homepage. Using this SDK is strongly recommended.</p>
+</section>
+<section id="building-msg">
+<h2>Building MSG<a class="headerlink" href="#building-msg" title="Permalink to this headline"></a></h2>
+<section id="download">
+<h3>Download<a class="headerlink" href="#download" title="Permalink to this headline"></a></h3>
+<p>Download the MSG source code, and unpack it from the command line using the tar utility:</p>
+<p><code class="docutils literal notranslate"><span class="pre">tar</span> <span class="pre">xf</span> <span class="pre">msg-main.tar.gz</span></code></p>
+<p>Set the MSG_DIR environment variable with the path to the newly created source directory; this can be achieved e.g. using the realpath command1:</p>
+<p><code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">MSG_DIR=$(realpath</span> <span class="pre">msg-main)</span></code></p>
+<p>Compile
+Compile MSG using the make utility:</p>
+<p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">-j</span> <span class="pre">-C</span> <span class="pre">$MSG_DIR</span></code>
+(the -j flags tells make to use multiple cores, speeding up the build).</p>
+</section>
+<section id="test">
+<h3>Test<a class="headerlink" href="#test" title="Permalink to this headline"></a></h3>
+<p>To check that MSG has compiled correctly and gives reasonable results, you can run the calculation test suite via the command</p>
+<p>make -C $MSG_DIR test
+The initial output from the tests should look something like this:</p>
+<p>If things go awry, consult the troubleshooting chapter.</p>
+<p>Custom Builds
+Custom builds of MSG can be created by setting certain environment variables, and/or variables in the file $MSG_DIR/src/build/Makefile, to the value yes. The following variables are currently supported:</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Aaron Lopez.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
