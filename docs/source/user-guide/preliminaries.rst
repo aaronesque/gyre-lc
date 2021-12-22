@@ -1,42 +1,36 @@
 .. gyre-lc documentation master file, created by
 
-Installation
 ===================================
-
-Prerequisites
------------------------------------
-``pip install msg``
-
-Clone from git
------------------------------------
-
-``git clone https://github.com/aaronesque/gyre-lc.git`` 
+Preliminaries
+===================================
 
 Obtaining GYRE-lc
 -----------------------------------
 
-The source code for MSG is hosted in the rhdtownsend/msg git repository on GitHub. GYRE is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 3.
+The source code for GYRE-lc is hosted on GitHub at `github.com/aaronesque/gyre-lc <https://github.com/aaronesque/gyre-lc>`_. Like all GYRE expansions, GYRE-lc is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 3.
 
 Development Team
 -----------------------------------
 
-MSG remains under active development by the following team:
+GYRE-lc remains under active development by the following team:
 
-Rich Townsend (University of Wisconsin-Madison); project leader
+- Aaron Lopez (University of Wisconsin-Madison); project leader
+- Rich Townsend (University of Wisconsin-Madison)
 
-Aaron Lopez (University of Wisconsin-Madison)
 
 Related Links
 -----------------------------------
-The MESA Software Development Kit (SDK), which provides the compilers and supporting libraries needed to build MSG.
+
+- The `MESA Software Development Kit (SDK) <http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk>`_, which provides the compilers and supporting libraries needed to build GYRE-lc.
+- `MESA <mesa.sourceforge.net>`_, which calculates the stellar models compatible with GYRE-lc.
+- `GYRE <https://gyre.readthedocs.io/en/stable/>`_, which calculates the pulsation models compatible with GYRE-lc.
+- `MSG <http://www.astro.wisc.edu/~townsend/resource/docs/msg/>`_, which rapidly interpolates stellar spectra from a multidimensional grid for GYRE-lc.
 
 Acknowledgments
 -----------------------------------
-MSG has been developed with financial support from the following grants:
 
-NSF awards ACI-1663696 and AST-1716436;
+GYRE-lc has been developed with financial support from the following grants:
 
-NASA award 80NSSC20K0515.
 
 .. make sure you include the build_spectrum script in the bundle
 

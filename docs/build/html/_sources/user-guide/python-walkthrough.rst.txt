@@ -1,5 +1,8 @@
+.. _python-walkthrough:
+
 .. gyre-lc documentation master file, created by
 
+==============================
 Python Walkthrough
 ==============================
 

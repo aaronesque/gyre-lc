@@ -1,21 +1,19 @@
-.. gyre-lc documentation master file, created by
+.. _quick-start:
 
+==============================
 Quick Start
-=====================================
+==============================
 
-To get started with MSG, follow these five simple steps:
+To get started with GYRE-lc, follow these six simple steps:
 
-install the MESA Software Development Kit;
+- download & install the `MESA Software Development Kit (SDK) <http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk>`_;
+- download & install `MSG <http://www.astro.wisc.edu/~townsend/resource/docs/msg/>`_;
+- download the `GYRE-lc <https://github.com/aaronesque/gyre-lc>`_ source code
+- unpack the source code using the ``tar`` utility;
+- set the ``GYRELC_DIR`` environment variable to point to the newly created source directory;
+- compile GYRE-lc using the command **make -C $GYRELC_DIR**.
 
-download the MSG source code;
-
-unpack the source code using the tar utility;
-
-set the MSG_DIR environment variable to point to the newly created source directory;
-
-compile MSG using the command make -C $MSG_DIR.
-
-For a more in-depth installation guide that covers alternative use-cases, refer to the Installation chapter. If the code doesn’t compile properly, consult the troubleshooting chapter. Otherwise, proceed to the next chapter where you’ll put together your first MSG calculation.
+For a more in-depth installation guide that covers additional use-cases, refer to the Installation chapter. If the code doesn’t compile properly, consult the troubleshooting chapter. Otherwise, proceed to the next chapter where you’ll learn to run your first GYRE-lc calculation.
 
 
 .. note:: This project is under active development.
