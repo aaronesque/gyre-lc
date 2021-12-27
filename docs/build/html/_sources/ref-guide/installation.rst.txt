@@ -9,13 +9,14 @@ This chapter discusses MSG installation in detail. If you just want to get up an
 Prerequisites
 -----------------------------------
 
-To compile and run MSG, you’ll need the following software components:
+GYRE-lc requires Python 3.6+. 
 
-- A modern (2003+) Fortran compiler
-- The BLAS linear algebra library
-- The LAPACK linear algebra library
-- The LAPACK95 Fortran 95 interface to LAPACK
-- The HDF5 data management library
+To compile and run GYRE-lc, you’ll need the following Python libraries installed:
+
+- `<https://pypi.org/project/h5py/>`_, for HDF5 data management;
+- `<https://pypi.org/project/f90nml/>`_, ;
+- `<https://pypi.org/project/scipy/>`_, ;
+- `<https://pypi.org/project/astropy/>`_, ; 
 
 On Linux and MacOS platforms, these components are bundled together in the MESA Software Development Kit (SDK), which can be downloaded from the MESA SDK homepage. Using this SDK is strongly recommended.
 
