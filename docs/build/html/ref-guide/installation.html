@@ -46,7 +46,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#building-msg">Building MSG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-gyre-lc">Setting up GYRE-lc</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#download">Download</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#test">Test</a></li>
 </ul>
@@ -81,40 +81,43 @@
              
   <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
-<p>This chapter discusses MSG installation in detail. If you just want to get up and running, have a look at the Quick Start chapter.</p>
+<p>This chapter discusses GYRE-lc installation in detail. If you just want to get up and running, have a look at the Quick Start chapter.</p>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h2>
-<p>GYRE-lc requires Python 3.6+.</p>
-<p>To compile and run GYRE-lc, you’ll need the following Python libraries installed:</p>
+<p>A complete GYRE-lc workflow typically requires the use of additional software to produce the star and pulsation models that go into GYRE-lc as input for light curve synthesis. This includes:</p>
+<ul class="simple">
+<li><p>The <a class="reference external" href="http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk">MESA Software Development Kit (SDK)</a>, which provides the compilers and supporting libraries needed to build GYRE-lc.</p></li>
+<li><p><a class="reference external" href="mesa.sourceforge.net">MESA</a>, which calculates the stellar models compatible with GYRE-lc.</p></li>
+<li><p><a class="reference external" href="https://gyre.readthedocs.io/en/stable/">GYRE</a>, which calculates the pulsation models compatible with GYRE-lc.</p></li>
+<li><p><a class="reference external" href="http://www.astro.wisc.edu/~townsend/resource/docs/msg/">MSG</a>, which rapidly interpolates stellar spectra from a multidimensional grid for GYRE-lc.</p></li>
+</ul>
+<p>GYRE and MSG are currently officially compatible with Linux and MacOS platforms only- Windows at your own risk!</p>
+<p>Most importantly, GYRE-lc requires Python 3.6+.</p>
+<p>To run GYRE-lc, you’ll need the following Python libraries installed:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://pypi.org/project/h5py/">https://pypi.org/project/h5py/</a>, for HDF5 data management;</p></li>
-<li><p><a class="reference external" href="https://pypi.org/project/f90nml/">https://pypi.org/project/f90nml/</a>, ;</p></li>
-<li><p><a class="reference external" href="https://pypi.org/project/scipy/">https://pypi.org/project/scipy/</a>, ;</p></li>
-<li><p><a class="reference external" href="https://pypi.org/project/astropy/">https://pypi.org/project/astropy/</a>, ;</p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/f90nml/">https://pypi.org/project/f90nml/</a>, for namelist handling;</p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/scipy/">https://pypi.org/project/scipy/</a>, for special math functions and operations;</p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/astropy/">https://pypi.org/project/astropy/</a>, for MESA model handling;</p></li>
 </ul>
-<p>On Linux and MacOS platforms, these components are bundled together in the MESA Software Development Kit (SDK), which can be downloaded from the MESA SDK homepage. Using this SDK is strongly recommended.</p>
+<p>These components can be found via the PIP and Anaconda python package installers.</p>
 </section>
-<section id="building-msg">
-<h2>Building MSG<a class="headerlink" href="#building-msg" title="Permalink to this headline"></a></h2>
+<section id="setting-up-gyre-lc">
+<h2>Setting up GYRE-lc<a class="headerlink" href="#setting-up-gyre-lc" title="Permalink to this headline"></a></h2>
 <section id="download">
 <h3>Download<a class="headerlink" href="#download" title="Permalink to this headline"></a></h3>
-<p>Download the MSG source code, and unpack it from the command line using the tar utility:</p>
-<p><code class="docutils literal notranslate"><span class="pre">tar</span> <span class="pre">xf</span> <span class="pre">msg-main.tar.gz</span></code></p>
-<p>Set the MSG_DIR environment variable with the path to the newly created source directory; this can be achieved e.g. using the realpath command1:</p>
-<p><code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">MSG_DIR=$(realpath</span> <span class="pre">msg-main)</span></code></p>
-<p>Compile
-Compile MSG using the make utility:</p>
-<p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">-j</span> <span class="pre">-C</span> <span class="pre">$MSG_DIR</span></code>
-(the -j flags tells make to use multiple cores, speeding up the build).</p>
+<p>Download the GYRE-lc source code, and unpack it from the command line using the tar utility:</p>
+<p><code class="docutils literal notranslate"><span class="pre">tar</span> <span class="pre">xf</span> <span class="pre">gyre-lc.tar.gz</span></code></p>
+<p>Set the GYRELC_DIR environment variable with the path to the newly created source directory; this can be achieved e.g. using the realpath command1:</p>
+<p><code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">GYRELC_DIR=$(realpath</span> <span class="pre">gyre-lc)</span></code></p>
+<p>You are ready to test and use GYRE-lc.</p>
 </section>
 <section id="test">
 <h3>Test<a class="headerlink" href="#test" title="Permalink to this headline"></a></h3>
-<p>To check that MSG has compiled correctly and gives reasonable results, you can run the calculation test suite via the command</p>
-<p>make -C $MSG_DIR test
-The initial output from the tests should look something like this:</p>
+<p>To check that GYRE-lc functions as expected, you can run the calculation test suite via the command</p>
+<p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">$GYRELC_DIR/test.py</span></code></p>
+<p>The initial output from the tests should look something like this:</p>
 <p>If things go awry, consult the troubleshooting chapter.</p>
-<p>Custom Builds
-Custom builds of MSG can be created by setting certain environment variables, and/or variables in the file $MSG_DIR/src/build/Makefile, to the value yes. The following variables are currently supported:</p>
 </section>
 </section>
 </section>

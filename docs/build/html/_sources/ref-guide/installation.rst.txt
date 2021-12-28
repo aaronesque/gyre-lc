@@ -4,51 +4,55 @@
 Installation
 ===================================
 
-This chapter discusses MSG installation in detail. If you just want to get up and running, have a look at the Quick Start chapter.
+This chapter discusses GYRE-lc installation in detail. If you just want to get up and running, have a look at the Quick Start chapter.
 
 Prerequisites
 -----------------------------------
 
-GYRE-lc requires Python 3.6+. 
+A complete GYRE-lc workflow typically requires the use of additional software to produce the star and pulsation models that go into GYRE-lc as input for light curve synthesis. This includes:
 
-To compile and run GYRE-lc, you’ll need the following Python libraries installed:
+- The `MESA Software Development Kit (SDK) <http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk>`_, which provides the compilers and supporting libraries needed to build GYRE-lc.
+- `MESA <mesa.sourceforge.net>`_, which calculates the stellar models compatible with GYRE-lc.
+- `GYRE <https://gyre.readthedocs.io/en/stable/>`_, which calculates the pulsation models compatible with GYRE-lc.
+- `MSG <http://www.astro.wisc.edu/~townsend/resource/docs/msg/>`_, which rapidly interpolates stellar spectra from a multidimensional grid for GYRE-lc.
+
+GYRE and MSG are currently officially compatible with Linux and MacOS platforms only- Windows at your own risk!
+
+Most importantly, GYRE-lc requires Python 3.6+. 
+
+To run GYRE-lc, you’ll need the following Python libraries installed:
 
 - `<https://pypi.org/project/h5py/>`_, for HDF5 data management;
-- `<https://pypi.org/project/f90nml/>`_, ;
-- `<https://pypi.org/project/scipy/>`_, ;
-- `<https://pypi.org/project/astropy/>`_, ; 
+- `<https://pypi.org/project/f90nml/>`_, for namelist handling;
+- `<https://pypi.org/project/scipy/>`_, for special math functions and operations;
+- `<https://pypi.org/project/astropy/>`_, for MESA model handling; 
 
-On Linux and MacOS platforms, these components are bundled together in the MESA Software Development Kit (SDK), which can be downloaded from the MESA SDK homepage. Using this SDK is strongly recommended.
+These components can be found via the PIP and Anaconda python package installers.
 
-Building MSG
+
+Setting up GYRE-lc
 ------------------------------------
 
 Download
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Download the MSG source code, and unpack it from the command line using the tar utility:
+Download the GYRE-lc source code, and unpack it from the command line using the tar utility:
 
-``tar xf msg-main.tar.gz``
+``tar xf gyre-lc.tar.gz``
 
-Set the MSG_DIR environment variable with the path to the newly created source directory; this can be achieved e.g. using the realpath command1:
+Set the GYRELC_DIR environment variable with the path to the newly created source directory; this can be achieved e.g. using the realpath command1:
 
-``export MSG_DIR=$(realpath msg-main)``
+``export GYRELC_DIR=$(realpath gyre-lc)``
 
-Compile
-Compile MSG using the make utility:
-
-``make -j -C $MSG_DIR``
-(the -j flags tells make to use multiple cores, speeding up the build).
+You are ready to test and use GYRE-lc.
 
 Test
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-To check that MSG has compiled correctly and gives reasonable results, you can run the calculation test suite via the command
+To check that GYRE-lc functions as expected, you can run the calculation test suite via the command
 
-make -C $MSG_DIR test
+``python $GYRELC_DIR/test.py``
+
 The initial output from the tests should look something like this:
 
 If things go awry, consult the troubleshooting chapter.
-
-Custom Builds
-Custom builds of MSG can be created by setting certain environment variables, and/or variables in the file $MSG_DIR/src/build/Makefile, to the value yes. The following variables are currently supported:
 
