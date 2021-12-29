@@ -8,7 +8,7 @@ Python Walkthrough
 
 This chapter provides a walkthrough of using the GYRE-lc package to calculate a light curve for the eccentric ellipsoidal variable of :math:`{\iota}` Orionis.
 
-The :math:`{\iota}` Ori Models
+The iota Orionis Models
 -------------------------------
 
 The GitHub repository includes the model data necessary to create a light curve and test GYRE-lc's functionality.
