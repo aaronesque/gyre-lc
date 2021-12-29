@@ -11,16 +11,21 @@ This chapter provides a walkthrough of using the GYRE-lc package to calculate a 
 The iota Orionis Models
 -------------------------------
 
-The GitHub repository includes the model data necessary to create a light curve and test GYRE-lc's functionality.
+The GitHub repository includes the model data necessary to create a light curve and test GYRE-lc's functionality. You will be creating a light curve for the eccentric ellipsoidal variable of :math:`{\iota}` Orionis, which we'll refer to as simply :math:`{\iota}` Ori for brevity. 
 
-.. Stellar models for Aa and Ab
+The stellar models for each binary component, :math:`{\iota}` Ori Aa & Ab, were created with MESA using stellar parameters listed in :footcite:t:`2017:Pablo`.
+
+The time-dependent tidal potential 
+
 .. Pulsation models for Aa and Ab
 
 
 The GYRE-lc Module
 -------------------------------
 
-Install like this::
+To use GYRE-lc in Python, first make sure the ``GYRELC_DIR`` environment variable is set (see `Quick Start`). I use a Jupyter notebook for this walkthrough, but you may choose to write a Python script instead if you desire.
+
+Next, copy and past the following imports::
 
     # Import standard modules
 
@@ -45,3 +50,4 @@ Install like this::
 
 .. note:: This project is under active development.
 
+.. footbibliography::

@@ -82,11 +82,14 @@
 <p>This chapter provides a walkthrough of using the GYRE-lc package to calculate a light curve for the eccentric ellipsoidal variable of <span class="math notranslate nohighlight">\({\iota}\)</span> Orionis.</p>
 <section id="the-iota-orionis-models">
 <h2>The iota Orionis Models<a class="headerlink" href="#the-iota-orionis-models" title="Permalink to this headline"></a></h2>
-<p>The GitHub repository includes the model data necessary to create a light curve and test GYRE-lc’s functionality.</p>
+<p>The GitHub repository includes the model data necessary to create a light curve and test GYRE-lc’s functionality. You will be creating a light curve for the eccentric ellipsoidal variable of <span class="math notranslate nohighlight">\({\iota}\)</span> Orionis, which we’ll refer to as simply <span class="math notranslate nohighlight">\({\iota}\)</span> Ori for brevity.</p>
+<p>The stellar models for each binary component, <span class="math notranslate nohighlight">\({\iota}\)</span> Ori Aa &amp; Ab, were created with MESA using stellar parameters listed in Pablo <em>et al.</em><a class="footnote-reference brackets" href="#footcite-2017-pablo" id="id2">1</a>.</p>
+<p>The time-dependent tidal potential</p>
 </section>
 <section id="the-gyre-lc-module">
 <h2>The GYRE-lc Module<a class="headerlink" href="#the-gyre-lc-module" title="Permalink to this headline"></a></h2>
-<p>Install like this:</p>
+<p>To use GYRE-lc in Python, first make sure the <code class="docutils literal notranslate"><span class="pre">GYRELC_DIR</span></code> environment variable is set (see <cite>Quick Start</cite>). I use a Jupyter notebook for this walkthrough, but you may choose to write a Python script instead if you desire.</p>
+<p>Next, copy and past the following imports:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import standard modules</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -111,6 +114,12 @@
 <p class="admonition-title">Note</p>
 <p>This project is under active development.</p>
 </div>
+<p id="id3"><dl class="footnote brackets">
+<dt class="label" id="footcite-2017-pablo"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
+<dd><p>Herbert Pablo, N. D. Richardson, J. Fuller, J. Rowe, A. F. J. Moffat, R. Kuschnig, A. Popowicz, G. Handler, C. Neiner, A. Pigulski, G. A. Wade, W. Weiss, B. Buysschaert, T. Ramiaramanantsoa, A. D. Bratcher, C. J. Gerhartz, J. J. Greco, K. Hardegree-Ullman, L. Lembryk, and W. L. Oswald. The most massive heartbeat: an in-depth analysis of \ensuremath ı Orionis. <em>\mnras </em>, 467(2):2494–2503, May 2017. <a class="reference external" href="https://arxiv.org/abs/1703.02086">arXiv:1703.02086</a>, <a class="reference external" href="https://doi.org/10.1093/mnras/stx207">doi:10.1093/mnras/stx207</a>.</p>
+</dd>
+</dl>
+</p>
 </section>
 </section>
 
