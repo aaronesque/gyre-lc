@@ -13,8 +13,8 @@ The iota Orionis Models
 
 The GitHub repository includes the model data necessary to create a light curve and test GYRE-lc's functionality.
 
-Stellar models for Aa and Ab
-Pulsation models for Aa and Ab
+.. Stellar models for Aa and Ab
+.. Pulsation models for Aa and Ab
 
 
 The GYRE-lc Module
@@ -22,20 +22,24 @@ The GYRE-lc Module
 
 Install like this::
 
-   # Import gyre-lc
+    # Import standard modules
 
-   import sys
-   import os
-   sys.path.insert(0, os.path.join(os.environ['GYRELC_DIR'], 'lib'))
-   import gyrelc
+    import numpy as np
+    import sys
+    import os
 
-   # Import standard modules and configure them
+    # Import pymsg
 
-   import numpy as np
-   import matplotlib.pyplot as plt
+    sys.path.insert(0, os.path.join(os.environ['MSG_DIR'], 'lib'))
+    import pymsg
 
-   %matplotlib inline
-   plt.rcParams.update({'font.size': 16})
+    # Import gyrelc modules
+
+    sys.path.insert(0, os.path.join(os.environ['GYRELC_DIR'], 'lib'))
+    import atm_coeffs as ac
+    import resp_coeffs as rc
+    from star_class import Star
+    from binary_class import Irradiation, Binary
 
 .. make sure you include the build_spectrum script in the bundle
 

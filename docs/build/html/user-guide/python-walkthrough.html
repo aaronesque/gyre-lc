@@ -83,26 +83,28 @@
 <section id="the-iota-orionis-models">
 <h2>The iota Orionis Models<a class="headerlink" href="#the-iota-orionis-models" title="Permalink to this headline"></a></h2>
 <p>The GitHub repository includes the model data necessary to create a light curve and test GYRE-lc’s functionality.</p>
-<p>Stellar models for Aa and Ab
-Pulsation models for Aa and Ab</p>
 </section>
 <section id="the-gyre-lc-module">
 <h2>The GYRE-lc Module<a class="headerlink" href="#the-gyre-lc-module" title="Permalink to this headline"></a></h2>
 <p>Install like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import gyre-lc</span>
-
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;GYRELC_DIR&#39;</span><span class="p">],</span> <span class="s1">&#39;lib&#39;</span><span class="p">))</span>
-<span class="kn">import</span> <span class="nn">gyrelc</span>
-
-<span class="c1"># Import standard modules and configure them</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import standard modules</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
 
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">})</span>
+<span class="c1"># Import pymsg</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MSG_DIR&#39;</span><span class="p">],</span> <span class="s1">&#39;lib&#39;</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">pymsg</span>
+
+<span class="c1"># Import gyrelc modules</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;GYRELC_DIR&#39;</span><span class="p">],</span> <span class="s1">&#39;lib&#39;</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">atm_coeffs</span> <span class="k">as</span> <span class="nn">ac</span>
+<span class="kn">import</span> <span class="nn">resp_coeffs</span> <span class="k">as</span> <span class="nn">rc</span>
+<span class="kn">from</span> <span class="nn">star_class</span> <span class="kn">import</span> <span class="n">Star</span>
+<span class="kn">from</span> <span class="nn">binary_class</span> <span class="kn">import</span> <span class="n">Irradiation</span><span class="p">,</span> <span class="n">Binary</span>
 </pre></div>
 </div>
 <div class="admonition note">
