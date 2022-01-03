@@ -62,12 +62,13 @@ class Star:
         elif self.inlist['star_model_type']=='PT_MASS':
             
             self.params = self.read_pt_mass_params(self.inlist)
-            self.resp_coeffs = 0.
+            self.resp_coeffs = rc.resp_coeffs('') #self.make_pt_mass_response()
             self.phot_coeffs = {}
             
         else: raise Exception("Invalid star_model_type must be 'MESA' or 'PT_MASS'.")
         
     
+
     def read_pt_mass_params(self, star_inlist):
         
         m = star_inlist['mass']
@@ -83,8 +84,20 @@ class Star:
                 'L': 0,
                 'Teff': 0,
                 'logg': 0}
-            
-        
+           
+
+
+    def make_pt_mass_response(self):
+
+        return {'xi_r_ref': 0+0j,
+                'lag_L_ref': 0+0j,
+                'k_max': 0.,
+                'l_max': 0.,
+                'Omega_rot': 0.,
+                'Omega_orb': 0.}
+
+
+
     def read_mesa_params(self, star_model_path, units='SOLAR'):
         
         data = ascii.read(star_model_path, data_start=0, data_end=1)
@@ -168,7 +181,7 @@ class Star:
         logg = self.params['logg']
 
         dx = {'logT': np.log10(Teff), 'logg': logg}
-        pg = pymsg.PhotGrid(f"{os.environ['GYRELC_DIR']}/pg-demo-{filter_x}.h5")
+        pg = pymsg.PhotGrid(f"{os.environ['GYRELC_DIR']}/grid/{filter_x}.h5")
         
         # Set up intensity moment range
         
@@ -194,10 +207,10 @@ class Star:
                 f'dI_dlng_{filter_x}': dI_dlng_x_l}
     
     
-    def read_phot_coeffs_pt_mass(self, filter_x):
-        return {f'I_{filter_x}': 0., 
-                f'dI_dlnT_{filter_x}': 0., 
-                f'dI_dlng_{filter_x}': .0}
+    def make_phot_coeffs_pt_mass(self, filter_x):
+        return {f'I_{filter_x}': np.array([0.]), 
+                f'dI_dlnT_{filter_x}':np.array([0.]), 
+                f'dI_dlng_{filter_x}': np.array(0.)}
         
     
     def read_phot_coeffs(self, filter_x, phot_file=None):
@@ -209,7 +222,7 @@ class Star:
                 self.phot_coeffs.update( self.read_phot_coeffs_h5(filter_x, phot_file) )
                 
         elif self.inlist['star_model_type']=='PT_MASS':
-            self.phot_coeffs.update( self.read_phot_coeffs_pt_mass(filter_x) ) 
+            self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(filter_x) ) 
             
         return
     

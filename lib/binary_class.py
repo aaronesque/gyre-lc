@@ -99,6 +99,10 @@ class Irradiation:
 
     def find_irrad (self, star_number, filter_x, theta, phi, t, t_peri=0):
 
+        if self.component[star_number].inlist['star_model_type']=='PT_MASS':
+            return t*0
+        else: None
+
         # Set up for sum
 
         phot_coeffs, resp_data, L1, R1, L2 = self.setup_irrad(star_number)
@@ -177,18 +181,11 @@ class Binary(Irradiation):
         return params
     
     
-    def eval_fourier (self, filter_x, inc, omega, t=0, reflection=True):
+    def eval_fourier (self, filter_x, inc, omega, t=0):
             
         omega_orb = self.orbit_params['Omega_orb']
         
         f_1, A_1 = self.component[1].eval_fourier(filter_x, inc, omega)
         f_2, A_2 = self.component[2].eval_fourier(filter_x, inc, omega+180)
-        
-        #if reflection==True:
-        #    rf_1, rA_1 = self.system.eval_fourier_irrad(1, self.filter_x, inc, omega, t, t_peri)
-        #    rf_2, rA_2 = self.system.eval_fourier_irrad(2, self.filter_x, inc, omega+180, t, t_peri)
-        
-        #    return [f_1/omega_orb, rf_1, f_2/omega_orb, rf_2], [A_1, rA_1, A_2, rA_2]
-        #else:
     
         return f_1/omega_orb, np.abs(A_1) + np.abs(A_2)

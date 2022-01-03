@@ -56,9 +56,6 @@ class resp_coeffs:
             l_max = 0
             k_max = 0
             
-            # These may need tweaking; in any case, we should be picking
-            # up Omega_orb from elsewhere
-            
             Omega_rot = 0.
             Omega_orb = 0.
             
