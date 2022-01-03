@@ -28,10 +28,7 @@ GYRE-lc
    :maxdepth: 2
 
    ref-guide/installation.rst
+   ref-guide/inputs.rst
+   ref-guide/output.rst
+   ref-guide/tidal-theory.rst
 
-Indices and tables
-==================
-
-- :ref:`genindex`
-- :ref:`modindex`
-- :ref:`search`

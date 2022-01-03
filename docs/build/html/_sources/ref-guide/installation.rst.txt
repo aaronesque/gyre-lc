@@ -36,7 +36,7 @@ Setting up GYRE-lc
 Download
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Download the GYRE-lc source code, and unpack it from the command line using the tar utility:
+Download the `GYRE-lc source code <https://github.com/aaronesque/gyre-lc>`_, and unpack it from the command line using the tar utility:
 
 ``tar xf gyre-lc.tar.gz``
 
@@ -48,11 +48,13 @@ You are ready to test and use GYRE-lc.
 
 Test
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-To check that GYRE-lc functions as expected, you can run the calculation test suite via the command
+.. To check that GYRE-lc functions as expected, you can run the calculation test suite via the command
+.. ``python $GYRELC_DIR/test.py``
+.. The initial output from the tests should look something like this:
+.. If things go awry, consult the troubleshooting chapter.
 
-``python $GYRELC_DIR/test.py``
+.. note:: This project is under active development.
 
-The initial output from the tests should look something like this:
 
-If things go awry, consult the troubleshooting chapter.
+
 
