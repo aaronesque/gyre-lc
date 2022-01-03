@@ -3,9 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-===================================
+###################
 GYRE-lc
-===================================
+###################
 
 **GYRE-lc** is a Python library for the production of synthetic light curves for pulsating binary systems. It requires at least one `MESA <mesa.sourceforge.net>`_ stellar model and its corresponding `GYRE <https://gyre.readthedocs.io/en/stable/>`_ pulsation model as inputs. A model spectrum is also required-- GYRE-lc works best with `MSG <http://www.astro.wisc.edu/~townsend/resource/docs/msg/>`_ interpolated spectra for speed, ease of use, accuracy, and reliability, but it also takes `SYNSPEC <http://tlusty.oca.eu/Synspec49/synspec.html>`_ spectra in a *custom HDF5 format*.
 
