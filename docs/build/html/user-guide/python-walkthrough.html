@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Python Walkthrough &mdash; gyre-lc 0.1 documentation</title>
+  <title>Python Walkthrough &mdash; gyre-lc alpha-0.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -43,7 +43,10 @@
 <li class="toctree-l1"><a class="reference internal" href="preliminaries.html">Preliminaries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quick-start.html">Quick Start</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Python Walkthrough</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#the-iota-orionis-models">The iota Orionis Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#seting-up-your-inputs">Seting up your inputs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-iota-orionis-models">The iota Orionis Models</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#the-gyre-lc-module">The GYRE-lc Module</a></li>
 </ul>
 </li>
@@ -80,17 +83,35 @@
   <span class="target" id="python-walkthrough"></span><section id="id1">
 <h1>Python Walkthrough<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h1>
 <p>This chapter provides a walkthrough of using the GYRE-lc package to calculate a light curve for the eccentric ellipsoidal variable of <span class="math notranslate nohighlight">\({\iota}\)</span> Orionis.</p>
+<section id="seting-up-your-inputs">
+<h2>Seting up your inputs<a class="headerlink" href="#seting-up-your-inputs" title="Permalink to this headline"></a></h2>
+<p>There are 3 inputs to consider when producing a GYRE-lc light curve:</p>
+<ul class="simple">
+<li><p>1-2 stellar models, depending on how many stars contribute to the overall light curve</p></li>
+<li><p>1-2 pulsation models. one per stellar model</p></li>
+<li><p>1 inlist specifying orbital parametersi, paths to stellar and pulsation models, and other context for the problem</p></li>
+</ul>
 <section id="the-iota-orionis-models">
-<h2>The iota Orionis Models<a class="headerlink" href="#the-iota-orionis-models" title="Permalink to this headline"></a></h2>
-<p>The GitHub repository includes the model data necessary to create a light curve and test GYRE-lc’s functionality. You will be creating a light curve for the eccentric ellipsoidal variable of <span class="math notranslate nohighlight">\({\iota}\)</span> Orionis, which we’ll refer to as simply <span class="math notranslate nohighlight">\({\iota}\)</span> Ori for brevity.</p>
-<p>The stellar models for each binary component, <span class="math notranslate nohighlight">\({\iota}\)</span> Ori Aa &amp; Ab, were created with MESA using stellar parameters listed in Pablo <em>et al.</em><a class="footnote-reference brackets" href="#footcite-2017-pablo" id="id2">1</a>. The inlist is included for reproducibility of results.</p>
-<p>The pulsations models and their corresponding inlists are also included for each component. They are created with GYRE using the parameters listed in Pablo <em>et al.</em><a class="footnote-reference brackets" href="#footcite-2017-pablo" id="id3">1</a>. These contain the amplitudes and frequencies for the first 100 normal modes of a star’s tidally excited oscillations.</p>
-<p>Lastly, model spectra (produced with <a class="reference external" href="http://tlusty.oca.eu/Synspec49/synspec.html">SYNSPEC</a>) for each component are also included for testing purposes, but they are entirely optional. GYRE-lc works best with MSG– for that, three spectral grids are included corresponding to the filters BRITE-R, BRITE-B, and Kepler.</p>
+<h3>The iota Orionis Models<a class="headerlink" href="#the-iota-orionis-models" title="Permalink to this headline"></a></h3>
+<p>The GitHub repository includes the model data necessary to create a light curve and test GYRE-lc’s functionality. You will be creating a light curve for the eccentric ellipsoidal variable of <span class="math notranslate nohighlight">\({\iota}\)</span> Orionis, which we’ll refer to as simply <span class="math notranslate nohighlight">\({\iota}\)</span> Ori for brevity. What follows is a list of input files and descriptions thereof.</p>
+<dl class="simple">
+<dt>iOri-Aa.mesa &amp; iOri-Ab.mesa</dt><dd><p>The stellar models for each binary component, <span class="math notranslate nohighlight">\({\iota}\)</span> Ori Aa &amp; Ab, were created with MESA using stellar parameters listed in Pablo <em>et al.</em><a class="footnote-reference brackets" href="#footcite-2017-pablo" id="id2">1</a>. The MESA inlists are included for reproducibility of results.</p>
+</dd>
+<dt>iOri-Aa-response.h5 &amp; iOri-Ab-response.h5</dt><dd><p>The pulsations models and their corresponding GYRE inlists are also included for each component. They are created with GYRE using the parameters listed in Pablo <em>et al.</em><a class="footnote-reference brackets" href="#footcite-2017-pablo" id="id3">1</a>. These contain the amplitudes and frequencies for the first 100 normal modes of a star’s tidally excited oscillations.</p>
+</dd>
+<dt>binary_params.in</dt><dd><p>A GYRE-lc inlist specifying the binary parameters and synthetic instrument configuration. The <code class="docutils literal notranslate"><span class="pre">&amp;observer</span></code> namelist is optional when run from a Jupyter notebook.</p>
+</dd>
+<dt>[<em>filter</em>].h5 or tXXXXXgXXX.h5</dt><dd><p>Lastly, model spectra (produced with <a class="reference external" href="http://tlusty.oca.eu/Synspec49/synspec.html">SYNSPEC</a>) for each component are also included for testing purposes, but they are entirely optional. GYRE-lc works best with MSG– for that, three MSG-produced photometric grids are included corresponding to the filters BRITE-R, BRITE-B, and Kepler. These grids are included for demonstration purposes, and if you’d like to synthesize light curves for different passbands, you’ll have to create those using MSG yourself.</p>
+</dd>
+</dl>
+</section>
 </section>
 <section id="the-gyre-lc-module">
 <h2>The GYRE-lc Module<a class="headerlink" href="#the-gyre-lc-module" title="Permalink to this headline"></a></h2>
-<p>To use GYRE-lc in Python, first make sure the <code class="docutils literal notranslate"><span class="pre">GYRELC_DIR</span></code> environment variable is set (see <cite>Quick Start</cite>). I use a Jupyter notebook for this walkthrough, but you may choose to write a Python script instead if you desire.</p>
-<p>Next, copy and past the following imports:</p>
+<p>To use GYRE-lc in Python, first make sure the <code class="docutils literal notranslate"><span class="pre">GYRELC_DIR</span></code> environment variable is set (see <cite>Quick Start</cite>). I use a Jupyter notebook for this walkthrough, but you may later choose to write a Python script instead should it better suit your workflow.</p>
+<p>First, create a new working directory and copy the <code class="docutils literal notranslate"><span class="pre">binary_params.in</span></code> inlist from <code class="docutils literal notranslate"><span class="pre">$GYRELC_DIR/test/</span></code> into this new directory.</p>
+<p>In this same working directory, open a new Jupyter notebok</p>
+<p>Copy and past the following imports:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import standard modules</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -105,12 +126,53 @@
 <span class="c1"># Import gyrelc modules</span>
 
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;GYRELC_DIR&#39;</span><span class="p">],</span> <span class="s1">&#39;lib&#39;</span><span class="p">))</span>
-<span class="kn">import</span> <span class="nn">atm_coeffs</span> <span class="k">as</span> <span class="nn">ac</span>
-<span class="kn">import</span> <span class="nn">resp_coeffs</span> <span class="k">as</span> <span class="nn">rc</span>
-<span class="kn">from</span> <span class="nn">star_class</span> <span class="kn">import</span> <span class="n">Star</span>
-<span class="kn">from</span> <span class="nn">binary_class</span> <span class="kn">import</span> <span class="n">Irradiation</span><span class="p">,</span> <span class="n">Binary</span>
+<span class="kn">import</span> <span class="nn">gyrelc</span> <span class="k">as</span> <span class="nn">lc</span>
 </pre></div>
 </div>
+<p>Next, create a <code class="docutils literal notranslate"><span class="pre">Binary</span></code> object by feeding it the path to your <code class="docutils literal notranslate"><span class="pre">binary_params.in</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create Binary object</span>
+<span class="n">iori</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">Binary</span><span class="p">(</span><span class="s1">&#39;./binary_params.in&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now create an <code class="docutils literal notranslate"><span class="pre">Observer</span></code> object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creat an Observer object</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">Observer</span><span class="p">(</span><span class="n">iori</span><span class="p">,</span> <span class="s1">&#39;BRITE-B&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Binary</span></code> object consists of two <code class="docutils literal notranslate"><span class="pre">Star</span></code> objects, an <code class="docutils literal notranslate"><span class="pre">Irradiation</span></code> object, as well as the various attributes and parameters required to provide the <code class="docutils literal notranslate"><span class="pre">Observer</span></code> object sufficient context to synthesize a light curve. The <code class="docutils literal notranslate"><span class="pre">Observer</span></code> object primarily contains functions for light curve synthesis and analysis thereof. The last parameter left to specify, the choice of passband, is left as an argument for the <code class="docutils literal notranslate"><span class="pre">Observer</span></code> class.</p>
+<p>Finally, create a light curve:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Specify inclination and argument of periastron</span>
+<span class="n">inc</span> <span class="o">=</span> <span class="mf">62.86</span>
+<span class="n">omega</span> <span class="o">=</span> <span class="mf">122.2</span>
+
+<span class="c1"># Duration of &#39;observation&#39; and number of points</span>
+<span class="n">omega_orb</span> <span class="o">=</span> <span class="n">iori</span><span class="o">.</span><span class="n">orbit_params</span><span class="p">[</span><span class="s1">&#39;Omega_orb&#39;</span><span class="p">]</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.5</span><span class="o">/</span><span class="n">omega_orb</span><span class="p">,</span> <span class="mf">2.5</span><span class="o">/</span><span class="n">omega_orb</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">flux</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">find_flux</span><span class="p">(</span><span class="n">inc</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>An important subtlety: the <code class="docutils literal notranslate"><span class="pre">find_flux()</span></code> function <em>requires</em> the observation time to be in units of the orbital period. Here, I’m simulating a BRITE-B passband observation of <span class="math notranslate nohighlight">\({\iota}\)</span> iOri that consists of 2000 data points over 2 orbital periods, begining at half a period past periastron.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>, you may plot your results:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">legend_style</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;framealpha&#39;</span><span class="p">:</span><span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;handlelength&#39;</span><span class="p">:</span><span class="mf">1.2</span><span class="p">,</span> <span class="s1">&#39;handletextpad&#39;</span><span class="p">:</span><span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;fontsize&#39;</span><span class="p">:</span><span class="s1">&#39;small&#39;</span><span class="p">}</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="o">*</span><span class="n">omega_orb</span><span class="p">,</span> <span class="n">flux</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;BRITE-B&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">legend_style</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">2.</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;$\iota$Ori light curve, $\omega$=</span><span class="si">{</span><span class="n">omega</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;Mode Flux Perturbation&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;phase (P=</span><span class="si">{</span><span class="mf">1.</span><span class="o">/</span><span class="n">omega_orb</span><span class="si">:</span><span class="s1">4.4f</span><span class="si">}</span><span class="s1"> d)&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The legend style and labels are entirely a matter of stylistic choice, but a plot with this <em>xlim</em> should look something like this:</p>
+<img alt="../_images/walkthrough-lightcurve.png" src="../_images/walkthrough-lightcurve.png" />
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This project is under active development.</p>

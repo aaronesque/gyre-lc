@@ -22,7 +22,7 @@ copyright = '2021, Aaron Lopez'
 author = 'Aaron Lopez'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = 'alpha-0.1'
 
 
 # -- General configuration ---------------------------------------------------
@@ -32,6 +32,7 @@ release = '0.1'
 # ones.
 extensions = ['sphinxcontrib.bibtex']
 bibtex_bibfiles = ['refs.bib']
+bibtex_reference_style = 'author_year'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

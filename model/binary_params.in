@@ -1,0 +1,38 @@
+&star_1
+	star_model_path = 'lc-data/iori-Aa.mesa'
+	star_model_type = 'MESA'
+
+	tide_model_path = 'lc-data/response.Aa.h5'
+	tide_model_type = 'GYRE'
+/
+
+&star_2
+	star_model_path = 'lc-data/iori-Ab.mesa'
+	star_model_type = 'MESA'
+
+	tide_model_path = 'lc-data/response.Ab.h5'
+	tide_model_type = 'GYRE'
+/
+
+&orbit
+	a = 132.
+	a_units = 'SOLAR'
+	e = 0.764
+	
+	omega_orb = 0.034324440099733095
+	omega_orb_units = 'CYC_PER_DAY'
+	
+	inc = 82.9 	! inclination in degrees
+	omega = 122.2 	! argument of periastron in degrees
+/
+
+&observer
+	bandpass = 'BRITE-B'
+	
+	inc = 82.9 	! inclination in degrees
+	omega = 122.2 	! argument of periastron in degrees
+
+	t_start = -1.2  ! must be in units of period
+	t_end = 2.2
+	n = 2000	! number of exposures, evenly spaced
+/

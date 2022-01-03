@@ -12,6 +12,9 @@ sphinx:
   configuration: docs/conf.py
 
 # Set formats in addition to HTML
+formats:
+    - pdf
+    - epub
 
 # Explicitly set the version of Python and its requirements
 python:
