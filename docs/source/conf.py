@@ -22,7 +22,8 @@ copyright = '2021, Aaron Lopez'
 author = 'Aaron Lopez'
 
 # The full version, including alpha/beta/rc tags
-release = 'alpha-0.1'
+version = 'alpha'
+release = '0.5'
 
 
 # -- General configuration ---------------------------------------------------
