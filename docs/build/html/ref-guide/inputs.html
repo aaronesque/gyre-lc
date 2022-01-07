@@ -51,6 +51,7 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Inputs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#namelist-input-files">Namelist Input Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#star-1-and-star-2">&amp;star_1 and &amp;star_2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#orbit">&amp;orbit</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#observer">&amp;observer</a></li>
 </ul>
@@ -89,7 +90,26 @@
 <h1>Inputs<a class="headerlink" href="#inputs" title="Permalink to this headline"></a></h1>
 <section id="namelist-input-files">
 <h2>Namelist Input Files<a class="headerlink" href="#namelist-input-files" title="Permalink to this headline"></a></h2>
-<p>GYRE-lc reads parameters from an <em>inlist</em>, which is an input file that defines a number of “namelist” groups. Inlists are an input format designed for Fortran, and GYRE-lc is presently written entirely in Python. However, the Fortran-heavy workflow for GYRE and MESA users makes inlists a naturally convenient way to categorize groups of inputs for GYRE-lc.</p>
+<p>GYRE-lc reads parameters from an <em>inlist</em>, which is an input file that defines a number of “namelist” groups. Inlists are an input format designed for Fortran, and GYRE-lc is presently written entirely in Python. However, the Fortran-heavy workflow of GYRE and MESA makes inlists a naturally convenient way for users to categorize groups of inputs for GYRE-lc.</p>
+<section id="star-1-and-star-2">
+<h3>&amp;star_1 and &amp;star_2<a class="headerlink" href="#star-1-and-star-2" title="Permalink to this headline"></a></h3>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">bc_model_type</span></code></dt><dd><p>Type of binary component model to use:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'MESA'</span></code> : Evolutionary model read from a MESA GYRE-format text file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'PT_MASS'</span></code> : Point mass model</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bc_model_path</span></code></dt><dd><p>Path to binary component model file (when <code class="docutils literal notranslate"><span class="pre">bc_model_type</span></code> = <code class="docutils literal notranslate"><span class="pre">'MESA'</span></code>)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tide_model_path</span></code></dt><dd><p>Path to tide model file (when <code class="docutils literal notranslate"><span class="pre">bc_model_type</span></code> = <code class="docutils literal notranslate"><span class="pre">'MESA'</span></code>). Note that no “tide_model_type” parameter exists currently– GYRE-lc remains exclusively compatible with GYRE-format pulsation models</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mass</span></code></dt><dd><p>This component’s mass (when <code class="docutils literal notranslate"><span class="pre">bc_model_type</span></code> = <code class="docutils literal notranslate"><span class="pre">'PT_MASS'</span></code>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mass_units</span></code></dt><dd><p>The</p>
+</dd>
+</dl>
+</section>
 <section id="orbit">
 <h3>&amp;orbit<a class="headerlink" href="#orbit" title="Permalink to this headline"></a></h3>
 </section>

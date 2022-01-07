@@ -22,13 +22,13 @@ from binary_class import Irradiation, Binary
 
 class Observer:
 
-    def __init__ (self, star_system, filter_x, use_msg=True, phot_file=None):
+    def __init__ (self, comp_system, filter_x, use_msg=True, phot_file=None):
 
         self.filter_x = filter_x
         self.use_msg = use_msg
-        self.system = star_system
+        self.system = comp_system
 
-        if isinstance(star_system, Binary):
+        if isinstance(comp_system, Binary):
 
             self.system_type = 'binary'
             if use_msg==True:
@@ -38,13 +38,13 @@ class Observer:
                 self.system.component[1].read_phot_coeffs(self.filter_x, 1)
                 self.system.component[2].read_phot_coeffs(self.filter_x, 2)
 
-        elif isinstance(star_system, Star):
+        elif isinstance(comp_system, Star):
 
             self.system_type = 'single'
             if use_msg==True:
                 self.system.read_phot_coeffs(self.filter_x)
 
-        else: raise Exception(f'Input error: {star_system} must be of class Binary() or Star()')
+        else: raise Exception(f'Input error: {comp_system} must be of class Binary() or Star()')
 
 
     def convert_coords (self, inc, omega):
@@ -63,19 +63,19 @@ class Observer:
         # Initialize the frequencies/amplitudes arrays
 
         if isinstance(t, np.ndarray):
-            star_flux = np.zeros_like(t)
+            comp_flux = np.zeros_like(t)
         elif isinstance(t, list):
             t = np.array(t)
-            star_flux = np.zeros_like(t)
+            comp_flux = np.zeros_like(t)
         else: 
-            star_flux = 0.
+            comp_flux = 0.
 
         # Add contributions from each frequency component
 
         for k in range(len(A)):
-            star_flux += np.real(A[k] * np.exp(-1j*f[k]*2*np.pi*(t - t_peri)))
+            comp_flux += np.real(A[k] * np.exp(-1j*f[k]*2*np.pi*(t - t_peri)))
 
-        return star_flux
+        return comp_flux
 
 
     def eval_flux_binary (self, inc, omega, t, t_peri=0, reflection=True):

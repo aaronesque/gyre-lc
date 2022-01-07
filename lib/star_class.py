@@ -21,7 +21,7 @@ class Star:
     Arguments
     ---------
     inlist_path : str
-    star_number : int
+    comp_number : int
     
     Attributes
     ----------
@@ -31,7 +31,7 @@ class Star:
     
     Methods
     -------
-    +read_mesa_params(star_model_path) : dict
+    +read_mesa_params(comp_model_path) : dict
     +read_phot_coeffs_h5(filter_x, phot_file) : dict
     +read_phot_coeffs_msg(filter_x) : dict
     +read_phot_coeffs(filter_x, phot_file) : dict
@@ -44,35 +44,35 @@ class Star:
     +eval_fourier(filter_x, inc, omega, bol) : [array, array]
     """
     
-    def __init__ (self, inlist_path, star_number=1):
+    def __init__ (self, inlist_path, comp_number=1):
         
         # should check if 'inlist', this just checks 'str'
         
         if isinstance(inlist_path, str):
             self.inlist_path = inlist_path
-            self.inlist = nml.read(inlist_path)[f'star_{star_number}']
+            self.inlist = nml.read(inlist_path)[f'comp_{comp_number}']
         else: raise Exception('Inlist file error')
         
-        if self.inlist['star_model_type']=='MESA':
+        if self.inlist['comp_model_type']=='MESA':
             
-            self.params = self.read_mesa_params(self.inlist['star_model_path'])
+            self.params = self.read_mesa_params(self.inlist['comp_model_path'])
             self.resp_coeffs = rc.resp_coeffs(self.inlist['tide_model_path']) 
             self.phot_coeffs = {}
         
-        elif self.inlist['star_model_type']=='PT_MASS':
+        elif self.inlist['comp_model_type']=='PT_MASS':
             
             self.params = self.read_pt_mass_params(self.inlist)
             self.resp_coeffs = rc.resp_coeffs('') #self.make_pt_mass_response()
             self.phot_coeffs = {}
             
-        else: raise Exception("Invalid star_model_type must be 'MESA' or 'PT_MASS'.")
+        else: raise Exception("Invalid comp_model_type must be 'MESA' or 'PT_MASS'.")
         
     
 
-    def read_pt_mass_params(self, star_inlist):
+    def read_pt_mass_params(self, comp_inlist):
         
-        m = star_inlist['mass']
-        m_units = star_inlist['mass_units']
+        m = comp_inlist['mass']
+        m_units = comp_inlist['mass_units']
          
         M_sol = 1.989e33
         
@@ -98,9 +98,9 @@ class Star:
 
 
 
-    def read_mesa_params(self, star_model_path, units='SOLAR'):
+    def read_mesa_params(self, comp_model_path, units='SOLAR'):
         
-        data = ascii.read(star_model_path, data_start=0, data_end=1)
+        data = ascii.read(comp_model_path, data_start=0, data_end=1)
         
         # cgs constants
         
@@ -215,13 +215,13 @@ class Star:
     
     def read_phot_coeffs(self, filter_x, phot_file=None):
         
-        if self.inlist['star_model_type']=='MESA':
+        if self.inlist['comp_model_type']=='MESA':
             if phot_file==None:
                 self.phot_coeffs.update( self.read_phot_coeffs_msg(filter_x) )
             else:
                 self.phot_coeffs.update( self.read_phot_coeffs_h5(filter_x, phot_file) )
                 
-        elif self.inlist['star_model_type']=='PT_MASS':
+        elif self.inlist['comp_model_type']=='PT_MASS':
             self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(filter_x) ) 
             
         return
@@ -289,7 +289,7 @@ class Star:
 
     def eval_fourier (self, filter_x, theta, phi):
         
-        if self.inlist['star_model_type']=='PT_MASS':
+        if self.inlist['comp_model_type']=='PT_MASS':
             f, A = np.array([0]), np.array([0])
         else:
             resp_coeffs = self.resp_coeffs

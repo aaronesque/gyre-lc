@@ -29,9 +29,9 @@ class Irradiation:
         return Z_lm
 
 
-    def find_disk_intg_factor (self, star_number, filter_x, l):
+    def find_disk_intg_factor (self, comp_number, filter_x, l):
 
-        b_l = self.component[star_number].disk_intg_factor(filter_x, l)
+        b_l = self.component[comp_number].disk_intg_factor(filter_x, l)
 
         return b_l
 
@@ -78,34 +78,34 @@ class Irradiation:
         return D
 
 
-    def setup_irrad (self, star_number):
+    def setup_irrad (self, comp_number):
 
-        if int(star_number)==1:
-            star_neighbor = 2
-        elif int(star_number)==2:
-            star_neighbor = 1
+        if int(comp_number)==1:
+            comp_neighbor = 2
+        elif int(comp_number)==2:
+            comp_neighbor = 1
         else:
-            raise Exception('Star unspecified')
+            raise Exception('Component unspecified')
 
-        phot_coeffs = self.component[star_number].phot_coeffs
-        resp_data = self.component[star_number].resp_coeffs.data
+        phot_coeffs = self.component[comp_number].phot_coeffs
+        resp_data = self.component[comp_number].resp_coeffs.data
 
-        L1 = self.component[star_number].params['L']
-        R1 = self.component[star_number].params['R']
-        L2 = self.component[star_neighbor].params['L']
+        L1 = self.component[comp_number].params['L']
+        R1 = self.component[comp_number].params['R']
+        L2 = self.component[comp_neighbor].params['L']
 
         return phot_coeffs, resp_data, L1, R1, L2
 
 
-    def find_irrad (self, star_number, filter_x, theta, phi, t, t_peri=0):
+    def find_irrad (self, comp_number, filter_x, theta, phi, t, t_peri=0):
 
-        if self.component[star_number].inlist['star_model_type']=='PT_MASS':
+        if self.component[comp_number].inlist['comp_model_type']=='PT_MASS':
             return t*0
         else: None
 
         # Set up for sum
 
-        phot_coeffs, resp_data, L1, R1, L2 = self.setup_irrad(star_number)
+        phot_coeffs, resp_data, L1, R1, L2 = self.setup_irrad(comp_number)
 
         Dt = self.find_bin_sep(t, t_peri)
 
@@ -130,7 +130,7 @@ class Irradiation:
 
                 Zt_lm = Z_lm*Y_lm*np.exp(-1j*m*ft) # Replace Z_lm*Y_lm w amplitude, ft*m w frequency?
 
-                b_l = self.find_disk_intg_factor(star_number, filter_x, l)
+                b_l = self.find_disk_intg_factor(comp_number, filter_x, l)
 
                 rel_dJ += b_l*Zt_lm.real*(L2/L1)*(R1/Dt)**2
 

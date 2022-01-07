@@ -1,17 +1,15 @@
 &star_1
-	star_model_path = 'lc-data/iori-Aa.mesa'
 	star_model_type = 'MESA'
+	star_model_path = 'lc-data/iori-Aa.mesa'
 
 	tide_model_path = 'lc-data/response.Aa.h5'
-	tide_model_type = 'GYRE'
 /
 
 &star_2
-	star_model_path = 'lc-data/iori-Ab.mesa'
 	star_model_type = 'MESA'
+	star_model_path = 'lc-data/iori-Ab.mesa'
 
 	tide_model_path = 'lc-data/response.Ab.h5'
-	tide_model_type = 'GYRE'
 /
 
 &orbit
