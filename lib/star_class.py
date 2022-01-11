@@ -71,17 +71,25 @@ class Star:
 
     def read_pt_mass_params(self, comp_inlist):
         
-        m = comp_inlist['mass']
-        m_units = comp_inlist['mass_units']
-         
         M_sol = 1.989e33
+        L_sol = 3.839e33
         
-        if m_units=='CGS':
-            m = m/M_sol
-            
+        m = comp_inlist['mass']
+       
+        if 'lum' in list(comp_inlist.keys()):  
+            l = comp_inlist['lum']
+        else: l = 0
+        
+        # convert to solar units if input is CGS
+
+        if 'mass_units' in list(comp_inlist.keys()):
+            if comp_inlist['mass_units']=='CGS':  m = m/M_sol
+        if 'lum_units' in list(comp_inlist.keys()):
+            if comp_inlist['lum_units']=='CGS':  l = l/L_sol
+
         return {'M': m, 
                 'R': 0,
-                'L': 0,
+                'L': l,
                 'Teff': 0,
                 'logg': 0}
            
@@ -98,7 +106,7 @@ class Star:
 
 
 
-    def read_mesa_params(self, comp_model_path, units='SOLAR'):
+    def read_mesa_params(self, comp_model_path):
         
         data = ascii.read(comp_model_path, data_start=0, data_end=1)
         
@@ -124,12 +132,11 @@ class Star:
         
         logg = np.log10(g_surf)
         
-        # convert to solar units
+        # convert to solar units, assuming MESA output in CGS
         
-        if units=='SOLAR':
-            m = m/M_sol
-            r = r/R_sol
-            l = l/L_sol
+        m = m/M_sol
+        r = r/R_sol
+        l = l/L_sol
             
         return {'M': m,
                 'R': r,
@@ -223,7 +230,9 @@ class Star:
                 
         elif self.inlist['comp_model_type']=='PT_MASS':
             self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(filter_x) ) 
-            
+        
+        else: raise Exception(f"Invalid comp_model_type must be 'MESA' or 'PT_MASS'.")
+
         return
     
     
@@ -283,7 +292,7 @@ class Star:
                 kappa = 0.
         else:
             kappa = 1.
-            
+        print(theta, phi, Y_lm)
         return 2*kappa*(dR_lmk*R_xl + dT_lmk*T_xl + dG_lmk*G_xl)*Y_lm
     
 
@@ -306,7 +315,6 @@ class Star:
             for l in np.arange(2, resp_coeffs.data['l_max']+1).astype(int):
                 for m in np.arange(-l, l+1).astype(int):
                     for k in np.arange(0, resp_coeffs.data['k_max']+1).astype(int):
-        
                         # Add the Fourier contribution * spherical harmonic
             
                         A[k] += self.eval_fourier_moment(filter_x, theta, phi, l,m,k)

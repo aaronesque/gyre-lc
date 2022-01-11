@@ -1,13 +1,13 @@
-&star_1
-	star_model_type = 'MESA'
-	star_model_path = 'lc-data/iori-Aa.mesa'
+&comp_1
+	comp_model_type = 'MESA'
+	comp_model_path = 'lc-data/iori-Aa.mesa'
 
 	tide_model_path = 'lc-data/response.Aa.h5'
 /
 
-&star_2
-	star_model_type = 'MESA'
-	star_model_path = 'lc-data/iori-Ab.mesa'
+&comp_2
+	comp_model_type = 'MESA'
+	comp_model_path = 'lc-data/iori-Ab.mesa'
 
 	tide_model_path = 'lc-data/response.Ab.h5'
 /

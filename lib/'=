@@ -49,8 +49,8 @@ class Observer:
 
     def convert_coords (self, inc, omega):
 
-        theta = inc/180. * np.pi
-        phi = (90.-omega)/180. * np.pi
+        theta = inc/180 * np.pi
+        phi = (90-omega)/180 * np.pi
 
         return theta, phi
 
@@ -84,13 +84,13 @@ class Observer:
         resp_1 = self.eval_flux_single(self.system.component[1], inc, omega, t, t_peri)
         L1 = self.system.component[1].params['L']
 
-        resp_2 = self.eval_flux_single(self.system.component[2], inc, omega+180., t, t_peri)
+        resp_2 = self.eval_flux_single(self.system.component[2], inc, omega+180, t, t_peri)
         L2 = self.system.component[2].params['L']
 
         if reflection==True:
 
             refl_1 = self.system.find_irrad(1, self.filter_x, inc, omega, t, t_peri)
-            refl_2 = self.system.find_irrad(2, self.filter_x, inc, omega+180., t, t_peri)
+            refl_2 = self.system.find_irrad(2, self.filter_x, inc, omega+180, t, t_peri)
 
             flux = L1*(refl_1 + resp_1) + L2*(refl_2 + resp_2)
 

@@ -161,19 +161,20 @@ class Binary(Irradiation):
         
         params = {}
         
-        #placeholder unit routine
+        #very simple unit routine
+
+        omega_orb_units = 1 #default is 'CYC_PER_DAY'
+
+        if 'omega_orb_units' in list(orbit_inlist.keys()):
+            if orbit_inlist['omega_orb_units']!='CYC_PER_DAY':
+                raise Exception(f"Units {orbit_inlist['omega_orb_units']} unsupported")
         
-        if orbit_inlist['omega_orb_units']=='CYC_PER_DAY':
-            omega_orb_units = 1 
-        else: omega_orb_units = 1
-        
-        if orbit_inlist['a_units']=='CM':
-            a_units = 6.957e10 #cm per r_sol
-        else: a_units = 1
+        a_units = 1 #default is 'SOLAR'
             
-        # eventually, we want to get these from resp_data
-        # resp_data currently does not contain this output tho
-        
+        if 'a_units' in list(orbit_inlist.keys()):
+            if orbit_inlist['a_units']=='CGS':
+                a_units = 6.957e10 #cm per r_sol 
+            
         params['a'] = orbit_inlist['a']*a_units
         params['e'] = orbit_inlist['e']
         params['Omega_orb'] = orbit_inlist['omega_orb']*omega_orb_units
@@ -187,5 +188,5 @@ class Binary(Irradiation):
         
         f_1, A_1 = self.component[1].eval_fourier(filter_x, inc, omega)
         f_2, A_2 = self.component[2].eval_fourier(filter_x, inc, omega+180)
-    
+        
         return f_1/omega_orb, np.abs(A_1) + np.abs(A_2)

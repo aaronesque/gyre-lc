@@ -13,33 +13,69 @@ Namelist Input Files
 
 GYRE-lc reads parameters from an *inlist*, which is an input file that defines a number of "namelist" groups. Inlists are an input format designed for Fortran, and GYRE-lc is presently written entirely in Python. However, the Fortran-heavy workflow of GYRE and MESA makes inlists a naturally convenient way for users to categorize groups of inputs for GYRE-lc.
 
-===================
-&star_1 and &star_2
-===================
+========
+&comp_1
+========
 	
-``bc_model_type``
+``comp_model_type``
   Type of binary component model to use:
   
   - ``'MESA'`` : Evolutionary model read from a MESA GYRE-format text file
   - ``'PT_MASS'`` : Point mass model
 
-``bc_model_path``
-  Path to binary component model file (when ``bc_model_type`` = ``'MESA'``)
+``comp_model_path``
+  Path to binary component model file (when ``comp_model_type`` = ``'MESA'``)
 
 ``tide_model_path``
-  Path to tide model file (when ``bc_model_type`` = ``'MESA'``). Note that no "tide_model_type" parameter exists currently-- GYRE-lc remains exclusively compatible with GYRE-format pulsation models
+  Path to tide model file (when ``comp_model_type`` = ``'MESA'``). Note that no "tide_model_type" parameter exists currently-- GYRE-lc remains exclusively compatible with GYRE-format pulsation models
 
 ``mass``
-  This component's mass (when ``bc_model_type`` = ``'PT_MASS'``).
+  This component's mass (when ``comp_model_type`` = ``'PT_MASS'``)
 
 ``mass_units``
-  The 
+  The units of the component's mass:
   
+  - ``'SOLAR'`` : solar mass units, :math:`{M_\odot}` (default)
+  - ``'CGS'`` : grams
+ 
+``luminosity``
+  This component's luminosity (when ``comp_model_type`` = ``'PT_MASS'``). If left blank, a component of zero luminosity and zero "reflection" is assumed
+
+``luminosity_units``
+  The units of the component's luminosity:
+
+  - ``'SOLAR'`` : solar luminosity units, :math:`{L_\odot}` (default)
+  - ``'CGS'`` : ergs per second
+
+========
+&comp_2
+========
+
+Same parameters available as ``&comp_1``, but for the second component of the binary.
 
 =======
 &orbit
 =======
 
+``a``
+  The binary separation distance; the length of the axis connecting the centers of mass of both components
+
+``a_units``
+  The units of the binary separation:
+  
+  - ``'SOLAR'`` : solar radii, :math:`{R_\odot}` (default)
+  - ``'CGS'`` : centimeters
+	
+``e``
+  The binary's orbital eccentricity (:math:`0<e<1`)
+ 
+``omega_orb``
+  The binary's orbital velocity
+
+``omega_orb_units``
+  The units of the orbital velocity
+
+  - ``'CYC_PER_DAY'`` : cycles per day (default)
 
 
 ============
