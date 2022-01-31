@@ -1,3 +1,5 @@
+.. _preliminaries:
+
 .. gyre-lc documentation master file, created by
    sphinx-quickstart on Tue Dec 14 13:12:55 2021.
    You can adapt this file completely to your liking, but it should at least

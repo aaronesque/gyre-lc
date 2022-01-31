@@ -1,3 +1,5 @@
+.. _python-interface:
+
 .. gyre-lc documentation master file, created by
 
 #############################

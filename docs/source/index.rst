@@ -28,7 +28,7 @@ GYRE-lc
    :maxdepth: 2
 
    ref-guide/installation.rst
+   ref-guide/how-gyre-lc-works.rst
    ref-guide/inputs.rst
-   ref-guide/output.rst
-   ref-guide/tidal-theory.rst
+   ref-guide/python-interface.rst
 
