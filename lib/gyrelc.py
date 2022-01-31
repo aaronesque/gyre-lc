@@ -68,7 +68,7 @@ class Observer:
         elif isinstance(t, list):
             t = np.array(t)
             star_flux = np.zeros_like(t)
-        else: #How to isinstance any mathable t? float, int, etc?
+        else: 
             star_flux = 0.
 
         # Add contributions from each frequency component

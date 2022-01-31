@@ -32,8 +32,11 @@ class Irradiation:
     def find_disk_intg_factor (self, star_number, filter_x, l):
         """
         """
-        b_l = self.component[star_number].disk_intg_factor(filter_x, l)
-        return b_l
+        if self.component[star_number].luminosity==0.:
+            return 0.
+        else:
+            b_l = self.component[star_number].disk_intg_factor(filter_x, l)
+            return b_l
         
     
     def find_mean_anom (self, t, t_peri=0):
@@ -101,6 +104,11 @@ class Irradiation:
         # Set up for sum
         
         phot_coeffs, resp_data, L1, R1, L2 = self.setup_irrad(star_number)
+       
+        if L1==0.:
+            return np.zeros_like(t)
+        else:
+            pass
         
         Dt = self.find_bin_sep(t, t_peri)
         

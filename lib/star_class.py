@@ -94,7 +94,7 @@ class Star:
 
     def read_pt_mass_params(self):
         """Checks for user-specified point mass parameters.
-        Converts to solar units if input is CGS.
+        Does unit conversions as needed.
         """
         # cgs constants
         M_sol = 1.989e33
@@ -102,34 +102,38 @@ class Star:
         R_sol = 6.957e10
         G = 6.674079999999999e-08
         sigma_sb = 5.6703669999999995e-05
-
-        # assumed conversion factors
-        self.__mass_units = M_sol # 
-        self.__luminosity_units =  L_sol #
-        self.__radius_units = R_sol
+        
+        if self.__dict__.get('mass'):
+            pass
+        else: self.__dict__['mass'] = 0.
+        if self.__dict__.get('luminosity'):
+            pass
+        else: self.__dict__['luminosity'] = 0.
+        if self.__dict__.get('radius'):
+            pass
+        else: self.__dict__['radius'] = 0.
 
         if self.__dict__.get('units'):
-            if self.__dict__['units']=='CGS':
-                if self.__dict__.get('mass'):
-                    self.mass = self.mass/self.__mass_units
-                else: self.mass = 0.
-                if self.__dict__.get('luminosity'):
-                    self.luminosity = self.luminosity/self.__luminosity_units
-                else: self.luminosity = 0.
-                if self.__dict__.get('radius'):
-                    self.radius = self.radius/self.__radius_units
-                else: self.radius = 0.
+            if upper(self.__dict__['units'])=='SOLAR':
+                self.__dict__['__mass_units'] = M_sol
+                self.__dict__['__luminosity_units'] = L_sol
+                self.__dict__['__radius_units'] = R_sol
+            elif upper(self.__dict__['units'])=='CGS':
+                self.__dict__['__mass_units'] = 1
+                self.__dict__['__luminosity_units'] = 1
+                self.__dict__['__radius_units'] = 1
             else:
                 raise Exception(f'user-specified `units` unrecognized')
-        else:
-            if self.__dict__.get('mass'): pass
-            else: self.mass = 0.
-            if self.__dict__.get('luminosity'): pass
-            else: self.luminosity = 0.
-            if self.__dict__.get('radius'): pass
-            else: self.radius = 0.
-       
-        """
+        else: # assume user assumed 'solar'
+            self.__dict__['units'] = 'SOLAR'
+            self.__dict__['__mass_units'] = M_sol
+            self.__dict__['__luminosity_units'] = L_sol
+            self.__dict__['__radius_units'] = R_sol
+
+        self.__dict__['__mass'] = self.__dict__['mass']*self.__dict__['__mass_units']
+        self.__dict__['__luminosity'] = self.__dict__['luminosity']*self.__dict__['__luminosity_units']
+        self.__dict__['__radius'] = self.__dict__['radius']*self.__dict__['__radius_units']
+        
         # calculate Teff [K], logg [dex]
         if self.__dict__.get('Teff'): 
             pass
@@ -137,22 +141,20 @@ class Star:
             try:
                 self.Teff = (self.luminosity/(sigma_sb * 4*np.pi*self.radius**2))**0.25
             except ZeroDivisionError:
-                print(f'invalid radius, r={self.radius} <= 0. Teff set to 0.')
                 self.Teff = 0
-
+                print(f'Invalid radius, r={self.radius} <= 0. Teff set to 0.')
+        
         if self.__dict__.get('logg'): 
             pass
         else:
             try:
                 g_surf = G*self.mass/(self.radius**2)
             except ZeroDivisionError:
-                print(
-            self.logg = np.log10(g_surf)
-        else:
-            raise Exception(f'invalid radius, r={self.radius} <= 0. logg set to 0.')
-            except Exception:
                 self.logg = 0
-        """
+                print(f'Invalid radius, r={self.radius} <= 0. log(g) set to 0.')
+            else:
+                self.logg = np.log10(g_surf)
+        
         return
 
     def make_pt_mass_response(self):
@@ -274,6 +276,9 @@ class Star:
     def read_phot_coeffs(self, filter_x, synspec_model=None):
         """
         """
+        if self.luminosity==0.:
+            self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(filter_x) )
+
         if self.__dict__.get('mesa_model'):
             if synspec_model==None:
                 self.phot_coeffs.update( self.read_phot_coeffs_msg(filter_x) )
@@ -282,6 +287,7 @@ class Star:
         elif self.__dict__.get('point_mass_model'):
             self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(filter_x) )
         else: raise Exception(f"Invalid component model type must be 'mesa_model' or 'point_mass_model'.")
+        
         return
 
 
