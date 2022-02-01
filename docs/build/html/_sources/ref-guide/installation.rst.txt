@@ -1,3 +1,5 @@
+.. _installation:
+
 .. gyre-lc documentation master file, created by
 
 ===================================

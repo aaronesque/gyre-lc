@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tidal Theory &mdash; gyre-lc 0.5 documentation</title>
+  <title>How GYRE-lc Works &mdash; gyre-lc 0.5 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -15,10 +15,12 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Output" href="output.html" /> 
+    <link rel="next" title="Inputs" href="inputs.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,9 +50,9 @@
 <p class="caption" role="heading"><span class="caption-text">Reference Guide</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How GYRE-lc Works</a></li>
 <li class="toctree-l1"><a class="reference internal" href="inputs.html">Inputs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="output.html">Output</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Tidal Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python-interface.html">Python Interface</a></li>
 </ul>
 
         </div>
@@ -67,9 +69,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Tidal Theory</li>
+      <li>How GYRE-lc Works</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/ref-guide/tidal-theory.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/ref-guide/how-gyre-lc-works.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -77,9 +79,18 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="tidal-theory">
-<h1>Tidal Theory<a class="headerlink" href="#tidal-theory" title="Permalink to this headline"></a></h1>
-<p>This section provides an overview how GYRE-lc works as well as the underpinning tidal theory.</p>
+  <span class="target" id="how-gyre-lc-works"></span><section id="id1">
+<h1>How GYRE-lc Works<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h1>
+<blockquote>
+<div><p>Pablo <em>et al.</em><a class="footnote-reference brackets" href="#footcite-2017-pablo" id="id2">1</a>.</p>
+</div></blockquote>
+<p>GYRE-tides models forced oscillations of a star in a binary due to its companion’s gravitational field Sun <em>et al.</em><a class="footnote-reference brackets" href="#footcite-2021-sun" id="id3">2</a>. As input for one such calculation, GYRE-tides takes a stellar model produced with <a class="reference external" href="mesa.sourceforge.net">MESA</a> and applies a forcing potential calculated via user-specified binary parameters (see <cite>inputs</cite>).</p>
+<p>The forcing potential <span class="math notranslate nohighlight">\({\Phi_S}\)</span> can be written as an expansion of the gravitational potential at a point on the star’s surface into spherical harmonics:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\Phi_S (\vec{r}; t) &amp;= \frac{-q G M}{|\vec{r} - \vec{r}_S|} \\
+&amp;= \sum^\infty_{l=0} \sum^l_{m=-l} \sum^\infty_{k=-\infty} \Phi_{r;l,m,k}(r) \; \Yml(\theta, \phi) \; e^{-i k \Omega_\textrm{orb} t}\end{split}\]</div>
+<p>For wide binaries, this assertion easily holds as long as the primary’s radius $R$ is much smaller than the semimajor axis $a$. For some highly eccentric binaries on the other hand, such as eccentric ellipsoidal variables, a small mass ratio $q=M_2/M$ between the secondary and primary stars might be a good enough diagnostic.  We will probe the edge of where our ‘weak tides’ approach breaks down in a future work.</p>
+<p>The photospheric data required to compute the specific intensities is provided by the spectral synthesis code for stars, MSG. A brief overview of its limitations and functionality follows.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This project is under active development.</p>
@@ -90,7 +101,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="output.html" class="btn btn-neutral float-left" title="Output" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="inputs.html" class="btn btn-neutral float-right" title="Inputs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,3 +1,5 @@
+.. _inputs:
+
 .. gyre-lc documentation master file, created by
    sphinx-quickstart on Tue Dec 14 13:12:55 2021.
    You can adapt this file completely to your liking, but it should at least
@@ -16,7 +18,9 @@ GYRE-lc reads parameters from an *inlist*, which is an input file that defines a
 ========
 &comp_1
 ========
-	
+
+The ``&comp_1`` namelist includes all parameters specifically relevant to the primary component of the binary. GYRE-lc does not currently support rapid rotation. 
+
 ``comp_model_type``
   Type of binary component model to use:
   
@@ -38,10 +42,10 @@ GYRE-lc reads parameters from an *inlist*, which is an input file that defines a
   - ``'SOLAR'`` : solar mass units, :math:`{M_\odot}` (default)
   - ``'CGS'`` : grams
  
-``luminosity``
+``lum``
   This component's luminosity (when ``comp_model_type`` = ``'PT_MASS'``). If left blank, a component of zero luminosity and zero "reflection" is assumed
 
-``luminosity_units``
+``lum_units``
   The units of the component's luminosity:
 
   - ``'SOLAR'`` : solar luminosity units, :math:`{L_\odot}` (default)
@@ -57,6 +61,8 @@ Same parameters available as ``&comp_1``, but for the second component of the bi
 &orbit
 =======
 
+The ``&orbit`` namelist includes the parameters that specify the orbital configuration of the binary. 
+
 ``a``
   The binary separation distance; the length of the axis connecting the centers of mass of both components
 
@@ -67,7 +73,7 @@ Same parameters available as ``&comp_1``, but for the second component of the bi
   - ``'CGS'`` : centimeters
 	
 ``e``
-  The binary's orbital eccentricity (:math:`0<e<1`)
+  The binary's orbital eccentricity (:math:`0 < e \leq 1`)
  
 ``omega_orb``
   The binary's orbital velocity
@@ -77,13 +83,10 @@ Same parameters available as ``&comp_1``, but for the second component of the bi
 
   - ``'CYC_PER_DAY'`` : cycles per day (default)
 
-
 ============
 &observer
 ============
 
 .. note:: This project is under active development.
-
-
 
 

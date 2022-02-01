@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Output" href="output.html" />
-    <link rel="prev" title="Installation" href="installation.html" /> 
+    <link rel="next" title="Python Interface" href="python-interface.html" />
+    <link rel="prev" title="How GYRE-lc Works" href="how-gyre-lc-works.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,6 +50,7 @@
 <p class="caption" role="heading"><span class="caption-text">Reference Guide</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-gyre-lc-works.html">How GYRE-lc Works</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Inputs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#namelist-input-files">Namelist Input Files</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#comp-1">&amp;comp_1</a></li>
@@ -60,8 +61,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="output.html">Output</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tidal-theory.html">Tidal Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python-interface.html">Python Interface</a></li>
 </ul>
 
         </div>
@@ -88,13 +88,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="inputs">
-<h1>Inputs<a class="headerlink" href="#inputs" title="Permalink to this headline"></a></h1>
+  <span class="target" id="inputs"></span><section id="id1">
+<h1>Inputs<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h1>
 <section id="namelist-input-files">
 <h2>Namelist Input Files<a class="headerlink" href="#namelist-input-files" title="Permalink to this headline"></a></h2>
 <p>GYRE-lc reads parameters from an <em>inlist</em>, which is an input file that defines a number of “namelist” groups. Inlists are an input format designed for Fortran, and GYRE-lc is presently written entirely in Python. However, the Fortran-heavy workflow of GYRE and MESA makes inlists a naturally convenient way for users to categorize groups of inputs for GYRE-lc.</p>
 <section id="comp-1">
 <h3>&amp;comp_1<a class="headerlink" href="#comp-1" title="Permalink to this headline"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">&amp;comp_1</span></code> namelist includes all parameters specifically relevant to the primary component of the binary. GYRE-lc does not currently support rapid rotation.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">comp_model_type</span></code></dt><dd><p>Type of binary component model to use:</p>
 <ul class="simple">
@@ -114,9 +115,9 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">'CGS'</span></code> : grams</p></li>
 </ul>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">luminosity</span></code></dt><dd><p>This component’s luminosity (when <code class="docutils literal notranslate"><span class="pre">comp_model_type</span></code> = <code class="docutils literal notranslate"><span class="pre">'PT_MASS'</span></code>). If left blank, a component of zero luminosity and zero “reflection” is assumed</p>
+<dt><code class="docutils literal notranslate"><span class="pre">lum</span></code></dt><dd><p>This component’s luminosity (when <code class="docutils literal notranslate"><span class="pre">comp_model_type</span></code> = <code class="docutils literal notranslate"><span class="pre">'PT_MASS'</span></code>). If left blank, a component of zero luminosity and zero “reflection” is assumed</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">luminosity_units</span></code></dt><dd><p>The units of the component’s luminosity:</p>
+<dt><code class="docutils literal notranslate"><span class="pre">lum_units</span></code></dt><dd><p>The units of the component’s luminosity:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">'SOLAR'</span></code> : solar luminosity units, <span class="math notranslate nohighlight">\({L_\odot}\)</span> (default)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">'CGS'</span></code> : ergs per second</p></li>
@@ -130,6 +131,7 @@
 </section>
 <section id="orbit">
 <h3>&amp;orbit<a class="headerlink" href="#orbit" title="Permalink to this headline"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">&amp;orbit</span></code> namelist includes the parameters that specify the orbital configuration of the binary.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">a</span></code></dt><dd><p>The binary separation distance; the length of the axis connecting the centers of mass of both components</p>
 </dd>
@@ -139,7 +141,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">'CGS'</span></code> : centimeters</p></li>
 </ul>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">e</span></code></dt><dd><p>The binary’s orbital eccentricity (<span class="math notranslate nohighlight">\(0&lt;e&lt;1\)</span>)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">e</span></code></dt><dd><p>The binary’s orbital eccentricity (<span class="math notranslate nohighlight">\(0 &lt; e \leq 1\)</span>)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">omega_orb</span></code></dt><dd><p>The binary’s orbital velocity</p>
 </dd>
@@ -164,8 +166,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="output.html" class="btn btn-neutral float-right" title="Output" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="how-gyre-lc-works.html" class="btn btn-neutral float-left" title="How GYRE-lc Works" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="python-interface.html" class="btn btn-neutral float-right" title="Python Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
