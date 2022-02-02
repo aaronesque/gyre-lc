@@ -6,7 +6,7 @@
 How GYRE-lc Works
 #############################
 
-Go :footcite:t:`2017:Pablo`. 
+.. Go :footcite:t:`2017:Pablo`. 
 
 .. GYRE-tides models forced oscillations of a star in a binary due to its companion's gravitational field :footcite:t:`2021:Sun`. As input for one such calculation, GYRE-tides takes a stellar model produced with `MESA <mesa.sourceforge.net>`_ and applies a forcing potential calculated via user-specified binary parameters (see `inputs`).
 
@@ -72,4 +72,4 @@ The photospheric data required to compute the specific intensities is provided b
 
 .. note:: This project is under active development.
 
-.. footbibliography::
+.. .. footbibliography::
