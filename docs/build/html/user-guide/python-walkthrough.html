@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Python Walkthrough &mdash; gyre-lc 0.5 documentation</title>
+  <title>Python Walkthrough &mdash; GYRE-lc master documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -28,10 +28,10 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> gyre-lc
+            <a href="../index.html" class="icon icon-home"> GYRE-lc
           </a>
               <div class="version">
-                alpha
+                master
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -68,7 +68,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">gyre-lc</a>
+          <a href="../index.html">GYRE-lc</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -101,9 +101,9 @@
 <h3>The iota Orionis Models<a class="headerlink" href="#the-iota-orionis-models" title="Permalink to this headline"></a></h3>
 <p>The GitHub repository includes the model data necessary to create a light curve and test GYRE-lc’s functionality. You will be creating a light curve for the eccentric ellipsoidal variable of <span class="math notranslate nohighlight">\({\iota}\)</span> Orionis, which we’ll refer to as simply <span class="math notranslate nohighlight">\({\iota}\)</span> Ori for brevity. What follows is a list of input files and descriptions thereof.</p>
 <dl class="simple">
-<dt>iOri-Aa.mesa &amp; iOri-Ab.mesa</dt><dd><p>The stellar models for each binary component, <span class="math notranslate nohighlight">\({\iota}\)</span> Ori Aa &amp; Ab, were created with MESA using stellar parameters listed in Pablo <em>et al.</em><a class="footnote-reference brackets" href="#footcite-2017-pablo" id="id2">1</a>. The MESA inlists are included for reproducibility of results.</p>
+<dt>iOri-Aa.mesa &amp; iOri-Ab.mesa</dt><dd><p>The stellar models for each binary component, <span class="math notranslate nohighlight">\({\iota}\)</span> Ori Aa &amp; Ab, were created with MESA using stellar parameters listed in <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2017MNRAS.467.2494P/abstract">Pablo et al. (2017)</a>. The MESA inlists are included for reproducibility of results.</p>
 </dd>
-<dt>iOri-Aa-response.h5 &amp; iOri-Ab-response.h5</dt><dd><p>The tide models and their corresponding GYRE inlists are also included for each component. They are created with GYRE using the parameters listed in Pablo <em>et al.</em><a class="footnote-reference brackets" href="#footcite-2017-pablo" id="id3">1</a>. These contain the amplitudes and frequencies for the first 100 normal modes of a star’s tidally excited oscillations.</p>
+<dt>iOri-Aa-response.h5 &amp; iOri-Ab-response.h5</dt><dd><p>The tide models and their corresponding GYRE inlists are also included for each component. They are created with GYRE using the parameters listed in <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2017MNRAS.467.2494P/abstract">Pablo et al. (2017)</a>. These contain the amplitudes and frequencies for the first 100 normal modes of a star’s tidally excited oscillations.</p>
 </dd>
 <dt>binary_params.in</dt><dd><p>A GYRE-lc inlist specifying the binary parameters and synthetic instrument configuration. The <code class="docutils literal notranslate"><span class="pre">&amp;observer</span></code> namelist is optional when run from a Jupyter notebook.</p>
 </dd>
@@ -183,12 +183,7 @@
 <p class="admonition-title">Note</p>
 <p>This project is under active development.</p>
 </div>
-<p id="id4"><dl class="footnote brackets">
-<dt class="label" id="footcite-2017-pablo"><span class="brackets">1</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id3">2</a>)</span></dt>
-<dd><p>Herbert Pablo, N. D. Richardson, J. Fuller, J. Rowe, A. F. J. Moffat, R. Kuschnig, A. Popowicz, G. Handler, C. Neiner, A. Pigulski, G. A. Wade, W. Weiss, B. Buysschaert, T. Ramiaramanantsoa, A. D. Bratcher, C. J. Gerhartz, J. J. Greco, K. Hardegree-Ullman, L. Lembryk, and W. L. Oswald. The most massive heartbeat: an in-depth analysis of \ensuremath ı Orionis. <em>\mnras </em>, 467(2):2494–2503, May 2017. <a class="reference external" href="https://arxiv.org/abs/1703.02086">arXiv:1703.02086</a>, <a class="reference external" href="https://doi.org/10.1093/mnras/stx207">doi:10.1093/mnras/stx207</a>.</p>
-</dd>
-</dl>
-</p>
+<p class="rubric">Footnotes:</p>
 </section>
 </section>
 

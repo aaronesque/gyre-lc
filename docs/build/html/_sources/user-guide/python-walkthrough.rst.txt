@@ -25,10 +25,10 @@ The GitHub repository includes the model data necessary to create a light curve 
 
 
 iOri-Aa.mesa & iOri-Ab.mesa
-    The stellar models for each binary component, :math:`{\iota}` Ori Aa & Ab, were created with MESA using stellar parameters listed in :footcite:t:`2017:Pablo`. The MESA inlists are included for reproducibility of results.
+    The stellar models for each binary component, :math:`{\iota}` Ori Aa & Ab, were created with MESA using stellar parameters listed in :ads_citet:`Pablo:2017`. The MESA inlists are included for reproducibility of results.
 
 iOri-Aa-response.h5 & iOri-Ab-response.h5
-    The tide models and their corresponding GYRE inlists are also included for each component. They are created with GYRE using the parameters listed in :footcite:t:`2017:Pablo`. These contain the amplitudes and frequencies for the first 100 normal modes of a star's tidally excited oscillations.
+    The tide models and their corresponding GYRE inlists are also included for each component. They are created with GYRE using the parameters listed in :ads_citet:`Pablo:2017`. These contain the amplitudes and frequencies for the first 100 normal modes of a star's tidally excited oscillations.
 
 binary_params.in
     A GYRE-lc inlist specifying the binary parameters and synthetic instrument configuration. The ``&observer`` namelist is optional when run from a Jupyter notebook.
@@ -115,4 +115,4 @@ The legend style and labels are entirely a matter of stylistic choice, but a plo
 
 .. note:: This project is under active development.
 
-.. footbibliography::
+.. rubric:: Footnotes:

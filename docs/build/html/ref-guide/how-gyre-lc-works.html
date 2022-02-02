@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How GYRE-lc Works &mdash; gyre-lc 0.5 documentation</title>
+  <title>How GYRE-lc Works &mdash; GYRE-lc master documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -28,10 +28,10 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> gyre-lc
+            <a href="../index.html" class="icon icon-home"> GYRE-lc
           </a>
               <div class="version">
-                alpha
+                master
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -61,7 +61,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">gyre-lc</a>
+          <a href="../index.html">GYRE-lc</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -81,6 +81,7 @@
              
   <span class="target" id="how-gyre-lc-works"></span><section id="id1">
 <h1>How GYRE-lc Works<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h1>
+<p>GYRE-tides models forced oscillations of a star in a binary due to its companion’s gravitational field <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2021AAS...23743804S/abstract">Sun et al. (2021)</a>. As input for one such calculation, GYRE-tides takes a stellar model produced with <a class="reference external" href="mesa.sourceforge.net">MESA</a> and applies a forcing potential calculated via user-specified binary parameters (see <cite>inputs</cite>).</p>
 <p>The forcing potential <span class="math notranslate nohighlight">\({\Phi_S}\)</span> can be written as an expansion of the gravitational potential at a point on the star’s surface into spherical harmonics:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\Phi_S (\vec{r}; t) &amp;= \frac{-q G M}{|\vec{r} - \vec{r}_S|} \\
@@ -91,6 +92,7 @@
 <p class="admonition-title">Note</p>
 <p>This project is under active development.</p>
 </div>
+<p class="rubric">Footnote</p>
 </section>
 
 
