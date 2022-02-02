@@ -11,11 +11,11 @@ This chapter discusses GYRE-lc installation in detail. If you just want to get u
 Prerequisites
 -----------------------------------
 
-A complete GYRE-lc workflow typically requires the use of additional software to produce the star and pulsation models that go into GYRE-lc as input for light curve synthesis. This includes:
+A complete GYRE-lc workflow typically requires the use of additional software to produce the star and tide models that go into GYRE-lc as input for light curve synthesis. This includes:
 
 - The `MESA Software Development Kit (SDK) <http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk>`_, which provides the compilers and supporting libraries needed to build GYRE-lc.
 - `MESA <mesa.sourceforge.net>`_, which calculates the stellar models compatible with GYRE-lc.
-- `GYRE <https://gyre.readthedocs.io/en/stable/>`_, which calculates the pulsation models compatible with GYRE-lc.
+- `GYRE <https://gyre.readthedocs.io/en/stable/>`_, which calculates the tide models compatible with GYRE-lc.
 - `MSG <http://www.astro.wisc.edu/~townsend/resource/docs/msg/>`_, which rapidly interpolates stellar spectra from a multidimensional grid for GYRE-lc.
 
 GYRE and MSG are currently officially compatible with Linux and MacOS platforms only- Windows at your own risk!

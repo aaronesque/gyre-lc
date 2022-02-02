@@ -30,7 +30,7 @@ Related Links
 
 - The `MESA Software Development Kit (SDK) <http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk>`_, which provides the compilers and supporting libraries needed to build GYRE-lc.
 - `MESA <mesa.sourceforge.net>`_, which calculates the stellar models compatible with GYRE-lc.
-- `GYRE <https://gyre.readthedocs.io/en/stable/>`_, which calculates the pulsation models compatible with GYRE-lc.
+- `GYRE <https://gyre.readthedocs.io/en/stable/>`_, which calculates the oscillation models compatible with GYRE-lc.
 - `MSG <http://www.astro.wisc.edu/~townsend/resource/docs/msg/>`_, which rapidly interpolates stellar spectra from a multidimensional grid for GYRE-lc.
 
 *******************

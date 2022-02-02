@@ -15,8 +15,8 @@ Seting up your inputs
 There are 3 inputs to consider when producing a GYRE-lc light curve:
 
 - 1-2 stellar models, depending on how many stars contribute to the overall light curve
-- 1-2 pulsation models. one per stellar model
-- 1 inlist specifying orbital parametersi, paths to stellar and pulsation models, and other context for the problem
+- 1-2 tide models. one per stellar model
+- 1 inlist specifying orbital parameters, paths to stellar and tide models, and other context for the problem
 
 The iota Orionis Models
 =============================
@@ -28,7 +28,7 @@ iOri-Aa.mesa & iOri-Ab.mesa
     The stellar models for each binary component, :math:`{\iota}` Ori Aa & Ab, were created with MESA using stellar parameters listed in :footcite:t:`2017:Pablo`. The MESA inlists are included for reproducibility of results.
 
 iOri-Aa-response.h5 & iOri-Ab-response.h5
-    The pulsations models and their corresponding GYRE inlists are also included for each component. They are created with GYRE using the parameters listed in :footcite:t:`2017:Pablo`. These contain the amplitudes and frequencies for the first 100 normal modes of a star's tidally excited oscillations.
+    The tide models and their corresponding GYRE inlists are also included for each component. They are created with GYRE using the parameters listed in :footcite:t:`2017:Pablo`. These contain the amplitudes and frequencies for the first 100 normal modes of a star's tidally excited oscillations.
 
 binary_params.in
     A GYRE-lc inlist specifying the binary parameters and synthetic instrument configuration. The ``&observer`` namelist is optional when run from a Jupyter notebook.

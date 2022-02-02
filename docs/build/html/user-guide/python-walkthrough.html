@@ -94,8 +94,8 @@
 <p>There are 3 inputs to consider when producing a GYRE-lc light curve:</p>
 <ul class="simple">
 <li><p>1-2 stellar models, depending on how many stars contribute to the overall light curve</p></li>
-<li><p>1-2 pulsation models. one per stellar model</p></li>
-<li><p>1 inlist specifying orbital parametersi, paths to stellar and pulsation models, and other context for the problem</p></li>
+<li><p>1-2 tide models. one per stellar model</p></li>
+<li><p>1 inlist specifying orbital parameters, paths to stellar and tide models, and other context for the problem</p></li>
 </ul>
 <section id="the-iota-orionis-models">
 <h3>The iota Orionis Models<a class="headerlink" href="#the-iota-orionis-models" title="Permalink to this headline"></a></h3>
@@ -103,7 +103,7 @@
 <dl class="simple">
 <dt>iOri-Aa.mesa &amp; iOri-Ab.mesa</dt><dd><p>The stellar models for each binary component, <span class="math notranslate nohighlight">\({\iota}\)</span> Ori Aa &amp; Ab, were created with MESA using stellar parameters listed in Pablo <em>et al.</em><a class="footnote-reference brackets" href="#footcite-2017-pablo" id="id2">1</a>. The MESA inlists are included for reproducibility of results.</p>
 </dd>
-<dt>iOri-Aa-response.h5 &amp; iOri-Ab-response.h5</dt><dd><p>The pulsations models and their corresponding GYRE inlists are also included for each component. They are created with GYRE using the parameters listed in Pablo <em>et al.</em><a class="footnote-reference brackets" href="#footcite-2017-pablo" id="id3">1</a>. These contain the amplitudes and frequencies for the first 100 normal modes of a star’s tidally excited oscillations.</p>
+<dt>iOri-Aa-response.h5 &amp; iOri-Ab-response.h5</dt><dd><p>The tide models and their corresponding GYRE inlists are also included for each component. They are created with GYRE using the parameters listed in Pablo <em>et al.</em><a class="footnote-reference brackets" href="#footcite-2017-pablo" id="id3">1</a>. These contain the amplitudes and frequencies for the first 100 normal modes of a star’s tidally excited oscillations.</p>
 </dd>
 <dt>binary_params.in</dt><dd><p>A GYRE-lc inlist specifying the binary parameters and synthetic instrument configuration. The <code class="docutils literal notranslate"><span class="pre">&amp;observer</span></code> namelist is optional when run from a Jupyter notebook.</p>
 </dd>

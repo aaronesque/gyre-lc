@@ -31,7 +31,7 @@ The ``&comp_1`` namelist includes all parameters specifically relevant to the pr
   Path to binary component model file (when ``comp_model_type`` = ``'MESA'``)
 
 ``tide_model_path``
-  Path to tide model file (when ``comp_model_type`` = ``'MESA'``). Note that no "tide_model_type" parameter exists currently-- GYRE-lc remains exclusively compatible with GYRE-format pulsation models
+  Path to tide model file (when ``comp_model_type`` = ``'MESA'``). Note that no "tide_model_type" parameter exists currently-- GYRE-lc remains exclusively compatible with GYRE-format tide models
 
 ``mass``
   This component's mass (when ``comp_model_type`` = ``'PT_MASS'``)

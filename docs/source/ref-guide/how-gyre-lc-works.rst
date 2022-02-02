@@ -20,7 +20,7 @@ The forcing potential :math:`{\Phi_S}` can be written as an expansion of the gra
     &= \sum^\infty_{l=0} \sum^l_{m=-l} \sum^\infty_{k=-\infty} \Phi_{r;l,m,k}(r) \; \Yml(\theta, \phi) \; e^{-i k \Omega_\textrm{orb} t}
 
 
-.. Here, :math:`{\Phi_{r;l,m,k}}` is the radial component of the forcing potential amplitude, and :math:`{\Y^m_l}` is the spherical harmonic of order $m$ and degree $l$.  The exponential term is the $k$-th Fourier harmonic. Restricting ourselves to small amplitude pulsations allows us to write the response perturbation as a superposition of many different partial tides:
+.. Here, :math:`{\Phi_{r;l,m,k}}` is the radial component of the forcing potential amplitude, and :math:`{\Y^m_l}` is the spherical harmonic of order $m$ and degree $l$.  The exponential term is the $k$-th Fourier harmonic. Restricting ourselves to small amplitude tides allows us to write the response perturbation as a superposition of many different partial tides:
 
 ..    \xi_r(\vec{r}; t) = \sum_{l,m,k} \tilde{\xi}_{r; l,m,k}(r) \; Y^m_l (\theta, \phi) \; e^{-i k \Omega_\textrm{orb} t}
 
@@ -30,12 +30,12 @@ The forcing potential :math:`{\Phi_S}` can be written as an expansion of the gra
 
 .. It behooves us to probe the practical limitations of this approach. The net tidal force can be characterized by the tidal strength term
     \epsilon_\mathrm{T} \equiv \left( \frac{R}{a} \right)^3 = \frac{R^3 \Omega_\textrm{orb}^2}{GM}\times \left( \frac{q}{1+q} \right).
-.. For small amplitude pulsations, $\epsilon_\mathrm{T} << 1$.
+.. For small amplitude tides, $\epsilon_\mathrm{T} << 1$.
 
 
 For wide binaries, this assertion easily holds as long as the primary's radius $R$ is much smaller than the semimajor axis $a$. For some highly eccentric binaries on the other hand, such as eccentric ellipsoidal variables, a small mass ratio $q=M_2/M$ between the secondary and primary stars might be a good enough diagnostic.  We will probe the edge of where our 'weak tides' approach breaks down in a future work.
 
-.. GYRE-tides calculates the tidal pulsation model, i.e. the partial tide amplitudes $\tilde{\xi}_{r;l,m,k}(R)$ and surface luminosity variations $\widetilde{\delta L}_{\textrm{rad};l,m,k}(R)$, and writes them to file. A corresponding pulsation model is then created for the companion's neighbor. Both pulsation models, along with their corresponding stellar models, are the 4 files required to build a single light curve using GYRE-LC.
+.. GYRE-tides calculates the tide model, i.e. the partial tide amplitudes $\tilde{\xi}_{r;l,m,k}(R)$ and surface luminosity variations $\widetilde{\delta L}_{\textrm{rad};l,m,k}(R)$, and writes them to file. A corresponding tide model is then created for the companion's neighbor. Both tide models, along with their corresponding stellar models, are the 4 files required to build a single light curve using GYRE-LC.
 
 
 .. \subsubsection{The semi-analytical formalism} \label{formalism}
