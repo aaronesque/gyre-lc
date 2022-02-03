@@ -66,5 +66,8 @@ epub_show_urls = 'footnote'
 
 # -- Additional configuration ------------------------------------------------
 
+# Set logo
+html_logo = 'gyre-lc-logo-1.png'
+
 # Set up extlinks
 extlinks = {'ads': ('https://ui.adsabs.harvard.edu/abs/%s/abstract', '')}

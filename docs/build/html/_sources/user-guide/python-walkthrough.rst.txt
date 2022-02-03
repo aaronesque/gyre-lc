@@ -1,5 +1,8 @@
 .. _python-walkthrough:
 
+.. _iOri-Aa.mesa: https://github.com/aaronesque/gyre-lc/blob/3efd50ac0d847eda8b6fcfe0c82228fdd87cbd5c/model/iori-Aa.mesa
+.. _iOri-Ab.mesa: https://github.com/aaronesque/gyre-lc/blob/master/model/iori-Ab.mesa
+
 .. gyre-lc documentation master file, created by
 
 #############################
@@ -24,7 +27,7 @@ The iota Orionis Models
 The GitHub repository includes the model data necessary to create a light curve and test GYRE-lc's functionality. You will be creating a light curve for the eccentric ellipsoidal variable of :math:`{\iota}` Orionis, which we'll refer to as simply :math:`{\iota}` Ori for brevity. What follows is a list of input files and descriptions thereof.  
 
 
-iOri-Aa.mesa & iOri-Ab.mesa
+`iOri-Aa.mesa`_ & `iOri-Ab.mesa`_
     The stellar models for each binary component, :math:`{\iota}` Ori Aa & Ab, were created with MESA using stellar parameters listed in :ads_citet:`Pablo:2017`. The MESA inlists are included for reproducibility of results.
 
 iOri-Aa-response.h5 & iOri-Ab-response.h5

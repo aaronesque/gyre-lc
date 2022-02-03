@@ -9,7 +9,7 @@ GYRE-lc presumes a basic familiarity with introductory python, which includes th
 To get started with GYRE-lc, follow these five simple steps:
 
 - download & install the `MESA Software Development Kit (SDK) <http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk>`_;
-- download & install `MSG <http://www.astro.wisc.edu/~townsend/resource/docs/msg/>`_;
+- download, install, & setup `MSG <http://www.astro.wisc.edu/~townsend/resource/docs/msg/>`_;
 - download & unpack the `GYRE-lc <https://github.com/aaronesque/gyre-lc>`_ source code;
 - set the ``GYRELC_DIR`` environment variable to point to the newly created source directory;
 - implement in Python with ``sys.path.insert(0, os.path.join(os.environ['GYRELC_DIR'], 'lib'))`` and ``import gyrelc``

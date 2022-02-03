@@ -29,6 +29,7 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> GYRE-lc
+            <img src="../_static/gyre-lc-logo-1.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 master
@@ -86,7 +87,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <span class="target" id="python-walkthrough"></span><section id="id1">
+  <section id="id1">
 <h1>Python Walkthrough<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h1>
 <p>This chapter provides a walkthrough of using the GYRE-lc package to calculate a light curve for the eccentric ellipsoidal variable of <span class="math notranslate nohighlight">\({\iota}\)</span> Orionis.</p>
 <section id="seting-up-your-inputs">
@@ -101,7 +102,7 @@
 <h3>The iota Orionis Models<a class="headerlink" href="#the-iota-orionis-models" title="Permalink to this headline"></a></h3>
 <p>The GitHub repository includes the model data necessary to create a light curve and test GYRE-lc’s functionality. You will be creating a light curve for the eccentric ellipsoidal variable of <span class="math notranslate nohighlight">\({\iota}\)</span> Orionis, which we’ll refer to as simply <span class="math notranslate nohighlight">\({\iota}\)</span> Ori for brevity. What follows is a list of input files and descriptions thereof.</p>
 <dl class="simple">
-<dt>iOri-Aa.mesa &amp; iOri-Ab.mesa</dt><dd><p>The stellar models for each binary component, <span class="math notranslate nohighlight">\({\iota}\)</span> Ori Aa &amp; Ab, were created with MESA using stellar parameters listed in <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2017MNRAS.467.2494P/abstract">Pablo et al. (2017)</a>. The MESA inlists are included for reproducibility of results.</p>
+<dt><a class="reference external" href="https://github.com/aaronesque/gyre-lc/blob/3efd50ac0d847eda8b6fcfe0c82228fdd87cbd5c/model/iori-Aa.mesa">iOri-Aa.mesa</a> &amp; <a class="reference external" href="https://github.com/aaronesque/gyre-lc/blob/master/model/iori-Ab.mesa">iOri-Ab.mesa</a></dt><dd><p>The stellar models for each binary component, <span class="math notranslate nohighlight">\({\iota}\)</span> Ori Aa &amp; Ab, were created with MESA using stellar parameters listed in <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2017MNRAS.467.2494P/abstract">Pablo et al. (2017)</a>. The MESA inlists are included for reproducibility of results.</p>
 </dd>
 <dt>iOri-Aa-response.h5 &amp; iOri-Ab-response.h5</dt><dd><p>The tide models and their corresponding GYRE inlists are also included for each component. They are created with GYRE using the parameters listed in <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2017MNRAS.467.2494P/abstract">Pablo et al. (2017)</a>. These contain the amplitudes and frequencies for the first 100 normal modes of a star’s tidally excited oscillations.</p>
 </dd>
