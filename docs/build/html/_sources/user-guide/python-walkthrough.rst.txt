@@ -17,11 +17,11 @@ This chapter provides a walkthrough of using the GYRE-lc package to calculate a 
 Seting up your inputs
 *****************************
 
-There are 3 inputs to consider when producing a GYRE-lc light curve:
+There are 3 sets of inputs to consider when producing a GYRE-lc light curve:
 
 - 1-2 stellar models, depending on how many stars contribute to the overall light curve
 - 1-2 tide models. one per stellar model
-- 1 inlist specifying orbital parameters, paths to stellar and tide models, and other context for the problem
+- the orbital parameters: :math:`a`, :math:`e`, and :math:`\Omega_{orb}`
 
 The iota Orionis Models
 =============================
@@ -67,10 +67,18 @@ Copy and past the following imports::
     sys.path.insert(0, os.path.join(os.environ['GYRELC_DIR'], 'lib'))
     import gyrelc as lc
 
-Next, create a ``Binary`` object by feeding it the path to your ``binary_params.in`` file:: 
+The :py:mod:`pymsg` and :py:mod:`gyrelc` modules both require :py:mod:`sys` and :py:mod:`os` to be imported, so we do that first. We also import the :py:mod:`numpy` module, which we use extensively.
+
+Next, create a pair of :py:class:`gyrelc.Star` objects using the stellar and tide models provided::
+
+    # Create Star objects
+    Aa = lc.Star(mesa_model='iOri-Aa.mesa', gyre_model='iOri-Aa-response.h5')
+    Ab = lc.Star(mesa_model='iOri-Ab.mesa', gyre_model='iOri-Ab-response.h5')
+
+Use them, along with the corresponding orbital parameters, as inputs to create a :py:class:`gyrelc.Binary` object::
 
     # Create Binary object
-    iori = lc.Binary('./binary_params.in')
+    iOri = lc.Binary(Aa, Ab, a=132., e=0.764, omega_orb=0.03432)
 
 Now create an ``Observer`` object::
 
@@ -86,14 +94,14 @@ Finally, create a light curve::
     omega = 122.2
 
     # Duration of 'observation' and number of points
-    omega_orb = iori.orbit_params['Omega_orb']
+    omega_orb = iOri.omega_orb
     t = np.linspace(0.5/omega_orb, 2.5/omega_orb, num=2000, endpoint=False)
 
     flux = obs.find_flux(inc, omega, t)
 
 An important subtlety: the ``find_flux()`` function *requires* the observation time to be in units of the orbital period. Here, I'm simulating a BRITE-B passband observation of :math:`{\iota}` iOri that consists of 2000 data points over 2 orbital periods, begining at half a period past periastron. 
 
-Using ``matplotlib``, you may plot your results::
+Using :py:mod:`matplotlib`, you may plot your results::
 
     # Plot
 
