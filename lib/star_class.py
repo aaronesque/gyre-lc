@@ -64,6 +64,10 @@ class Star:
         allowed_keys = {'mass', 'radius', 'luminosity', 'Teff', 'logg', 'units',\
                         'mesa_model', 'gyre_model', 'synspec_model'}
         self.__dict__.update((k, v) for k, v in kwargs.items() if k in allowed_keys)
+        
+        for k, v in kwargs.items():
+            if k not in allowed_keys:
+                print(f"Warning: kwarg '{k}' not recognized.")
 
         # if mesa model is specified, read mesa params
         if kwargs.get('mesa_model'):
@@ -76,7 +80,6 @@ class Star:
 
         # else check for a point mass, read user-specified params
         elif kwargs.get('mass'):
-
             # make note of model as point mass type
             self.point_mass_model = True
             self.read_pt_mass_params()

@@ -60,7 +60,6 @@ class Observer:
         
         theta, phi = self.convert_coords(inc, omega)
         f, A = star.eval_fourier(self.filter_x, theta, phi)
-        
         # Initialize the frequencies/amplitudes arrays
         
         if isinstance(t, np.ndarray):
@@ -100,7 +99,7 @@ class Observer:
         
         else:
             flux = L1*resp_1 + L2*resp_2
-            
+
         return flux/(L1+L2)
     
     
