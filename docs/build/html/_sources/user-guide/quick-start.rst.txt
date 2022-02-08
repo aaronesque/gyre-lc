@@ -14,7 +14,7 @@ To get started with GYRE-lc, follow these five simple steps:
 - set the ``GYRELC_DIR`` environment variable to point to the newly created source directory;
 - implement in Python with ``sys.path.insert(0, os.path.join(os.environ['GYRELC_DIR'], 'lib'))`` and ``import gyrelc``
 
-For a more in-depth installation guide, refer to the Installation chapter. If the package doesn’t run properly, consult the troubleshooting chapter. Otherwise, proceed to the next chapter where you’ll learn to run your first GYRE-lc calculation.
+For a more in-depth installation guide, refer to the Installation chapter. Otherwise, proceed to the next chapter where you’ll learn to run your first GYRE-lc calculation.
 
 
 .. note:: This project is under active development.

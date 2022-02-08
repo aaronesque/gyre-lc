@@ -7,7 +7,7 @@
 GYRE-lc
 ###################
 
-**GYRE-lc** is a Python library for the production of synthetic light curves for tidally distorted binary systems. It relies on GYRE-tides (:ads_citet:`Sun:2021`), an as-yet unreleased extension of GYRE to model stellar tides. It requires at least one `MESA <mesa.sourceforge.net>`_ stellar model and its corresponding `GYRE <https://gyre.readthedocs.io/en/stable/>`_ tide model as inputs. A model spectrum is also required-- GYRE-lc works best with `MSG <http://www.astro.wisc.edu/~townsend/resource/docs/msg/>`_ interpolated spectra for speed, ease of use, accuracy, and reliability, but it also takes `SYNSPEC <http://tlusty.oca.eu/Synspec49/synspec.html>`_ spectra in a *custom HDF5 format*.
+**GYRE-lc** is a Python library for the production of synthetic light curves for tidally distorted binary systems. It relies on GYRE-tides :ads_citep:`Sun:2021`, an as-yet unreleased extension of GYRE to model stellar tides. It requires at least one `MESA <mesa.sourceforge.net>`_ stellar model and its corresponding `GYRE <https://gyre.readthedocs.io/en/stable/>`_ tide model as inputs. A model spectrum is also required-- GYRE-lc works best with `MSG <http://www.astro.wisc.edu/~townsend/resource/docs/msg/>`_ interpolated spectra for speed, ease of use, accuracy, and reliability, but it also takes `SYNSPEC <http://tlusty.oca.eu/Synspec49/synspec.html>`_ spectra in a *custom HDF5 format*.
 
 .. make sure you include the build_spectrum script in the bundle
 

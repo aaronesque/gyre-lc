@@ -26,7 +26,7 @@ There are 3 sets of inputs to consider when producing a GYRE-lc light curve:
 The iota Orionis Models
 =============================
 
-The GitHub repository includes the model data necessary to create a light curve and test GYRE-lc's functionality. You will be creating a light curve for the eccentric ellipsoidal variable of :math:`{\iota}` Orionis, which we'll refer to as simply :math:`{\iota}` Ori for brevity. What follows is a list of input files and descriptions thereof.  
+The GitHub repository includes the model data necessary to create a light curve and test GYRE-lc's functionality. You will be creating a light curve for the eccentric ellipsoidal variable of :math:`{\iota}` Orionis, which we'll refer to as simply :math:`{\iota}` Ori for brevity. What follows is a list of required input files and descriptions thereof.  
 
 
 `iOri-Aa.mesa`_ & `iOri-Ab.mesa`_
@@ -35,8 +35,10 @@ The GitHub repository includes the model data necessary to create a light curve 
 `iOri-Aa-response.h5`_ & `iOri-Ab-response.h5`_
     The tide models and their corresponding GYRE inlists are also included for each component. They are created with GYRE using the parameters listed in :ads_citet:`Pablo:2017`. These contain the amplitudes and frequencies for the first 100 normal modes of a star's tidally excited oscillations.
    
-[*filter*].h5 or tXXXXXgXXX.h5 
-    Lastly, model spectra (produced with `SYNSPEC <http://tlusty.oca.eu/Synspec49/synspec.html>`_) for each component are also included for testing purposes, but they are entirely optional. GYRE-lc works best with MSG-- for that, three MSG-produced photometric grids are included corresponding to the filters BRITE-R, BRITE-B, and Kepler. These grids are included for demonstration purposes, and if you'd like to synthesize light curves for different passbands, you'll have to create those using MSG yourself.
+[*photometric grid*].h5 or tXXXXXgXXX.h5 
+    Lastly, photometric data for each binary component are required. GYRE-lc works best with MSG, which rapidly interpolates desired spectra and photometry from a grid in :math:`log(g) - T_{eff}` space. For that, three MSG-produced photometric grids are included in the ``$GYRELC_DIR/grid`` directory corresponding to the filters BRITE-R, BRITE-B, and Kepler. These grids are included for demonstration purposes, and if you'd like to synthesize light curves for different passbands, you'll have to create those using MSG yourself.
+
+    Lastly, model spectra (produced with `SYNSPEC <http://tlusty.oca.eu/Synspec49/synspec.html>`_) for each component are also included for testing purposes, but they are entirely optional. GYRE-lc works best with MSG-- for that, three MSG-produced photometric grids are included in the ``$GYRELC_DIR/grid`` directory corresponding to the filters BRITE-R, BRITE-B, and Kepler. These grids are included for demonstration purposes, and if you'd like to synthesize light curves for different passbands, you'll have to create those using MSG yourself.
 
 
 ******************************
