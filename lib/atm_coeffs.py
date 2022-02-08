@@ -1,6 +1,5 @@
 import numpy as np
 import h5py
-import f90nml as nml
 
 ### Class definition
 

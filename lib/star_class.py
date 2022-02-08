@@ -1,6 +1,5 @@
 import numpy as np
 import h5py
-import f90nml as nml
 from scipy.special import sph_harm
 from astropy.io import ascii
 

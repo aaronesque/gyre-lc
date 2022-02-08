@@ -1,5 +1,4 @@
 import numpy as np
-import f90nml as nml
 from scipy.integrate import quad as integrate
 from scipy.special import lpmv, sph_harm
 from scipy.optimize import fsolve
