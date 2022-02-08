@@ -18,42 +18,43 @@ class Star:
     parameters necessary for plotting a light curve.
 
     :param mesa_model: Path to MESA stellar model, defaults to None
-        if blank or if model type is a point mass
+       if blank or if model type is a point mass
     :type mesa_model: str, optional
 
     :param gyre_model: Path to GYRE tides model, defaults to zero
-        tides if blank or if model type is a point mass
+       tides if blank or if model type is a point mass
     :type gyre_model: str, optional
 
     :param synspec_model : Path to SYNSPEC atmospheric spectrum model,
-        defaults to using MSG for spectra as desired
+       defaults to using MSG for spectra as desired
     :type synspec_model: str, optional
 
     :param mass: Stellar mass is specified by user if model type is
-        a point mass, else is auto-set according to mesa_model
+       a point mass, else is auto-set according to mesa_model
     :type mass: float, optional
 
     :param radius: Stellar radius can be specified by user if model
-        type is a point mass, else is auto-set according to mesa_model
+       type is a point mass, else is auto-set according to mesa_model
     :type radius: float, optional
 
     :param luminosity: Bolometric luminosity can be specified by user
-        if model type is a point mass, else is auto-set according to
-        mesa_model
+       if model type is a point mass, else is auto-set according to
+       mesa_model
     :type luminosity: float, optional
 
     :param Teff: Effective temperature can be specified by user if
-        neither mesa_model or synspec_model are specified and MSG
-        spectra are desired
+       neither mesa_model or synspec_model are specified and MSG
+       spectra are desired
     :type Teff: float, optional
 
     :param logg: Effective surface gravity can be specified by user
-        if neither mesa_model or synspec_model are specified and
-        MSG spectra are desired
+       if neither mesa_model or synspec_model are specified and
+       MSG spectra are desired
     :type logg: float, optional
 
     :param units: User may choose between 'CGS' and 'SOLAR'
     :type units: str, default='SOLAR'
+
     """
 
     def __init__ (self, **kwargs):

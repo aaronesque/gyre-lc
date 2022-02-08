@@ -14,6 +14,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath('exts'))
+sys.path.insert(0, os.path.join(os.environ['GYRELC_DIR'], 'lib'))
 
 # -- Project information -----------------------------------------------------
 
@@ -37,6 +38,7 @@ author = 'Aaron Lopez'
 
 extensions = [
         'sphinx.ext.extlinks',
+        'sphinx.ext.autodoc',
         'ads_cite'
         ]
 

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Binary &mdash; GYRE-lc master documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Observer" href="observer.html" />
+    <link rel="prev" title="Star" href="star.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> GYRE-lc
+            <img src="../../_static/gyre-lc-logo-1.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                master
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guide/preliminaries.html">Preliminaries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guide/quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guide/python-walkthrough.html">Python Walkthrough</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-gyre-lc-works.html">How GYRE-lc Works</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inputs.html">Inputs</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../python-interface.html">Python Interface</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="star.html">Star</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Binary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="observer.html">Observer</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GYRE-lc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../python-interface.html">Python Interface</a> &raquo;</li>
+      <li>Binary</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/ref-guide/python-interface/binary.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="binary">
+<span id="python-binary"></span><h1>Binary<a class="headerlink" href="#binary" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="gyrelc.Binary">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gyrelc.</span></span><span class="sig-name descname"><span class="pre">Binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gyrelc.Binary" title="Permalink to this definition"></a></dt>
+<dd><p>This is a class representation of a tidally interacting
+binary system. It is a combination of two <a class="reference internal" href="star.html#gyrelc.Star" title="gyrelc.Star"><code class="xref py py-class docutils literal notranslate"><span class="pre">gyrelc.Star</span></code></a>
+classes, augmented by several user-input binary parameters
+and the optional irradiation scheme (Burkart 2016?) as
+inherited by <a class="reference internal" href="#gyrelc.Irradiation" title="gyrelc.Irradiation"><code class="xref py py-class docutils literal notranslate"><span class="pre">gyrelc.Irradiation</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component_2</strong> (<em>component_1</em><em>,</em>) – Class representations of
+the binary components whose tidal interactions will be
+simulated and visualized</p></li>
+<li><p><strong>omega_orb</strong> (<em>float</em>) – </p></li>
+<li><p><strong>omega_orb_units</strong> (<em>str</em><em>, </em><em>optional</em>) – default is ‘CYC_PER_DAY’</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – </p></li>
+<li><p><strong>a_units</strong> (<em>str</em><em>, </em><em>optional</em>) – Default is ‘SOLAR’ but user may specify
+‘CGS’ (centimeters) instead</p></li>
+<li><p><strong>e</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gyrelc.Binary.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gyrelc.Binary.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Constructor method</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gyrelc.Binary.read_units">
+<span class="sig-name descname"><span class="pre">read_units</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gyrelc.Binary.read_units" title="Permalink to this definition"></a></dt>
+<dd><p>Unit routine</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gyrelc.Irradiation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gyrelc.</span></span><span class="sig-name descname"><span class="pre">Irradiation</span></span><a class="headerlink" href="#gyrelc.Irradiation" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="gyrelc.Irradiation.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gyrelc.Irradiation.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Constructor method</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gyrelc.Irradiation.convert_t_to_f">
+<span class="sig-name descname"><span class="pre">convert_t_to_f</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_peri</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gyrelc.Irradiation.convert_t_to_f" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gyrelc.Irradiation.eval_ramp_coeff">
+<span class="sig-name descname"><span class="pre">eval_ramp_coeff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gyrelc.Irradiation.eval_ramp_coeff" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gyrelc.Irradiation.find_bin_sep">
+<span class="sig-name descname"><span class="pre">find_bin_sep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_peri</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gyrelc.Irradiation.find_bin_sep" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gyrelc.Irradiation.find_disk_intg_factor">
+<span class="sig-name descname"><span class="pre">find_disk_intg_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">star_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gyrelc.Irradiation.find_disk_intg_factor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gyrelc.Irradiation.find_ecce_anom">
+<span class="sig-name descname"><span class="pre">find_ecce_anom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gyrelc.Irradiation.find_ecce_anom" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gyrelc.Irradiation.find_irrad">
+<span class="sig-name descname"><span class="pre">find_irrad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">star_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_peri</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gyrelc.Irradiation.find_irrad" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gyrelc.Irradiation.find_mean_anom">
+<span class="sig-name descname"><span class="pre">find_mean_anom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_peri</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gyrelc.Irradiation.find_mean_anom" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gyrelc.Irradiation.find_true_anom">
+<span class="sig-name descname"><span class="pre">find_true_anom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gyrelc.Irradiation.find_true_anom" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gyrelc.Irradiation.setup_irrad">
+<span class="sig-name descname"><span class="pre">setup_irrad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">star_number</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gyrelc.Irradiation.setup_irrad" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="star.html" class="btn btn-neutral float-left" title="Star" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="observer.html" class="btn btn-neutral float-right" title="Observer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Aaron Lopez.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
