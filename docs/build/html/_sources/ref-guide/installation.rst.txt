@@ -25,7 +25,6 @@ Most importantly, GYRE-lc requires Python 3.6+.
 To run GYRE-lc, you’ll need the following Python libraries installed:
 
 - `<https://pypi.org/project/h5py/>`_, for HDF5 data management;
-- `<https://pypi.org/project/f90nml/>`_, for namelist handling;
 - `<https://pypi.org/project/scipy/>`_, for special math functions and operations;
 - `<https://pypi.org/project/astropy/>`_, for MESA model handling; 
 
@@ -34,6 +33,8 @@ These components can be found via the PIP and Anaconda python package installers
 
 Setting up GYRE-lc
 ------------------------------------
+
+Download and install MSG as detailed in the `MSG installation guide <http://www.astro.wisc.edu/~townsend/resource/docs/msg/ref-guide/installation.html>`_.
 
 Download
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
