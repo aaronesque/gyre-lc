@@ -43,7 +43,7 @@ Download the `GYRE-lc source code <https://github.com/aaronesque/gyre-lc>`_, and
 
 ``tar xf gyre-lc.tar.gz``
 
-Set the GYRELC_DIR environment variable with the path to the newly created source directory; this can be achieved e.g. using the realpath command1:
+Set the GYRELC_DIR environment variable with the path to the newly created source directory; this can be achieved e.g. using the realpath command:
 
 ``export GYRELC_DIR=$(realpath gyre-lc)``
 
