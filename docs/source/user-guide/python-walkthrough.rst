@@ -35,17 +35,16 @@ The GitHub repository includes the model data necessary to create a light curve 
 `iOri-Aa-response.h5`_ & `iOri-Ab-response.h5`_
     The tide models and their corresponding GYRE inlists are also included for each component. They are created with GYRE using the parameters listed in :ads_citet:`Pablo:2017`. These contain the amplitudes and frequencies for the first 100 normal modes of a star's tidally excited oscillations.
    
-[*photometric grid*].h5 or tXXXXXgXXX.h5 
-    Lastly, photometric data for each binary component are required. GYRE-lc works best with MSG, which rapidly interpolates desired spectra and photometry from a grid in :math:`log(g) - T_{eff}` space. For that, three MSG-produced photometric grids are included in the ``$GYRELC_DIR/grid`` directory corresponding to the filters BRITE-R, BRITE-B, and Kepler. These grids are included for demonstration purposes, and if you'd like to synthesize light curves for different passbands, you'll have to create those using MSG yourself.
+[*photometric grid*].h5
+    Lastly, photometric data for each binary component are required. GYRE-lc works best with MSG, which rapidly interpolates desired spectra and photometry from a grid in :math:`log(g)-T_{eff}` space. For that, three MSG-produced photometric grids are included in the ``$GYRELC_DIR/grid`` directory corresponding to the filters BRITE-R, BRITE-B, and Kepler. These grids are included for demonstration purposes, and if you'd like to synthesize light curves for different passbands, you'll have to create those using MSG yourself.
 
-    Lastly, model spectra (produced with `SYNSPEC <http://tlusty.oca.eu/Synspec49/synspec.html>`_) for each component are also included for testing purposes, but they are entirely optional. GYRE-lc works best with MSG-- for that, three MSG-produced photometric grids are included in the ``$GYRELC_DIR/grid`` directory corresponding to the filters BRITE-R, BRITE-B, and Kepler. These grids are included for demonstration purposes, and if you'd like to synthesize light curves for different passbands, you'll have to create those using MSG yourself.
-
+    GYRE-lc is also capable of working with SYNSPEC-produced photometric intensity data read in through a custom HDF5 format. Two such files are included (``t29173g423.h5`` and ``t30890g364.h5``) for demonstration, but the production of such files is computationally expensive relative to simply interpolating similar data via MSG. Therefore, no advice on how to produce SYNSPEC photometric intensities in this format will be offered in the foreseeable future.
 
 ******************************
 The GYRE-lc Module
 ******************************
 
-This walkthrough relies on `MSG <http://www.astro.wisc.edu/~townsend/resource/docs/msg/>`_ for rapid spectral synthesis. Download and install MSG, then set the :envvar:`MSG_DIR` environment variable as described in the `MSG Quick Start guide <http://www.astro.wisc.edu/~townsend/resource/docs/msg/user-guide/quick-start.html#quick-start>`_. 
+This walkthrough relies on `MSG <http://www.astro.wisc.edu/~townsend/resource/docs/msg/>`_ for rapid synthesis of photometric data. Download and install MSG, then set the :envvar:`MSG_DIR` environment variable as described in the `MSG Quick Start guide <http://www.astro.wisc.edu/~townsend/resource/docs/msg/user-guide/quick-start.html#quick-start>`_. 
 
 To use GYRE-lc in Python, also make sure the :envvar:`GYRELC_DIR` environment variable is set (see `Quick Start`). I use a Jupyter notebook for this walkthrough, but you may later choose to write a Python script instead should it better suit your workflow.
 
