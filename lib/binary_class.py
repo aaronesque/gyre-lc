@@ -142,41 +142,37 @@ class Irradiation:
 
 class Binary(Irradiation):
     """This is a class representation of a tidally interacting
-    binary system. It is a combination of two :class:`gyrelc.Star`
+    binary system. 
+
+    It is a combination of two :class:`gyrelc.Star`
     classes, augmented by several user-input binary parameters
     and the optional irradiation scheme (Burkart 2016?) as
     inherited by :class:`gyrelc.Irradiation`
 
-    :param component_1, component_2: Class representations of
-        the binary components whose tidal interactions will be
-        simulated and visualized
-    :type component_1, component_2: class:`gyrelc.Star`
-
-    :param omega_orb:
-    :type omega_orb: float
-
-    :param omega_orb_units: default is 'CYC_PER_DAY'
-    :type omega_orb_units: str, optional
-
-    :param a:
-    :type a: float
-
-    :param a_units: Default is 'SOLAR' but user may specify
+    Attributes:
+        component_1 (:py:class:`gyrelc.Star`): Class representations of
+            the binary components whose tidal interactions will be
+            simulated and visualized
+        component_2 (:py:class:`gyrelc.Star`): Class representations of
+            the binary components whose tidal interactions will be
+            simulated and visualized
+        omega_orb (float): The binary's orbital angular velocity
+        omega_orb_units (str): Units of ``omega_orb``. Default is 'CYC_PER_DAY'
+        a (float): The binary separation
+        a_units (str): Units of ``a``. Default is 'SOLAR' but user may specify
         'CGS' (centimeters) instead
-    :type a_units: str, optional
-
-    :param e:
-    :type e: float
+        e (float): The binary eccentricity. :math:`0\leq e <1`
+    
     """
 
 
-    def __init__ (self, component_1, component_2, **kwargs):
+    def __init__ (self, component_1, component_2, omega_orb, a, e, 
+            omega_orb_units=False, a_units=False):
         """Constructor method
         """
-        allowed_keys = {'omega_orb', 'omega_orb_units', 'a', 'a_units', 'e'}
-        self.__dict__.update((k, v) for k, v in kwargs.items() if k in allowed_keys)
-        self.read_units()
-
+        self.omega_orb = omega_orb
+        self.a = a
+        self.e = e
         self.component = {1: component_1,\
                           2: component_2 }
         super().__init__()

@@ -14,78 +14,67 @@ import atm_coeffs as ac
 ### Class definitions
 
 class Star:
-    """Takes path to mesa model specifying stellar
-    parameters necessary for plotting a light curve.
+    """Takes parameters necessary for plotting a light curve.
 
-    :param mesa_model: Path to MESA stellar model, defaults to None
-       if blank or if model type is a point mass
-    :type mesa_model: str, optional
+    Parameters are taken in as kwargs. To function properly, either 
+    `mesa_model` or `mass` (if modeling a point mass) must be taken.
 
-    :param gyre_model: Path to GYRE tides model, defaults to zero
-       tides if blank or if model type is a point mass
-    :type gyre_model: str, optional
-
-    :param synspec_model : Path to SYNSPEC atmospheric spectrum model,
-       defaults to using MSG for spectra as desired
-    :type synspec_model: str, optional
-
-    :param mass: Stellar mass is specified by user if model type is
-       a point mass, else is auto-set according to mesa_model
-    :type mass: float, optional
-
-    :param radius: Stellar radius can be specified by user if model
-       type is a point mass, else is auto-set according to mesa_model
-    :type radius: float, optional
-
-    :param luminosity: Bolometric luminosity can be specified by user
-       if model type is a point mass, else is auto-set according to
-       mesa_model
-    :type luminosity: float, optional
-
-    :param Teff: Effective temperature can be specified by user if
-       neither mesa_model or synspec_model are specified and MSG
-       spectra are desired
-    :type Teff: float, optional
-
-    :param logg: Effective surface gravity can be specified by user
-       if neither mesa_model or synspec_model are specified and
-       MSG spectra are desired
-    :type logg: float, optional
-
-    :param units: User may choose between 'CGS' and 'SOLAR'
-    :type units: str, default='SOLAR'
+    Attributes:
+        mesa_model (str): Path to MESA stellar model, defaults to None
+            if blank or if model type is a point mass
+        gyre_model (str): Path to GYRE tides model, defaults to zero
+            tides if blank or if model type is a point mass
+        synspec_model (str): Path to SYNSPEC atmospheric spectrum model,
+            defaults to using MSG for spectra as desired
+        mass (float): Stellar mass is specified by user if model type is
+            a point mass, else is auto-set according to mesa_model
+        radius (float): Stellar radius can be specified by user if model
+            type is a point mass, else is auto-set according to mesa_model
+        luminosity (float): Bolometric luminosity can be specified by user
+            if model type is a point mass, else is auto-set according to
+            mesa_model
+        Teff (float): Effective temperature can be specified by user if
+            neither mesa_model or synspec_model are specified and MSG
+            spectra are desired
+        logg (float): Effective surface gravity can be specified by user
+            if neither mesa_model or synspec_model are specified and
+            MSG spectra are desired
+        units (str): User may choose between 'CGS' and 'SOLAR'
+        resp_coeffs (dict): A dictionary containing the tidal response
+            coefficients from GYRE-tides output
+        phot_coeffs (dict); A dictionary containing the photometric 
+            coefficients from `gyrelc.Observer`
+        point_mass_model (bool): Gets set to True when `mesa_model` is 
+            unspecified
 
     """
 
-    def __init__ (self, **kwargs):
+    def __init__ (self, mesa_model=False, gyre_model=False, 
+            synspec_model=False, mass=False, radius=False, 
+            luminosity=False, Teff=False, logg=False, units=False):
         """Constructor method
         """
-        # takes user inputs from limited list
-        allowed_keys = {'mass', 'radius', 'luminosity', 'Teff', 'logg', 'units',\
-                        'mesa_model', 'gyre_model', 'synspec_model'}
-        self.__dict__.update((k, v) for k, v in kwargs.items() if k in allowed_keys)
-        
-        for k, v in kwargs.items():
-            if k not in allowed_keys:
-                print(f"Warning: kwarg '{k}' not recognized.")
-
         # if mesa model is specified, read mesa params
-        if kwargs.get('mesa_model'):
-            self.read_mesa_params(self.mesa_model)
+        if mesa_model:
+            self.model = mesa_model
+            self.model_type = 'MESA'
+            self.read_mesa_params(self.model)
 
             # also check for gyre model for response coefficients
-            if kwargs.get('gyre_model'):
+            if gyre_model:
+                self.gyre_model = gyre_model
                 self.resp_coeffs = rc.resp_coeffs( self.gyre_model )
             else: self.resp_coeffs = rc.resp_coeffs('')
 
         # else check for a point mass, read user-specified params
-        elif kwargs.get('mass'):
+        elif mass:
             # make note of model as point mass type
-            self.point_mass_model = True
+            self.model = f'{mass} M_sol'
+            self.model_type = 'point mass'
             self.read_pt_mass_params()
 
             # no gyre_model allowed
-            if kwargs.get('gyre_model'):
+            if gyre_model:
                 raise Exception("A point mass cannot experience tides")
             self.resp_coeffs = rc.resp_coeffs('')
 
@@ -203,8 +192,7 @@ class Star:
 
 
     def read_phot_coeffs_h5(self, filter_x, synspec_model):
-        """
-        This function is old and was tested on a
+        """This function is deprecated and was tested on a
         synspec intensity spectrum calculated from
         iOri's tlusty atmosphere.
         """
@@ -237,7 +225,9 @@ class Star:
 
 
     def read_phot_coeffs_msg(self, filter_x):
-
+        """Creates and stores photometric coefficients from
+        MSG for the desired filter
+        """
         # Set atmosphere parameters dict
 
         Teff = self.Teff
@@ -271,23 +261,27 @@ class Star:
 
 
     def make_phot_coeffs_pt_mass(self, filter_x):
+        """Creates and stores zeros as photometric
+        coefficients for a point mass model
+        """
         return {f'I_{filter_x}': np.array([0.]),
                 f'dI_dlnT_{filter_x}':np.array([0.]),
                 f'dI_dlng_{filter_x}': np.array(0.)}
 
 
     def read_phot_coeffs(self, filter_x, synspec_model=None):
-        """
+        """Selects appropriate photometric coefficient routine
+        depending on the stellar model
         """
         if self.luminosity==0.:
             self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(filter_x) )
 
-        if self.__dict__.get('mesa_model'):
+        if self.model_type=='MESA':
             if synspec_model==None:
                 self.phot_coeffs.update( self.read_phot_coeffs_msg(filter_x) )
             else:
                 self.phot_coeffs.update( self.read_phot_coeffs_h5(filter_x, synspec_model) )
-        elif self.__dict__.get('point_mass_model'):
+        elif self.model_type=='point mass':
             self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(filter_x) )
         else: raise Exception(f"Invalid component model type must be 'mesa_model' or 'point_mass_model'.")
         
@@ -295,6 +289,9 @@ class Star:
 
 
     def D_moment(self, l, filter_x, deriv=None):
+        """Makes reading photometric coefficients from
+        a gyrelc.Star instance less painful
+        """
         I = self.phot_coeffs
         if deriv=='lnT':
             return I[f'dI_dlnT_{filter_x}'][l]
