@@ -40,10 +40,11 @@ class Irradiation:
         """Evaluates the ramp function
 
         Args:
-            l (int): mode number
-            m (int): 
+            l (int): degree of spherical harmonic
+            m (int): order of spherical harmonic
 
-
+        Returns:
+            The float resulting from evaluating the ramp function :math:`Z_{lm}`
         """
         term1 = 2* np.sqrt( ((2*l+1)/(4*np.pi)) \
                            *(np.math.factorial(l-m)/np.math.factorial(l+m)) )
@@ -58,7 +59,16 @@ class Irradiation:
     
     
     def find_disk_intg_factor (self, star_number, filter_x, l):
-        """
+        """Finds the disk integral factor :ads_citep:`Burkart:2012` for
+        a given spherical degree l and passband filter x
+
+        Args:
+            star_number (int): index denoting primary or secondary star
+            filter_x (str): filter name
+            l (int): degree of spherical harmonic
+
+        Returns:
+            The disk integral factor :math:`b_l`, a float
         """
         if self.component[star_number].luminosity==0.:
             return 0.
@@ -68,13 +78,28 @@ class Irradiation:
         
     
     def find_mean_anom (self, t, t_peri=0):
-        """
+        """Finds the mean anomaly given the observation time,
+        time at periastron, and orbital angular velocity
+
+        Args:
+            t (float, np.array): observation time(s)
+            t_peri (float): the time at periastron
+
+        Returns:
+            The mean anomaly
         """
         return self.omega_orb*(t - t_peri)*(2*np.pi)
         
     
     def find_ecce_anom (self, M):
-        """
+        """Finds the eccentric anomaly from the mean anomaly
+        and orbital eccentricity
+
+        Args:
+            M (float, np.array): The mean anomaly
+
+        Returns:
+            The eccentric anomaly
         """
         K_soln = np.empty_like(M)
         for i, M_val in enumerate(M): 
@@ -84,13 +109,28 @@ class Irradiation:
         
     
     def find_true_anom (self, E):
-        """
+        """Finds the true anomaly from the eccentric 
+        anomaly and eccentricity
+
+        Args:
+            E (float, np.array): The eccentric anomaly
+
+        Returns:
+            The true anomaly
         """
         return 2*np.arctan( ((1+self.e)/(1-self.e))*np.tan(E/2) )
     
     
     def convert_t_to_f (self, t, t_peri=0):
-        """
+        """Converts from observation time `t` to
+        true anomaly `f`
+
+        Args:
+            t (float, np.array): The observation time(s)
+            t_peri (float): The time of periastron
+
+        Returns:
+            The true anomaly
         """
         M = self.find_mean_anom(t, t_peri)
         E = self.find_ecce_anom(M)
@@ -99,7 +139,15 @@ class Irradiation:
     
     
     def find_bin_sep (self, t, t_peri=0):
-        """
+        """Finds the binary separation :math:`D(t)` for the
+        binary at time `t`, given some `t_peri`
+
+        Args:
+            t (float, np.array): The observation time(s)
+            t_peri (float): The time of periastron
+           
+        Returns:
+            The binary separation at time(s) `t`
         """
         f = self.convert_t_to_f(t, t_peri)
         D = self.a*(1-self.e**2)/(1+self.e*np.cos(f))
@@ -107,7 +155,17 @@ class Irradiation:
     
     
     def setup_irrad (self, star_number):
-        """
+        """Acquires the parameters from either :py:class:`gyrelc.Star`
+        component necessary to evaluate the additional flux from
+        the binary due to irradiation effects :ads_citep:`Burkart:2012`
+
+        Args:
+            star_number (int): The index denoting the primary or secondary component
+
+        Returns:
+            The irradiated star's intrinsic luminosity, its radius, its
+            photometric coefficients, its tidal response coefficients,
+            and its companion's luminosity
         """
         if int(star_number)==1:
             star_neighbor = 2

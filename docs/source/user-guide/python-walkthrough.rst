@@ -1,9 +1,9 @@
 .. _python-walkthrough:
 
-.. _iOri-Aa.mesa: https://github.com/aaronesque/gyre-lc/blob/master/model/iOri-Aa.mesa
-.. _iOri-Ab.mesa: https://github.com/aaronesque/gyre-lc/blob/master/model/iOri-Ab.mesa
-.. _iOri-Aa-response.h5: https://github.com/aaronesque/gyre-lc/blob/master/model/iOri-Aa-response.h5
-.. _iOri-Ab-response.h5: https://github.com/aaronesque/gyre-lc/blob/master/model/iOri-Ab-response.h5
+.. _iOri-Aa.mesa: https://github.com/aaronesque/gyre-lc/raw/master/model/iOri-Aa.mesa
+.. _iOri-Ab.mesa: https://github.com/aaronesque/gyre-lc/raw/master/model/iOri-Ab.mesa
+.. _iOri-Aa-response.h5: https://github.com/aaronesque/gyre-lc/raw/master/model/iOri-Aa-response.h5
+.. _iOri-Ab-response.h5: https://github.com/aaronesque/gyre-lc/raw/master/model/iOri-Ab-response.h5
 
 .. gyre-lc documentation master file, created by
 
