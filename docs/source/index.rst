@@ -29,6 +29,5 @@ GYRE-lc
 
    ref-guide/installation.rst
    ref-guide/how-gyre-lc-works.rst
-   ref-guide/inputs.rst
    ref-guide/python-interface.rst
 
