@@ -7,14 +7,43 @@ from star_class import Star
 ### Class definitions
 
 class Irradiation:
+    """This class contains the routines necessary for modeling
+    irradiation effects.
+
+    This is especially important in close or high eccentricity
+    binaries. :py:class:`gyrelc.Irradiation` is turned off by 
+    default for :py:func:`gyrelc.Observer.find_flux()` to 
+    preserve computational resources.
+
+    Attributes:
+        component_1 (:py:class:`gyrelc.Star`): Class representations of
+            the binary components whose tidal interactions will be
+            simulated and visualized
+        component_2 (:py:class:`gyrelc.Star`): Class representations of
+            the binary components whose tidal interactions will be
+            simulated and visualized
+        omega_orb (float): The binary's orbital angular velocity
+        omega_orb_units (str): Units of ``omega_orb``. Default is 'CYC_PER_DAY'
+        a (float): The binary separation
+        a_units (str): Units of ``a``. Default is 'SOLAR' but user may specify
+        'CGS' (centimeters) instead
+        e (float): The binary eccentricity. :math:`0\leq e <1`
     
+    """
+
     def __init__ (self):
         """Constructor method
         """
         pass
             
     def eval_ramp_coeff (self, l, m):
-        """
+        """Evaluates the ramp function
+
+        Args:
+            l (int): mode number
+            m (int): 
+
+
         """
         term1 = 2* np.sqrt( ((2*l+1)/(4*np.pi)) \
                            *(np.math.factorial(l-m)/np.math.factorial(l+m)) )
@@ -164,7 +193,6 @@ class Binary(Irradiation):
         e (float): The binary eccentricity. :math:`0\leq e <1`
     
     """
-
 
     def __init__ (self, component_1, component_2, omega_orb, a, e, 
             omega_orb_units=False, a_units=False):

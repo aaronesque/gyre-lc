@@ -39,6 +39,7 @@ author = 'Aaron Lopez'
 extensions = [
         'sphinx.ext.extlinks',
         'sphinx.ext.autodoc',
+        'sphinx.ext.napoleon',
         'ads_cite'
         ]
 
@@ -73,3 +74,12 @@ html_logo = 'gyre-lc-logo-1.png'
 
 # Set up extlinks
 extlinks = {'ads': ('https://ui.adsabs.harvard.edu/abs/%s/abstract', '')}
+
+# Set up autodoc
+autoclass_content = 'class'
+autodoc_member_order = 'groupwise'
+
+# Set up napoleon
+napoleon_google_docstring = True
+napoleon_include_init_with_doc = True
+
