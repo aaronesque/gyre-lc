@@ -84,7 +84,7 @@ Use them, along with the corresponding orbital parameters, as inputs to create a
 Now create an ``Observer`` object::
 
     # Creat an Observer object
-    obs = lc.Observer(iori, 'BRITE-B')
+    obs = lc.Observer(iOri, 'BRITE-B')
 
 The ``Binary`` object consists of two ``Star`` objects, an ``Irradiation`` object, as well as the various attributes and parameters required to provide the ``Observer`` object sufficient context to synthesize a light curve. The ``Observer`` object primarily contains functions for light curve synthesis and analysis thereof. The last parameter left to specify, the choice of passband, is left as an argument for the ``Observer`` class.
 
