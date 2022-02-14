@@ -7,10 +7,9 @@ Binary
 
 .. autoclass:: Binary
    :members:
-
-   .. automethod:: __init__
+   :noindex:
 
 .. autoclass:: Irradiation
    :members:
+   :noindex:
 
-   .. automethod:: __init__

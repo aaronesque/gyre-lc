@@ -8,4 +8,3 @@ Observer
 .. autoclass:: Observer
    :members:
 
-   .. automethod:: __init__

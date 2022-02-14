@@ -7,5 +7,4 @@ Star
 
 .. autoclass:: Star
    :members:
-
-   .. automethod:: __init__
+   :noindex:
