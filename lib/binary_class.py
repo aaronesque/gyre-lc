@@ -253,7 +253,7 @@ class Binary(Irradiation):
     """
 
     def __init__ (self, component_1, component_2, omega_orb, a, e, 
-            omega_orb_units=False, a_units=False):
+            omega_orb_units=None, a_units=None):
         """Constructor method
         """
         self.omega_orb = omega_orb

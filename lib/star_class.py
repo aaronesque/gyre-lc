@@ -49,32 +49,32 @@ class Star:
 
     """
 
-    def __init__ (self, mesa_model=False, gyre_model=False, 
-            synspec_model=False, mass=False, radius=False, 
-            luminosity=False, Teff=False, logg=False, units=False):
+    def __init__ (self, mesa_model=None, gyre_model=None, 
+            synspec_model=None, mass=None, radius=None, 
+            luminosity=None, Teff=None, logg=None, units=None):
         """Constructor method
         """
         # if mesa model is specified, read mesa params
-        if mesa_model:
+        if mesa_model is not None:
             self.model = mesa_model
             self.model_type = 'MESA'
             self.read_mesa_params(self.model)
 
             # also check for gyre model for response coefficients
-            if gyre_model:
+            if gyre_model is not None:
                 self.gyre_model = gyre_model
                 self.resp_coeffs = rc.resp_coeffs( self.gyre_model )
             else: self.resp_coeffs = rc.resp_coeffs('')
 
         # else check for a point mass, read user-specified params
-        elif mass:
+        elif mass is not None:
             # make note of model as point mass type
             self.model = f'{mass} M_sol'
             self.model_type = 'point mass'
             self.read_pt_mass_params()
 
             # no gyre_model allowed
-            if gyre_model:
+            if gyre_model is not None:
                 raise Exception("A point mass cannot experience tides")
             self.resp_coeffs = rc.resp_coeffs('')
 
