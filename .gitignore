@@ -1,5 +1,7 @@
 *~
 __pycache__
+images
+.ipynb_checkpoints
 docs/build
 docs/source/.DS_Store
 docs/gyre-lc-logo.psd
