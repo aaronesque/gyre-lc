@@ -38,7 +38,6 @@ The GitHub repository includes the model data necessary to create a light curve 
 [*photometric grid*].h5
     Lastly, photometric data for each binary component are required. GYRE-lc works best with MSG, which rapidly interpolates desired spectra and photometry from a grid in :math:`log(g)-T_{eff}` space. For that, three MSG-produced photometric grids are included in the ``$GYRELC_DIR/grid`` directory corresponding to the filters BRITE-R, BRITE-B, and Kepler. These grids are included for demonstration purposes, and if you'd like to synthesize light curves for different passbands, you'll have to create those using MSG yourself.
 
-    GYRE-lc is also capable of working with SYNSPEC-produced photometric intensity data read in through a custom HDF5 format. Two such files are included (``t29173g423.h5`` and ``t30890g364.h5``) for demonstration, but the production of such files is computationally expensive relative to simply interpolating similar data via MSG. Therefore, no advice on how to produce SYNSPEC photometric intensities in this format will be offered in the foreseeable future.
 
 ******************************
 The GYRE-lc Module
