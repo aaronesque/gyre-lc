@@ -3,8 +3,8 @@
 Observer
 ========
 
-.. currentmodule:: gyrelc
+.. .. currentmodule:: gyrelc
 
-.. autoclass:: Observer
+.. .. autoclass:: Observer
    :members:
 

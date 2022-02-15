@@ -3,8 +3,8 @@
 Star
 ====
 
-.. currentmodule:: gyrelc
+.. .. currentmodule:: gyrelc
 
-.. autoclass:: Star
+.. .. autoclass:: Star
    :members:
    :noindex:
