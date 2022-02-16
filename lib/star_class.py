@@ -196,16 +196,7 @@ class Star:
         synspec intensity spectrum calculated from
         iOri's tlusty atmosphere.
         """
-
-        l_min = 0
-        dl = 1
-        l_max = self.resp_coeffs.data['l_max']
-        n_l = np.ceil( (l_max - l_min)/dl ) + 1
-
-        l_range = l_min + dl*np.arange(n_l)
-
-        # read intensity file
-
+        # Read intensity file
         I = ac.atm_coeffs(synspec_model)
         I = I.data
 
@@ -214,10 +205,10 @@ class Star:
         dI_dlnT_x_l = {}
         dI_dlng_x_l = {}
 
-        for l in l_range.astype(int):
-            I_x_l[l] = I[f'I_{filter_x}_{l}'][0]
-            dI_dlnT_x_l[l] = I[f'dlnTeff_{filter_x}_{l}'][0]
-            dI_dlng_x_l[l] = I[f'dlng_{filter_x}_{l}'][0]
+        for l in range(self.resp_coeffs.data['l_max']+1):
+            I_x_l[l] = pg.D_moment(dx, l)
+            dI_dlnT_x_l[l] = pg.D_moment(dx, l, deriv={'logT':True})/np.log(10.)
+            dI_dlng_x_l[l] = pg.D_moment(dx, l, deriv={'logg':True})/np.log(10.)
 
         return {f'I_{filter_x}': I_x_l,
                 f'dI_dlnT_{filter_x}': dI_dlnT_x_l,
