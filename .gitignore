@@ -2,6 +2,7 @@
 __pycache__
 images
 .ipynb_checkpoints
+gyre-lc.py
 docs/build
 docs/source/.DS_Store
 docs/gyre-lc-logo.psd
