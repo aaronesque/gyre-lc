@@ -3,13 +3,13 @@
 Binary
 ======
 
-.. .. currentmodule:: gyrelc
+.. currentmodule:: gyrelc
 
-.. .. autoclass:: Binary
+.. autoclass:: Binary
    :members:
    :noindex:
 
-.. .. autoclass:: Irradiation
+.. autoclass:: Irradiation
    :members:
    :noindex:
 
