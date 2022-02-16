@@ -202,16 +202,7 @@ class Irradiation:
         
         rel_dJ = np.zeros_like(t)
         
-        # Set up intensity moment range
-        
-        l_min = 0
-        dl = 1
-        l_max = resp_data['l_max']
-        n_l = np.ceil( (l_max - l_min)/dl ) + 1
-
-        l_range = l_min + dl*np.arange(n_l)
-        
-        for l in l_range.astype(int):
+        for l in range(resp_data['l_max']+1):
             for m in np.arange(-l, l+1).astype(int):
                 
                 Z_lm = self.eval_ramp_coeff(l, m)

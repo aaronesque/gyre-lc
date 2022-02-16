@@ -227,21 +227,12 @@ class Star:
         dx = {'logT': np.log10(Teff), 'logg': logg}
         pg = pymsg.PhotGrid(f"{os.environ['GYRELC_DIR']}/grid/{filter_x}.h5")
 
-        # Set up intensity moment range
-
-        l_min = 0
-        dl = 1
-        l_max = self.resp_coeffs.data['l_max']
-        n_l = np.ceil( (l_max - l_min)/dl ) + 1
-
-        l_range = l_min + dl*np.arange(n_l)
-
         # Evaluate photometric data
         I_x_l = {}
         dI_dlnT_x_l = {}
         dI_dlng_x_l = {}
 
-        for l in l_range.astype(int):
+        for l in range(self.resp_coeffs.data['l_max']+1):
             I_x_l[l] = pg.D_moment(dx, l)
             dI_dlnT_x_l[l] = pg.D_moment(dx, l, deriv={'logT':True})/np.log(10.)
             dI_dlng_x_l[l] = pg.D_moment(dx, l, deriv={'logg':True})/np.log(10.)
