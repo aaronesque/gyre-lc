@@ -7,4 +7,4 @@ Star
 
 .. autoclass:: Star
    :members:
-   :noindex:
+
