@@ -5,3 +5,4 @@ sphinx>=4.3.1
 sphinx_rtd_theme>=1.0.0
 readthedocs-sphinx-search>=0.1.1
 ads>=0.12.3
+numpy>=1.20.0
