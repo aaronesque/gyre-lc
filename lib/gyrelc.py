@@ -11,7 +11,7 @@ import pymsg
 
 # Import gyrelc modules
 
-sys.path.insert(0, os.path.join(os.environ['GYRELC_DIR'], 'lib'))
+sys.path.insert(0, os.path.abspath('../../lib/'))
 import atm_coeffs as ac
 import resp_coeffs as rc
 from star_class import Star
