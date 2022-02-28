@@ -58,13 +58,12 @@ class Irradiation:
         return Z_lm
     
     
-    def find_disk_intg_factor (self, star_number, filter_x, l):
+    def find_disk_intg_factor (self, star_number, l):
         """Finds the disk integral factor :ads_citep:`Burkart:2012` for
         a given spherical degree l and passband filter x
 
         Args:
             star_number (int): index denoting primary or secondary star
-            filter_x (str): filter name
             l (int): degree of spherical harmonic
 
         Returns:
@@ -73,7 +72,7 @@ class Irradiation:
         if self.component[star_number].luminosity==0.:
             return 0.
         else:
-            b_l = self.component[star_number].disk_intg_factor(filter_x, l)
+            b_l = self.component[star_number].disk_intg_factor(l)
             return b_l
         
     
@@ -184,7 +183,7 @@ class Irradiation:
         return phot_coeffs, resp_data, L1, R1, L2
     
     
-    def find_irrad (self, star_number, filter_x, theta, phi, t, t_peri=0):
+    def find_irrad (self, star_number, theta, phi, t, t_peri=0):
         """
         """
         # Set up for sum
@@ -210,7 +209,7 @@ class Irradiation:
                 
                 Zt_lm = Z_lm*Y_lm*np.exp(-1j*m*ft) # Replace Z_lm*Y_lm w amplitude, ft*m w frequency?
                     
-                b_l = self.find_disk_intg_factor(star_number, filter_x, l)
+                b_l = self.find_disk_intg_factor(star_number, l)
                 
                 rel_dJ += b_l*Zt_lm.real*(L2/L1)*(R1/Dt)**2
                 
@@ -279,12 +278,12 @@ class Binary(Irradiation):
         return
 
 
-    def eval_fourier (self, filter_x, inc, omega, t=0, reflection=True):
+    def eval_fourier (self, inc, omega, t=0, reflection=True):
 
         omega_orb = self.omega_orb
 
-        f_1, A_1 = self.component[1].eval_fourier(filter_x, inc, omega)
-        f_2, A_2 = self.component[2].eval_fourier(filter_x, inc, omega+180)
+        f_1, A_1 = self.component[1].eval_fourier(inc, omega)
+        f_2, A_2 = self.component[2].eval_fourier(inc, omega+180)
 
         #if reflection==True:
         #    rf_1, rA_1 = self.system.eval_fourier_irrad(1, self.filter_x, inc, omega, t, t_peri)

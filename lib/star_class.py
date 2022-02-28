@@ -24,8 +24,8 @@ class Star:
             if blank or if model type is a point mass
         gyre_model (str): Path to GYRE tides model, defaults to zero
             tides if blank or if model type is a point mass
-        synspec_model (str): Path to SYNSPEC atmospheric spectrum model,
-            defaults to using MSG for spectra as desired
+        photgrid (:py:class:`pymsg.PhotGrid`): Photometric grid class
+            object, produced using MSG
         mass (float): Stellar mass is specified by user if model type is
             a point mass, else is auto-set according to mesa_model
         radius (float): Stellar radius can be specified by user if model
@@ -34,15 +34,15 @@ class Star:
             if model type is a point mass, else is auto-set according to
             mesa_model
         Teff (float): Effective temperature can be specified by user if
-            neither mesa_model or synspec_model are specified and MSG
+            neither mesa_model or photgrid are specified and MSG
             spectra are desired
         logg (float): Effective surface gravity can be specified by user
-            if neither mesa_model or synspec_model are specified and
+            if neither mesa_model or photgrid are specified and
             MSG spectra are desired
         units (str): User may choose between 'CGS' and 'SOLAR'
         resp_coeffs (dict): A dictionary containing the tidal response
             coefficients from GYRE-tides output
-        phot_coeffs (dict); A dictionary containing the photometric 
+        phot_coeffs (dict): A dictionary containing the photometric 
             coefficients from `gyrelc.Observer`
         point_mass_model (bool): Gets set to True when `mesa_model` is 
             unspecified
@@ -50,7 +50,7 @@ class Star:
     """
 
     def __init__ (self, mesa_model=None, gyre_model=None, 
-            synspec_model=None, mass=None, radius=None, 
+            photgrid=None, mass=None, radius=None, 
             luminosity=None, Teff=None, logg=None, units=None):
         """Constructor method
         """
@@ -191,7 +191,7 @@ class Star:
         return
 
 
-    def read_phot_coeffs_h5(self, filter_x, synspec_model):
+    def read_phot_coeffs_h5(self, synspec_model):
         """This function is deprecated and was tested on a
         synspec intensity spectrum calculated from
         iOri's tlusty atmosphere.
@@ -204,18 +204,21 @@ class Star:
         I_x_l = {}
         dI_dlnT_x_l = {}
         dI_dlng_x_l = {}
+       
+        # Use filename as filter name
+        filter_x = synspec_model.split(",")[0]
 
         for l in range(self.resp_coeffs.data['l_max']+1):
-            I_x_l[l] = pg.D_moment(dx, l)
-            dI_dlnT_x_l[l] = pg.D_moment(dx, l, deriv={'logT':True})/np.log(10.)
-            dI_dlng_x_l[l] = pg.D_moment(dx, l, deriv={'logg':True})/np.log(10.)
+            I_x_l[l] = I[f'I_{filter_x}_{l}'][0]
+            dI_dlnT_x_l[l] = I[f'dlnTeff_{filter_x}_{l}'][0]
+            dI_dlng_x_l[l] = I[f'dlng_{filter_x}_{l}'][0]
 
         return {f'I_{filter_x}': I_x_l,
                 f'dI_dlnT_{filter_x}': dI_dlnT_x_l,
                 f'dI_dlng_{filter_x}': dI_dlng_x_l}
 
 
-    def read_phot_coeffs_msg(self, filter_x):
+    def read_phot_coeffs_msg(self, photgrid):
         """Creates and stores photometric coefficients from
         MSG for the desired filter
         """
@@ -225,7 +228,7 @@ class Star:
         logg = self.logg
 
         dx = {'logT': np.log10(Teff), 'logg': logg}
-        pg = pymsg.PhotGrid(f"{os.environ['GYRELC_DIR']}/grid/{filter_x}.h5")
+        pg = photgrid
 
         # Evaluate photometric data
         I_x_l = {}
@@ -237,75 +240,78 @@ class Star:
             dI_dlnT_x_l[l] = pg.D_moment(dx, l, deriv={'logT':True})/np.log(10.)
             dI_dlng_x_l[l] = pg.D_moment(dx, l, deriv={'logg':True})/np.log(10.)
 
-        return {f'I_{filter_x}': I_x_l,
-                f'dI_dlnT_{filter_x}': dI_dlnT_x_l,
-                f'dI_dlng_{filter_x}': dI_dlng_x_l}
+        return {f'I_x': I_x_l,
+                f'dI_dlnT_x': dI_dlnT_x_l,
+                f'dI_dlng_x': dI_dlng_x_l}
 
 
-    def make_phot_coeffs_pt_mass(self, filter_x):
+    def make_phot_coeffs_pt_mass(self, photgrid):
         """Creates and stores zeros as photometric
         coefficients for a point mass model
         """
-        return {f'I_{filter_x}': np.array([0.]),
-                f'dI_dlnT_{filter_x}':np.array([0.]),
-                f'dI_dlng_{filter_x}': np.array(0.)}
+        return {f'I_x': np.array([0.]),
+                f'dI_dlnT_x':np.array([0.]),
+                f'dI_dlng_x': np.array(0.)}
 
 
-    def read_phot_coeffs(self, filter_x, synspec_model=None):
+    def read_phot_coeffs(self, photgrid):
         """Selects appropriate photometric coefficient routine
         depending on the stellar model
         """
         if self.luminosity==0.:
-            self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(filter_x) )
+            self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(photgrid) )
 
         if self.model_type=='MESA':
-            if synspec_model==None:
-                self.phot_coeffs.update( self.read_phot_coeffs_msg(filter_x) )
-            else:
-                self.phot_coeffs.update( self.read_phot_coeffs_h5(filter_x, synspec_model) )
+            if photgrid is not None:
+                if type(photgrid)==pymsg.PhotGrid
+                    self.phot_coeffs.update( self.read_phot_coeffs_msg(photgrid) )
+                elif type(photgrid)==str:
+                    self.phot_coeffs.update( self.read_phot_coeffs_h5(photgrid) )
+                else: raise Exception(f"Invalid photgrid")
+            else: raise Exception(f"Must specify photgrid")
         elif self.model_type=='point mass':
-            self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(filter_x) )
+            self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(photgrid) )
         else: raise Exception(f"Invalid component model type must be 'mesa_model' or 'point_mass_model'.")
         
         return
 
 
-    def D_moment(self, l, filter_x, deriv=None):
+    def D_moment(self, l, deriv=None):
         """Makes reading photometric coefficients from
         a gyrelc.Star instance less painful
         """
         I = self.phot_coeffs
         if deriv=='lnT':
-            return I[f'dI_dlnT_{filter_x}'][l]
+            return I[f'dI_dlnT_x'][l]
         elif deriv=='lng':
-            return I[f'dI_dlng_{filter_x}'][l]
+            return I[f'dI_dlng_x'][l]
         elif deriv=='logT':
-            return I[f'dI_dlnT_{filter_x}'][l] * np.log(10.)
+            return I[f'dI_dlnT_x'][l] * np.log(10.)
         elif deriv=='logT':
-            return I[f'dI_dlng_{filter_x}'][l] * np.log(10.)
+            return I[f'dI_dlng_x'][l] * np.log(10.)
         else:
-            return I[f'I_{filter_x}'][l]
+            return I[f'I_x'][l]
 
 
-    def R_xl(self, filter_x, l):
+    def R_xl(self, l):
         I = self.phot_coeffs
-        return (2 + l)*(1 - l)*I[f'I_{filter_x}'][l] / I[f'I_{filter_x}'][0]
+        return (2 + l)*(1 - l)*I[f'I_x'][l] / I[f'I_x'][0]
 
-    def T_xl(self, filter_x, l):
+    def T_xl(self, l):
         I = self.phot_coeffs
-        return I[f'dI_dlnT_{filter_x}'][l] / I[f'I_{filter_x}'][0]
+        return I[f'dI_dlnT_x'][l] / I[f'I_x'][0]
 
-    def G_xl(self, filter_x, l):
+    def G_xl(self, l):
         I = self.phot_coeffs
-        return I[f'dI_dlng_{filter_x}'][l] / I[f'I_{filter_x}'][0]
+        return I[f'dI_dlng_x'][l] / I[f'I_x'][0]
 
-    def disk_intg_factor (self, filter_x, l):
+    def disk_intg_factor (self, l):
         I = self.phot_coeffs
-        b_l = I[f'I_{filter_x}'][l]/I[f'I_{filter_x}'][0]
+        b_l = I[f'I_x'][l]/I[f'I_x'][0]
         return b_l
 
 
-    def eval_fourier_moment (self, filter_x, theta, phi, l,m,k):
+    def eval_fourier_moment (self, theta, phi, l,m,k):
 
         i_l = l
         i_m = m + self.resp_coeffs.data['l_max']
@@ -317,9 +323,9 @@ class Star:
 
         Y_lm = sph_harm(m, l, phi, theta)
 
-        R_xl = self.R_xl(filter_x, l)
-        T_xl = self.T_xl(filter_x, l)
-        G_xl = self.G_xl(filter_x, l)
+        R_xl = self.R_xl(l)
+        T_xl = self.T_xl(l)
+        G_xl = self.G_xl(l)
 
         if k == 0:
             if m == 0:
@@ -334,7 +340,7 @@ class Star:
         return 2*kappa*(dR_lmk*R_xl + dT_lmk*T_xl + dG_lmk*G_xl)*Y_lm
 
 
-    def eval_fourier (self, filter_x, theta, phi):
+    def eval_fourier (self, theta, phi):
 
         if self.__dict__.get('point_mass_model'):
             f, A = np.array([0]), np.array([0])
@@ -355,7 +361,7 @@ class Star:
                     for k in np.arange(0, resp_coeffs.data['k_max']+1).astype(int):
                         # Add the Fourier contribution * spherical harmonic
 
-                        A[k] += self.eval_fourier_moment(filter_x, theta, phi, l,m,k)
+                        A[k] += self.eval_fourier_moment(theta, phi, l,m,k)
 
         # Return data
         return f, A
