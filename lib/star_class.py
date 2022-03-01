@@ -5,8 +5,6 @@ from astropy.io import ascii
 
 import sys
 import os
-sys.path.insert(0, os.path.join(os.environ['MSG_DIR'], 'lib'))
-import pymsg
 
 import resp_coeffs as rc
 import atm_coeffs as ac
