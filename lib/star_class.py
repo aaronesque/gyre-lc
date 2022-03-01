@@ -198,7 +198,7 @@ class Star:
             self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(photgrid) )
 
         if self.model_type=='MESA':
-            if isinstance(photgrid, pymsg.PhotGrid):
+            if str(type(photgrid))=="<class 'pymsg.PhotGrid'>":
                 self.phot_coeffs.update( self.read_phot_coeffs_msg(photgrid) )
             elif isinstance(photgrid, str):
                 self.phot_coeffs.update( self.read_phot_coeffs_h5(photgrid) )
