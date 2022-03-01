@@ -58,7 +58,7 @@ class Star:
         if mesa_model is not None:
             self.model = mesa_model
             self.model_type = 'MESA'
-            self.read_mesa_params(self.model)
+            self.read_mesa_params()
 
             # also check for gyre model for response coefficients
             if gyre_model is not None:
@@ -78,9 +78,9 @@ class Star:
                 raise Exception("A point mass cannot experience tides")
             self.resp_coeffs = rc.resp_coeffs('')
 
-
         else: raise Exception("Star() must take valid 'mesa_model' or 'mass' argument")
 
+        self.photgrid = photgrid
         self.phot_coeffs = {}
 
 
@@ -149,6 +149,7 @@ class Star:
         
         return
 
+
     def make_pt_mass_response(self):
         """Makes a zero-response for the point mass.
         """
@@ -160,12 +161,12 @@ class Star:
                 'Omega_orb': 0.}
 
 
-    def read_mesa_params(self, mesa_model_path):
+    def read_mesa_params(self):
         """Reads and builds stellar parameters from
         user-specified MESA model. Converts to solar units
         assuming MESA output is CGS.
         """
-        data = ascii.read(mesa_model_path, data_start=0, data_end=1)
+        data = ascii.read(self.model, data_start=0, data_end=1)
 
         # cgs constants
 
@@ -188,6 +189,28 @@ class Star:
         self.__dict__['mass'] = m/M_sol
         self.__dict__['radius'] = r/R_sol
         self.__dict__['luminosity'] = l/L_sol
+        return
+
+    
+    def read_phot_coeffs(self, photgrid):
+        """Selects appropriate photometric coefficient routine
+        depending on the stellar model
+        """
+        if self.luminosity==0.:
+            self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(photgrid) )
+
+        if self.model_type=='MESA':
+            if isinstance(photgrid, pymsg.PhotGrid):
+                self.phot_coeffs.update( self.read_phot_coeffs_msg(photgrid) )
+            elif isinstance(photgrid, str):
+                self.phot_coeffs.update( self.read_phot_coeffs_h5(photgrid) )
+            elif isinstance(photgrid, None):
+                raise Exception("Must specify photgrid")
+            else: raise Exception(f"Invalid photgrid type")
+        elif self.model_type=='point mass':
+            self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(photgrid) )
+        else: raise Exception(f"Invalid component model type must be 'mesa_model' or 'point_mass_model'.")
+        
         return
 
 
@@ -252,28 +275,6 @@ class Star:
         return {f'I_x': np.array([0.]),
                 f'dI_dlnT_x':np.array([0.]),
                 f'dI_dlng_x': np.array(0.)}
-
-
-    def read_phot_coeffs(self, photgrid):
-        """Selects appropriate photometric coefficient routine
-        depending on the stellar model
-        """
-        if self.luminosity==0.:
-            self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(photgrid) )
-
-        if self.model_type=='MESA':
-            if photgrid is not None:
-                if type(photgrid)==pymsg.PhotGrid
-                    self.phot_coeffs.update( self.read_phot_coeffs_msg(photgrid) )
-                elif type(photgrid)==str:
-                    self.phot_coeffs.update( self.read_phot_coeffs_h5(photgrid) )
-                else: raise Exception(f"Invalid photgrid")
-            else: raise Exception(f"Must specify photgrid")
-        elif self.model_type=='point mass':
-            self.phot_coeffs.update( self.make_phot_coeffs_pt_mass(photgrid) )
-        else: raise Exception(f"Invalid component model type must be 'mesa_model' or 'point_mass_model'.")
-        
-        return
 
 
     def D_moment(self, l, deriv=None):

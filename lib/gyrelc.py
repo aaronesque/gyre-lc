@@ -17,44 +17,48 @@ from binary_class import Irradiation, Binary
 
 class Observer:
     
-    def __init__ (self, star_system, photgrid, use_msg=True, phot_file=None):
+    def __init__ (self, star_system, photgrid=None):
         
-        self.photgrid = photgrid
-        self.use_msg = use_msg
         self.system = star_system
-        
+        self.photgrid = photgrid
+
         if isinstance(star_system, Binary):
             
             self.system_type = 'binary'
-            if use_msg==True:
+            # If photgrid not specified here, take from gyrelc.Star
+            if self.photgrid is None:
+                self.photgrid = self.system.component[1].photgrid
+
+            if self.photgrid is not None:
                 self.system.component[1].read_phot_coeffs(self.photgrid)
                 self.system.component[2].read_phot_coeffs(self.photgrid)
-            else:
-                self.system.component[1].read_phot_coeffs(self.photgrid, 1)
-                self.system.component[2].read_phot_coeffs(self.photgrid, 2)
-                
+            # If photgrid not specified at any point, raise Exception
+            else: raise Exception('Input error: photgrid not specified')
+
         elif isinstance(star_system, Star):
             
             self.system_type = 'single'
-            if use_msg==True:
+            # If photgrid not specified here, take from gyrelc.Star
+            if self.photgrid is None:
+                self.photgrid = self.system.photgrid
+
+            if self.photgrid is not None:
                 self.system.read_phot_coeffs(self.photgrid)
-                
+            else: raise Exception('Input error: photgrid not specified')
+
         else: raise Exception(f'Input error: {star_system} must be of class Binary() or Star()')
-        
         
     
     def convert_coords (self, inc, omega):
-
         theta = inc/180 * np.pi
         phi = (90-omega)/180 * np.pi
-        
         return theta, phi
     
     
     def eval_flux_single (self, star, inc, omega, t, t_peri=0):
         
         theta, phi = self.convert_coords(inc, omega)
-        f, A = star.eval_fourier(self.photgrid, theta, phi)
+        f, A = star.eval_fourier(theta, phi)
         # Initialize the frequencies/amplitudes arrays
         
         if isinstance(t, np.ndarray):
@@ -87,8 +91,8 @@ class Observer:
         
         if reflection==True:
             
-            refl_1 = self.system.find_irrad(1, self.photgrid, inc, omega, t, t_peri)
-            refl_2 = self.system.find_irrad(2, self.photgrid, inc, omega+180, t, t_peri)
+            refl_1 = self.system.find_irrad(1, inc, omega, t, t_peri)
+            refl_2 = self.system.find_irrad(2, inc, omega+180, t, t_peri)
             
             flux = L1*(refl_1 + resp_1) + L2*(refl_2 + resp_2)
         
@@ -109,6 +113,6 @@ class Observer:
     def find_fourier (self, inc, omega, t=0, reflection=True):
         
         if self.system_type=='binary':
-            return self.system.eval_fourier(self.photgrid, inc, omega, t, reflection)
+            return self.system.eval_fourier(inc, omega, t, reflection)
         if self.system_type=='single':
-            return self.system.eval_fourier(self.photgrid, inc, omega)
+            return self.system.eval_fourier(inc, omega)
