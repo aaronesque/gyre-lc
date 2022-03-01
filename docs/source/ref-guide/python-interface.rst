@@ -10,10 +10,13 @@ Python Interface
 
 .. toctree::
   :maxdepth: 2
-
-  python-interface/star.rst
-  python-interface/binary.rst
-  python-interface/observer.rst
+  
+  python-interface/atm_coeffs.rst
+  python-interface/binary_class.rst
+  python-interface/gyrelc.rst
+  python-interface/modules.rst
+  python-interface/resp_coeffs.rst
+  python-interface/star_class.rst
 
 
 .. note:: This project is under active development.
