@@ -39,6 +39,7 @@ author = 'Aaron Lopez'
 extensions = [
         'sphinx.ext.extlinks',
         'sphinx.ext.autodoc',
+        'sphinx.ext.mathjax',
         'sphinx.ext.napoleon',
         'ads_cite'
         ]
