@@ -11,13 +11,6 @@ from scipy.integrate import quad as integrate
 from scipy.optimize import fsolve
 from astropy.io import ascii
 
-# Import gyrelc modules
-
-#sys.path.insert(0, os.path.join(os.environ['GYRELC_DIR'], 'lib'))
-import atm_coeffs as ac
-import resp_coeffs as rc
-from binary_class import Irradiation, Binary
-
 
 ### Class definitions
 
