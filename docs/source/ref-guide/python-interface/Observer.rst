@@ -1,7 +1,7 @@
 .. _python-Observer:
 
 Observer module
-=============
+===============
 
 .. currentmodule:: gyrelc
 

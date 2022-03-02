@@ -35,8 +35,8 @@ The GitHub repository includes the model data necessary to create a light curve 
 `iOri-Aa-response.h5`_ & `iOri-Ab-response.h5`_
     The tide models and their corresponding GYRE inlists are also included for each component. They are created with GYRE using the parameters listed in :ads_citet:`Pablo:2017`. These contain the amplitudes and frequencies for the first 100 normal modes of a star's tidally excited oscillations.
    
-[*photometric grid*].h5
-    Lastly, photometric data for each binary component are required. GYRE-lc works best with MSG, which rapidly interpolates desired spectra and photometry from a grid in :math:`log(g)-T_{eff}` space. For that, three MSG-produced photometric grids are included in the ``$GYRELC_DIR/grid`` directory corresponding to the filters BRITE-R, BRITE-B, and Kepler. These grids are included for demonstration purposes, and if you'd like to synthesize light curves for different passbands, you'll have to create those using MSG yourself.
+:py:class:`pymsg.PhotGrid`
+    Lastly, photometric data for each binary component are required. GYRE-lc works best with MSG, which rapidly interpolates desired spectra and photometry from a grid in :math:`log(g)-T_{eff}` space. For that, you will need to produce a :py:class:`pymsg.PhotGrid` object. Detailed instuctions can be found in the MSG documentation, however a brief walkthrough is included below.
 
 
 ******************************
