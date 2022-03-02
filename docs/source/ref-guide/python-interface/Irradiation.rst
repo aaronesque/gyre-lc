@@ -1,7 +1,7 @@
 .. _python-Irradiation:
 
-Binary module
-=============
+Irradiation module
+==================
 
 .. currentmodule:: gyrelc
 
