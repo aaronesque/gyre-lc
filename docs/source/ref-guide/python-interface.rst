@@ -6,8 +6,6 @@
 Python Interface
 #############################
 
-.. automodule:: gyrelc
-
 .. toctree::
   :maxdepth: 2
   
