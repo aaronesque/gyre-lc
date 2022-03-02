@@ -5,4 +5,3 @@ gyrelc module
    :members:
    :undoc-members:
    :show-inheritance:
-   :noindex:
