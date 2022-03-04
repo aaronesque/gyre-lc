@@ -238,7 +238,7 @@ class Star:
         resp_coeffs (dict): A dictionary containing the tidal response
             coefficients from GYRE-tides output
         phot_coeffs (dict): A dictionary containing the photometric 
-            coefficients from `gyrelc.Observer`
+            coefficients from :py:class:`pymsg.PhotGrid`
         point_mass_model (bool): Gets set to True when `mesa_model` is 
             unspecified
 
@@ -258,8 +258,8 @@ class Star:
             # also check for gyre model for response coefficients
             if gyre_model is not None:
                 self.gyre_model = gyre_model
-                self.resp_coeffs = rc.resp_coeffs( self.gyre_model )
-            else: self.resp_coeffs = rc.resp_coeffs('')
+                self.resp_coeffs = resp_coeffs( self.gyre_model )
+            else: self.resp_coeffs = resp_coeffs('')
 
         # else check for a point mass, read user-specified params
         elif mass is not None:
@@ -271,7 +271,7 @@ class Star:
             # no gyre_model allowed
             if gyre_model is not None:
                 raise Exception("A point mass cannot experience tides")
-            self.resp_coeffs = rc.resp_coeffs('')
+            self.resp_coeffs = resp_coeffs('')
 
         else: raise Exception("Star() must take valid 'mesa_model' or 'mass' argument")
 
@@ -855,10 +855,22 @@ class Binary(Irradiation):
 ###
 
 class Observer:
+    """This is a class representation of observer, whose position,
+    duration, and instrument determines the light curve observed.
+
+    Attributes:
+        system (:py:class:`gyrelc.Binary`): Class representations of
+            the binary whose tidal interactions will be
+            simulated and visualized
+        inc (float): The binary's inclination relative to the observer
+        omega (float): The binary's argument of periastron
     
-    def __init__ (self, star_system, photgrid=None):
+    """
+    def __init__ (self, star_system, inc, omega, photgrid=None):
         
         self.system = star_system
+        self.inc = inc
+        self.omega = omega
         self.photgrid = photgrid
 
         if isinstance(star_system, Binary):
@@ -941,17 +953,17 @@ class Observer:
         return flux/(L1+L2)
     
     
-    def find_flux (self, inc, omega, t, t_peri=0, reflection=True):
+    def find_flux (self, t, t_peri=0, reflection=True):
         
         if self.system_type=='binary':
-            return self.eval_flux_binary(inc, omega, t, t_peri, reflection)
+            return self.eval_flux_binary(self.inc, self.omega, t, t_peri, reflection)
         elif self.system_type=='single':
-            return self.eval_flux_single(self.system, inc, omega, t, t_peri)
+            return self.eval_flux_single(self.system, self.inc, self.omega, t, t_peri)
         
 
-    def find_fourier (self, inc, omega, t=0, reflection=True):
+    def find_fourier (self, t=0, reflection=True):
         
         if self.system_type=='binary':
-            return self.system.eval_fourier(inc, omega, t, reflection)
+            return self.system.eval_fourier(self.inc, self.omega, t, reflection)
         if self.system_type=='single':
-            return self.system.eval_fourier(inc, omega)
+            return self.system.eval_fourier(self.inc, self.omega)
