@@ -1,5 +1,6 @@
 .. _python-walkthrough:
 
+.. _MSG: http://www.astro.wisc.edu/~townsend/resource/docs/msg/
 .. _iOri-Aa.mesa: https://github.com/aaronesque/gyre-lc/raw/master/model/iOri-Aa.mesa
 .. _iOri-Ab.mesa: https://github.com/aaronesque/gyre-lc/raw/master/model/iOri-Ab.mesa
 .. _iOri-Aa-response.h5: https://github.com/aaronesque/gyre-lc/raw/master/model/iOri-Aa-response.h5
@@ -34,20 +35,25 @@ The GitHub repository includes the model data necessary to create a light curve 
 
 `iOri-Aa-response.h5`_ & `iOri-Ab-response.h5`_
     The tide models and their corresponding GYRE inlists are also included for each component. They are created with GYRE using the parameters listed in :ads_citet:`Pablo:2017`. These contain the amplitudes and frequencies for the first 100 normal modes of a star's tidally excited oscillations.
-   
-:py:class:`pymsg.PhotGrid`
-    Lastly, photometric data for each binary component are required. GYRE-lc works best with MSG, which rapidly interpolates desired spectra and photometry from a grid in :math:`log(g)-T_{eff}` space. For that, you will need to produce a :py:class:`pymsg.PhotGrid` object. Detailed instuctions can be found in the MSG documentation, however a brief walkthrough is included below.
+
+
+The model filenames themselves don't have to be in any particular format, so feel free to name them whatever you find most convenient. They also don't have to be located anywhere in particular, but be mindful of unweildy paths relative to the directory where you run GYRE-lc from.
+
+The photometric grids
+==============================
+
+Lastly, photometric data for each binary component are required. GYRE-lc works best with MSG, which rapidly interpolates desired spectra and photometry from a grid in :math:`log(g)-T_{eff}` space. For that, you will need to produce a :py:class:`pymsg.PhotGrid` object using an MSG-produced spectral grid and a properly formatted passband file. Detailed instuctions can be found in the `MSG`_ documentation, however a brief walkthrough is included below.
 
 
 ******************************
 The GYRE-lc Module
 ******************************
 
-This walkthrough relies on `MSG <http://www.astro.wisc.edu/~townsend/resource/docs/msg/>`_ for rapid synthesis of photometric data. Download and install MSG, then set the :envvar:`MSG_DIR` environment variable as described in the `MSG Quick Start guide <http://www.astro.wisc.edu/~townsend/resource/docs/msg/user-guide/quick-start.html#quick-start>`_. 
+This walkthrough relies on `MSG`_ for rapid synthesis of photometric data. Download and install MSG, then set the :envvar:`MSG_DIR` environment variable as described in the `MSG Quick Start guide <http://www.astro.wisc.edu/~townsend/resource/docs/msg/user-guide/quick-start.html#quick-start>`_. 
 
 To use GYRE-lc in Python, also make sure the :envvar:`GYRELC_DIR` environment variable is set (see `Quick Start`). I use a Jupyter notebook for this walkthrough, but you may later choose to write a Python script instead should it better suit your workflow.
 
-First, create a new working directory and open a new Jupyter notebok there.
+Begin by creating a new working directory and open a new Jupyter notebook there.
 
 Copy and past the following imports::
 
@@ -68,6 +74,22 @@ Copy and past the following imports::
     import gyrelc as lc
 
 The :py:mod:`pymsg` and :py:mod:`gyrelc` modules both require :py:mod:`sys` and :py:mod:`os` to be imported, so we do that first. We also import the :py:mod:`numpy` module, which we use extensively.
+At this point, you may also import and configure any plotting or visualization modules::
+
+    # Import plotting module and configure
+    
+    import matplotlib.pyplot as plt
+    %matplotlib inline
+    plt.rcParams.update({'font.size': 16})
+
+We must now create a photometric grid.
+
+Creating a PhotGrid
+=========================
+
+
+Modeling the "heartbeat"
+=========================
 
 Next, create a pair of :py:class:`gyrelc.Star` objects using the stellar and tide models provided::
 
