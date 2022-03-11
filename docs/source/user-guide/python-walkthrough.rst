@@ -15,14 +15,16 @@ Python Walkthrough
 This chapter provides a walkthrough of using the GYRE-lc package to calculate a light curve for the eccentric ellipsoidal variable of :math:`{\iota}` Orionis.
 
 *****************************
-Seting up your inputs
+Preparing your inputs
 *****************************
 
-There are 3 sets of inputs to consider when producing a GYRE-lc light curve:
+There are several inputs to consider when producing a GYRE-lc light curve:
 
 - 1-2 stellar models, depending on how many stars contribute to the overall light curve
-- 1-2 tide models. one per stellar model
-- the orbital parameters: :math:`a`, :math:`e`, and :math:`\Omega_{orb}`
+- a tidal response model for each star
+- a photometric model for each star
+- the orbital parameters: :math:`a`, :math:`e`, and :math:`\Omega_{orb}` for the binary
+
 
 The iota Orionis Models
 =============================
@@ -37,16 +39,20 @@ The GitHub repository includes the model data necessary to create a light curve 
     The tide models and their corresponding GYRE inlists are also included for each component. They are created with GYRE using the parameters listed in :ads_citet:`Pablo:2017`. These contain the amplitudes and frequencies for the first 100 normal modes of a star's tidally excited oscillations.
 
 
-The model filenames themselves don't have to be in any particular format, so feel free to name them whatever you find most convenient. They also don't have to be located anywhere in particular, but be mindful of unweildy paths relative to the directory where you run GYRE-lc from.
+The model filenames themselves don't have to be in any particular format, so feel free to name them whatever you find most convenient. Mind these files in `$GYRELC_DIR/models` and place them in your working directory.`.
 
 The photometric grids
 ==============================
 
 Lastly, photometric data for each binary component are required. GYRE-lc works best with MSG, which rapidly interpolates desired spectra and photometry from a grid in :math:`log(g)-T_{eff}` space. For that, you will need to produce a :py:class:`pymsg.PhotGrid` object using an MSG-produced spectral grid and a properly formatted passband file. Detailed instuctions can be found in the `MSG`_ documentation, however a brief walkthrough is included below.
 
+Before starting Jupyter, download and place the following files in your working directory::
+
+* :grids:`sg-demo.h5` from `MSG`_. This is a temperature-gravity grid of low-resolution intensity spectra (based on the solar-metallicity :ads_citet:`castelli:2003` atmospheres).
+* :passbands:`kepler.h5` from `$GYRELC_DIR/passbands`. This is  
 
 ******************************
-The GYRE-lc Module
+Importing the GYRE-lc Module
 ******************************
 
 This walkthrough relies on `MSG`_ for rapid synthesis of photometric data. Download and install MSG, then set the :envvar:`MSG_DIR` environment variable as described in the `MSG Quick Start guide <http://www.astro.wisc.edu/~townsend/resource/docs/msg/user-guide/quick-start.html#quick-start>`_. 
