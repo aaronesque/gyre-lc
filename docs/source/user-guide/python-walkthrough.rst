@@ -49,7 +49,7 @@ Lastly, photometric data for each binary component are required. GYRE-lc works b
 Before starting Jupyter, download and place the following files in your working directory::
 
 * :grids:`sg-demo.h5` from `MSG`_. This is a temperature-gravity grid of low-resolution intensity spectra (based on the solar-metallicity :ads_citet:`castelli:2003` atmospheres).
-* :passbands:`kepler.h5` from `$GYRELC_DIR/passbands`. This is  
+* :passbands:`kepler.h5` from `$GYRELC_DIR/passbands`. This is a response function corresponding to the the  
 
 ******************************
 Importing the GYRE-lc Module
@@ -59,9 +59,7 @@ This walkthrough relies on `MSG`_ for rapid synthesis of photometric data. Downl
 
 To use GYRE-lc in Python, also make sure the :envvar:`GYRELC_DIR` environment variable is set (see `Quick Start`). I use a Jupyter notebook for this walkthrough, but you may later choose to write a Python script instead should it better suit your workflow.
 
-Begin by creating a new working directory and open a new Jupyter notebook there.
-
-Copy and past the following imports::
+In a new Jupyter notebook, copy and past the following imports::
 
     # Import standard modules
 
@@ -93,6 +91,9 @@ We must now create a photometric grid.
 Creating a PhotGrid
 =========================
 
+With :grids:`sg-demo.h5` and :passbands:`kepler.h5` in the current working directory::
+    
+    pg = pymsg.PhotGrid('sg-demo.h5', 'kepler.h5')
 
 Modeling the "heartbeat"
 =========================
@@ -100,8 +101,8 @@ Modeling the "heartbeat"
 Next, create a pair of :py:class:`gyrelc.Star` objects using the stellar and tide models provided::
 
     # Create Star objects
-    Aa = lc.Star(mesa_model='iOri-Aa.mesa', gyre_model='iOri-Aa-response.h5')
-    Ab = lc.Star(mesa_model='iOri-Ab.mesa', gyre_model='iOri-Ab-response.h5')
+    Aa = lc.Star(mesa_model='iOri-Aa.mesa', gyre_model='iOri-Aa-response.h5', photgrid=pg)
+    Ab = lc.Star(mesa_model='iOri-Ab.mesa', gyre_model='iOri-Ab-response.h5', photgrid=pg)
 
 Use them, along with the corresponding orbital parameters, as inputs to create a :py:class:`gyrelc.Binary` object::
 
@@ -110,21 +111,22 @@ Use them, along with the corresponding orbital parameters, as inputs to create a
 
 Now create an ``Observer`` object::
 
-    # Creat an Observer object
-    obs = lc.Observer(iOri, 'BRITE-B')
+    # Create an Observer object
+    inc = 44.0
+    omega = 112.5
+    
+    # Create an Observer object
+    obs = lc.Observer(iOri, inc, omega)
 
 The ``Binary`` object consists of two ``Star`` objects, an ``Irradiation`` object, as well as the various attributes and parameters required to provide the ``Observer`` object sufficient context to synthesize a light curve. The ``Observer`` object primarily contains functions for light curve synthesis and analysis thereof. The last parameter left to specify, the choice of passband, is left as an argument for the ``Observer`` class.
 
 Finally, create a light curve::
 
-    # Specify inclination and argument of periastron
-    inc = 62.86
-    omega = 122.2
-
     # Duration of 'observation' and number of points
     omega_orb = iOri.omega_orb
     t = np.linspace(0.5/omega_orb, 2.5/omega_orb, num=2000, endpoint=False)
 
+    # Evaluate the fourier terms
     flux = obs.find_flux(inc, omega, t)
 
 An important subtlety: the ``find_flux()`` function *requires* the observation time to be in units of the orbital period. Here, I'm simulating a BRITE-B passband observation of :math:`{\iota}` iOri that consists of 2000 data points over 2 orbital periods, begining at half a period past periastron. 
