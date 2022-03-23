@@ -48,8 +48,8 @@ Lastly, photometric data for each binary component are required. GYRE-lc works b
 
 Before starting Jupyter, download and place the following files in your working directory::
 
-* :grids:`sg-demo.h5` from `MSG`_. This is a temperature-gravity grid of low-resolution intensity spectra (based on the solar-metallicity :ads_citet:`castelli:2003` atmospheres).
-* :passbands:`kepler.h5` from `$GYRELC_DIR/passbands`. This is a response function corresponding to the the  
+* `sg-demo.h5` from `MSG`_. This is a temperature-gravity grid of low-resolution intensity spectra (based on the solar-metallicity :ads_citet:`castelli:2003` atmospheres).
+* `kepler.h5` from `$GYRELC_DIR/passbands`. This is a response function corresponding to the the  
 
 ******************************
 Importing the GYRE-lc Module
@@ -74,7 +74,7 @@ In a new Jupyter notebook, copy and past the following imports::
 
     # Import gyrelc modules
 
-    sys.path.insert(0, os.path.join(os.environ['GYRELC_DIR'], 'lib'))
+    sys.path.insert(0, os.path.join(os.environ['GYRELC_DIR'], 'gyrelc'))
     import gyrelc as lc
 
 The :py:mod:`pymsg` and :py:mod:`gyrelc` modules both require :py:mod:`sys` and :py:mod:`os` to be imported, so we do that first. We also import the :py:mod:`numpy` module, which we use extensively.
