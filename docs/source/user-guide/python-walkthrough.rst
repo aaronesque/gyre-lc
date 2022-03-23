@@ -46,7 +46,7 @@ The photometric grids
 
 Lastly, photometric data for each binary component are required. GYRE-lc works best with MSG, which rapidly interpolates desired spectra and photometry from a grid in :math:`log(g)-T_{eff}` space. For that, you will need to produce a :py:class:`pymsg.PhotGrid` object using an MSG-produced spectral grid and a properly formatted passband file. Detailed instuctions can be found in the `MSG`_ documentation, however a brief walkthrough is included below.
 
-Before starting Jupyter, download and place the following files in your working directory::
+Before starting Jupyter, download and place the following files in your working directory:
 
 * `sg-demo.h5` from `MSG`_. This is a temperature-gravity grid of low-resolution intensity spectra (based on the solar-metallicity :ads_citet:`castelli:2003` atmospheres).
 * `kepler.h5` from `$GYRELC_DIR/passbands`. This is a response function corresponding to the the  
@@ -91,7 +91,7 @@ We must now create a photometric grid.
 Creating a PhotGrid
 =========================
 
-With :grids:`sg-demo.h5` and :passbands:`kepler.h5` in the current working directory::
+With `sg-demo.h5` and `kepler.h5` in the current working directory::
     
     pg = pymsg.PhotGrid('sg-demo.h5', 'kepler.h5')
 
