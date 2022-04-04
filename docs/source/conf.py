@@ -72,8 +72,8 @@ epub_show_urls = 'footnote'
 
 # MathJax & LaTeX macros
 mathjax3_config = {
-    'TeX': {
-        'Macros': {
+    'tex': {
+        'macros': {
             'ii': '\mathrm{i}',
             'dd': '\mathrm{d}',
             'RR': '\mathcal{R}',
