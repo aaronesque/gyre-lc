@@ -70,6 +70,24 @@ epub_show_urls = 'footnote'
 
 # -- Additional configuration ------------------------------------------------
 
+# MathJax & LaTeX macros
+mathjax3_config = {
+    'TeX': {
+        'Macros': {
+            'ii': '\mathrm{i}',
+            'dd': '\mathrm{d}',
+            'RR': '\mathcal{R}',
+            'TT': '\mathcal{T}',
+            'GG': '\mathcal{G}',
+            'II': '\mathcal{I}',
+            'FF': '\mathcal{F}',
+            'eff': '\mathrm{eff}',
+            'lx': '\ell;x',
+            'Yml': 'Y^m_l'
+            }
+    }
+}
+
 # Set logo
 html_logo = 'gyre-lc-logo-1.png'
 
