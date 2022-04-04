@@ -23,7 +23,7 @@ Here, :math:`{\Phi_{r;l,m,k}}` is the radial component of the forcing potential 
 .. math::
    \xi_r(\vec{r}; t) = \sum_{l,m,k} \tilde{\xi}_{r; l,m,k}(r) \; Y^m_l (\theta, \phi) \; e^{-i k \Omega_\textrm{orb} t}
 
-It follows from :ads_citet:`Townsend:2003a` (see :ref:`The Semi-analytical Formalism <how-gyre-lc-works-formalism>`) that we may also expand the radiative luminosity that way into surface luminosity variations:
+It follows from :ads_citet:`Townsend:2003b` (see :ref:`The Semi-analytical Formalism <how-gyre-lc-works-formalism>`) that we may also expand the radiative luminosity that way into surface luminosity variations:
 
 .. math::
    \delta L(\vec{r};t)_\textrm{rad} = \widetilde{\delta L}_{\textrm{rad};l,m,k}(r) \; Y^m_l \; e^{-i k \Omega_\textrm{orb} t }
