@@ -48,7 +48,7 @@ Lastly, photometric data for each binary component are required. GYRE-lc works b
 
 Before starting Jupyter, download and place the following files in your working directory:
 
-* `sg-demo.h5` from `MSG`_. This is a temperature-gravity grid of low-resolution intensity spectra (based on the solar-metallicity :ads_citet:`castelli:2003` atmospheres).
+* `sg-demo.h5` from `MSG`_. This is a temperature-gravity grid of low-resolution intensity spectra (based on the solar-metallicity :ads_citet:`Castelli:2003` atmospheres).
 * `kepler.h5` from `$GYRELC_DIR/passbands`. This is a response function corresponding to the the  
 
 ******************************
