@@ -49,7 +49,7 @@ The semi-analytical formalism for light variations due to tides extends earlier 
 
 Essentially, the semi-analytical formalism makes the statement that, for any stellar surface perturbation that can be written as a superposition of partial perturbations, we can write the resulting light variations in terms of intensity moments. 
 
-Accordingly, we can express perturbations to stellar radius $R$, effective temperature $T_\mathrm{eff}$, and surface gravity $g_\eff$ in terms of spherical harmonics $Y_l^m(\theta, \phi)$ and perturbation coefficients:
+Accordingly, we can express perturbations to stellar radius :math:`R`, effective temperature :math:`T_\mathrm{eff}`, and surface gravity :math:`g_\eff` in terms of spherical harmonics :math:`\Ylm(\theta, \phi)` and perturbation coefficients:
 
 .. math::
     \Delta_R &= \frac{\tilde{\xi}_r(R)}{R}\\
