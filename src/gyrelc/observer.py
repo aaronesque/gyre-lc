@@ -32,31 +32,30 @@ class Observer:
         self.system = star_system
         self.inc = inc
         self.omega = omega
-        self.photgrid = photgrid
 
         if isinstance(star_system, Binary):
             
             self.system_type = 'binary'
             # If photgrid not specified here, take from gyrelc.Star
-            if self.photgrid is None:
-                self.photgrid = self.system.component[1].photgrid
+            #if self.photgrid is None:
+            #    self.photgrid = self.system.component[1].photgrid
 
-            if self.photgrid is not None:
-                self.system.component[1].read_phot_coeffs(self.photgrid)
-                self.system.component[2].read_phot_coeffs(self.photgrid)
+            #if self.photgrid is not None:
+            #    self.system.component[1].read_phot_coeffs(self.photgrid)
+            #    self.system.component[2].read_phot_coeffs(self.photgrid)
             # If photgrid not specified at any point, raise Exception
-            else: raise Exception('Input error: photgrid not specified')
+            #else: raise Exception('Input error: photgrid not specified')
 
         elif isinstance(star_system, Star):
             
             self.system_type = 'single'
             # If photgrid not specified here, take from gyrelc.Star
-            if self.photgrid is None:
-                self.photgrid = self.system.photgrid
+            #if self.photgrid is None:
+            #    self.photgrid = self.system.photgrid
 
-            if self.photgrid is not None:
-                self.system.read_phot_coeffs(self.photgrid)
-            else: raise Exception('Input error: photgrid not specified')
+            #if self.photgrid is not None:
+            #    self.system.read_phot_coeffs(self.photgrid)
+            #else: raise Exception('Input error: photgrid not specified')
 
         else: raise Exception(f'Input error: {star_system} must be of class Binary() or Star()')
         
@@ -96,10 +95,10 @@ class Observer:
     def eval_flux_binary (self, inc, omega, t, t_peri=0, reflection=True):
         
         resp_1 = self.eval_flux_single(self.system.component[1], inc, omega, t, t_peri)
-        L1 = self.system.component[1].luminosity
+        L1 = self.system.component[1].params['luminosity']
         
         resp_2 = self.eval_flux_single(self.system.component[2], inc, omega+180, t, t_peri)
-        L2 = self.system.component[2].luminosity
+        L2 = self.system.component[2].params['luminosity']
         
         if reflection==True:
             

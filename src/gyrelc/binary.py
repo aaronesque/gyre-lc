@@ -77,10 +77,10 @@ class Irradiation:
         Returns:
             The disk integral factor :math:`b_l`, a float
         """
-        if self.component[star_number].luminosity==0.:
+        if self.component[star_number].params['luminosity']==0.:
             return 0.
         else:
-            b_l = self.component[star_number].disk_intg_factor(l)
+            b_l = self.component[star_number].phot_coeffs.disk_intg_factor(l)
             return b_l
         
     
@@ -184,9 +184,9 @@ class Irradiation:
         phot_coeffs = self.component[star_number].phot_coeffs
         resp_data = self.component[star_number].resp_coeffs.data
         
-        L1 = self.component[star_number].luminosity
-        R1 = self.component[star_number].radius
-        L2 = self.component[star_neighbor].luminosity
+        L1 = self.component[star_number].params['luminosity']
+        R1 = self.component[star_number].params['radius']
+        L2 = self.component[star_neighbor].params['luminosity']
         
         return phot_coeffs, resp_data, L1, R1, L2
     
