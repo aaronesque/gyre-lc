@@ -21,19 +21,13 @@ class Star:
     `mesa_model` or `mass` (if modeling a point mass) must be taken.
 
     Attributes:
-        Teff (float): Effective temperature can be specified by user if
-            neither mesa_model or photgrid are specified and MSG
-            spectra are desired
-        logg (float): Effective surface gravity can be specified by user
-            if neither mesa_model or photgrid are specified and
-            MSG spectra are desired
         resp_coeffs (dict): A dictionary containing the tidal response
             coefficients from GYRE-tides output
         phot_coeffs (dict): A dictionary containing the photometric 
             coefficients from :py:class:`pymsg.PhotGrid`
-        point_mass_model (bool): Gets set to True when `mesa_model` is 
-            unspecified
-
+        params (dict): A dictionary containing the stellar parameters
+        model_type (str): Denotes the type of stellar model this is, 
+            'MESA' or 'point mass'
     """
 
     def __init__ (self, mesa_model=None, gyre_model=None, 
@@ -166,64 +160,6 @@ class Star:
         
         return
 
-
-
-
-    def eval_fourier_moment (self, theta, phi, l,m,k):
-
-        i_l = l
-        i_m = m + self.resp_coeffs.data['l_max']
-        i_k = k
-
-        dR_lmk = self.resp_coeffs.R_lmk[i_l,i_m,i_k]
-        dT_lmk = self.resp_coeffs.T_lmk[i_l,i_m,i_k]
-        dG_lmk = self.resp_coeffs.G_lmk[i_l,i_m,i_k]
-
-        Y_lm = sph_harm(m, l, phi, theta)
-
-        R_xl = self.phot_coeffs.R_xl(l)
-        T_xl = self.phot_coeffs.T_xl(l)
-        G_xl = self.phot_coeffs.G_xl(l)
-
-        if k == 0:
-            if m == 0:
-                kappa = 0.5
-            elif m >= 1:
-                kappa = 1.
-            else:
-                kappa = 0.
-        else:
-            kappa = 1.
-
-        return 2*kappa*(dR_lmk*R_xl + dT_lmk*T_xl + dG_lmk*G_xl)*Y_lm
-
-
-    def eval_fourier (self, theta, phi):
-
-        if self.__dict__.get('point_mass_model'):
-            f, A = np.array([0]), np.array([0])
-        else:
-            resp_coeffs = self.resp_coeffs
-            I = self.phot_coeffs
-
-            # Initialize the frequencies/amplitudes arrays
-
-            f = np.arange(resp_coeffs.data['k_max']+1)*resp_coeffs.data['Omega_orb']
-
-            A = np.zeros(resp_coeffs.data['k_max']+1, dtype=complex)
-
-            # Loop over l, m and k
-
-            for l in np.arange(2, resp_coeffs.data['l_max']+1).astype(int):
-                for m in np.arange(-l, l+1).astype(int):
-                    for k in np.arange(0, resp_coeffs.data['k_max']+1).astype(int):
-                        # Add the Fourier contribution * spherical harmonic
-
-                        A[k] += self.eval_fourier_moment(theta, phi, l,m,k)
-
-        # Return data
-        return f, A
-
 ###
 
 class Response:
@@ -270,16 +206,12 @@ class Response:
         if filename == None:
             
             # Fabricate dummy data
-            
             xi_r_ref_re = np.zeros((0,0,0))
             xi_r_ref_im = np.zeros((0,0,0))
-            
             lag_L_ref_re = np.zeros((0,0,0))
             lag_L_ref_im = np.zeros((0,0,0))
-            
             l_max = 0
             k_max = 0
-            
             Omega_rot = 0.
             Omega_orb = 0.
             
@@ -336,30 +268,16 @@ class Photosphere:
     def __init__ (self, resp_coeffs, photgrid, dx):
         
         self.resp_coeffs = resp_coeffs
-        # input to be replaced by Teff, logg
+        
         self.coeffs = {}
         self.read_phot_coeffs(photgrid, dx) 
-        #self.data = self.read_intensity(intensity_file)
-        
-        #self.R_xl = {}
-        #self.T_xl = {}
-        #self.G_xl = {}
-        
-        #for x in self.info:
-            
-        #    self.R_xl[x] = self.find_coeffs('R',x)
-        #    self.T_xl[x] = self.find_coeffs('T',x)
-        #    self.G_xl[x] = self.find_coeffs('G',x)
     
     
     def read_phot_coeffs(self, photgrid, dx):
         """Selects appropriate photometric coefficient routine
         depending on the stellar model
         """
-        #if self.luminosity==0.:
-        #    self.coeffs.update( self.make_phot_coeffs_pt_mass(photgrid, dx) )
 
-        #if self.model_type=='MESA':
         if str(type(photgrid))=="<class 'pymsg.PhotGrid'>":
             self.coeffs.update( self.read_phot_coeffs_msg(photgrid, dx) )
         elif isinstance(photgrid, str):
@@ -367,9 +285,6 @@ class Photosphere:
         elif isinstance(photgrid, None):
             raise Exception("Must specify photgrid")
         else: raise Exception(f"Invalid photgrid type")
-        #elif self.model_type=='point mass':
-        #    self.coeffs.update( self.make_phot_coeffs_pt_mass(photgrid, dx) )
-        #else: raise Exception(f"Invalid component model type must be 'mesa_model' or 'point_mass_model'.")
         
         return
     
@@ -404,23 +319,6 @@ class Photosphere:
         return {f'I_x': np.array([0.]),
                 f'dI_dlnT_x':np.array([0.]),
                 f'dI_dlng_x': np.array(0.)}
-
-
-    def D_moment(self, pg, l, deriv=None):
-        """Makes reading photometric coefficients from
-        a gyrelc.Star instance less painful
-        """
-        dx = self.dx
-        if deriv=='lnT':
-            return pg.D_moment(dx, l, deriv={'logT':True})/np.log(10.)
-        elif deriv=='lng':
-            return pg.D_moment(dx, l, deriv={'logg':True})/np.log(10.)
-        elif deriv=='logT':
-            return pg.D_moment(dx, l, deriv={'logT':True})
-        elif deriv=='logg':
-            return pg.D_moment(dx, l, deriv={'logg':True})
-        else:
-            return pg.D_moment(dx, l) 
 
 
     def R_xl(self, l):
@@ -480,7 +378,6 @@ class Photosphere:
     def read_info(self, filename):
         
         moments = self.read_intensity(filename)
-        
         colors = []
         ells = []
 
@@ -496,7 +393,6 @@ class Photosphere:
                     ells.append(int(words[-1]))
                     
         l_min, l_max = min(ells), max(ells)
-        
         info = {}
         
         for color in colors:
@@ -510,20 +406,15 @@ class Photosphere:
         I = self.data
         
         def find_coeffs_C(I, C, x, l):
-            
             if C=='R': 
                 return (2 + l)*(1 - l)*I[f'I_{x}_{l}'][:] / I[f'I_{x}_0'][:]
-        
             if C=='T':
                 return I[f'dlnTeff_{x}_{l}'][:] / I[f'I_{x}_0'][:]
-        
             if C=='G':
                 return I[f'dlng_{x}_{l}'][:] / I[f'I_{x}_0'][:]
-            
         C_x = {} 
         
         if l==None:
-
             n_l = self.info[x]['l_max'] # - self.info[x]['l_min'] 
             #this may break if l_min =/= 0
         

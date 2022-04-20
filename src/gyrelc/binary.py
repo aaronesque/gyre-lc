@@ -22,20 +22,6 @@ class Irradiation:
     binaries. :py:class:`gyrelc.Irradiation` is turned off by 
     default for :py:func:`gyrelc.Observer.find_flux()` to 
     preserve computational resources.
-
-    Attributes:
-        component_1 (:py:class:`gyrelc.Star`): Class representations of
-            the binary components whose tidal interactions will be
-            simulated and visualized
-        component_2 (:py:class:`gyrelc.Star`): Class representations of
-            the binary components whose tidal interactions will be
-            simulated and visualized
-        omega_orb (float): The binary's orbital angular velocity
-        omega_orb_units (str): Units of ``omega_orb``. Default is 'CYC_PER_DAY'
-        a (float): The binary separation
-        a_units (str): Units of ``a``. Default is 'SOLAR' but user may specify
-        'CGS' (centimeters) instead
-        e (float): The binary eccentricity. :math:`0\leq e <1`
     
     """
 
@@ -83,83 +69,6 @@ class Irradiation:
             b_l = self.component[star_number].phot_coeffs.disk_intg_factor(l)
             return b_l
         
-    
-    def find_mean_anom (self, t, t_peri=0):
-        """Finds the mean anomaly given the observation time,
-        time at periastron, and orbital angular velocity
-
-        Args:
-            t (float, np.array): observation time(s)
-            t_peri (float): the time at periastron
-
-        Returns:
-            The mean anomaly
-        """
-        return self.omega_orb*(t - t_peri)*(2*np.pi)
-        
-    
-    def find_ecce_anom (self, M):
-        """Finds the eccentric anomaly from the mean anomaly
-        and orbital eccentricity
-
-        Args:
-            M (float, np.array): The mean anomaly
-
-        Returns:
-            The eccentric anomaly
-        """
-        K_soln = np.empty_like(M)
-        for i, M_val in enumerate(M): 
-            Keppler = lambda E : E - self.e*np.sin(E) - M_val
-            K_soln[i] = fsolve(Keppler, 0)[0]
-        return K_soln
-        
-    
-    def find_true_anom (self, E):
-        """Finds the true anomaly from the eccentric 
-        anomaly and eccentricity
-
-        Args:
-            E (float, np.array): The eccentric anomaly
-
-        Returns:
-            The true anomaly
-        """
-        return 2*np.arctan( ((1+self.e)/(1-self.e))*np.tan(E/2) )
-    
-    
-    def convert_t_to_f (self, t, t_peri=0):
-        """Converts from observation time `t` to
-        true anomaly `f`
-
-        Args:
-            t (float, np.array): The observation time(s)
-            t_peri (float): The time of periastron
-
-        Returns:
-            The true anomaly
-        """
-        M = self.find_mean_anom(t, t_peri)
-        E = self.find_ecce_anom(M)
-        f = self.find_true_anom(E)
-        return f
-    
-    
-    def find_bin_sep (self, t, t_peri=0):
-        """Finds the binary separation :math:`D(t)` for the
-        binary at time `t`, given some `t_peri`
-
-        Args:
-            t (float, np.array): The observation time(s)
-            t_peri (float): The time of periastron
-           
-        Returns:
-            The binary separation at time(s) `t`
-        """
-        f = self.convert_t_to_f(t, t_peri)
-        D = self.a*(1-self.e**2)/(1+self.e*np.cos(f))
-        return D
-    
     
     def setup_irrad (self, star_number):
         """Acquires the parameters from either :py:class:`gyrelc.Star`
@@ -286,20 +195,81 @@ class Binary(Irradiation):
         return
 
 
-    def eval_fourier (self, inc, omega, t=0, reflection=True):
+    def find_mean_anom (self, t, t_peri=0):
+        """Finds the mean anomaly given the observation time,
+        time at periastron, and orbital angular velocity
 
-        omega_orb = self.omega_orb
+        Args:
+            t (float, np.array): observation time(s)
+            t_peri (float): the time at periastron
 
-        f_1, A_1 = self.component[1].eval_fourier(inc, omega)
-        f_2, A_2 = self.component[2].eval_fourier(inc, omega+180)
+        Returns:
+            The mean anomaly
+        """
+        return self.omega_orb*(t - t_peri)*(2*np.pi)
+        
+    
+    def find_ecce_anom (self, M):
+        """Finds the eccentric anomaly from the mean anomaly
+        and orbital eccentricity
 
-        #if reflection==True:
-        #    rf_1, rA_1 = self.system.eval_fourier_irrad(1, self.filter_x, inc, omega, t, t_peri)
-        #    rf_2, rA_2 = self.system.eval_fourier_irrad(2, self.filter_x, inc, omega+180, t, t_peri)
+        Args:
+            M (float, np.array): The mean anomaly
 
-        #    return [f_1/omega_orb, rf_1, f_2/omega_orb, rf_2], [A_1, rA_1, A_2, rA_2]
-        #else:
+        Returns:
+            The eccentric anomaly
+        """
+        K_soln = np.empty_like(M)
+        for i, M_val in enumerate(M): 
+            Keppler = lambda E : E - self.e*np.sin(E) - M_val
+            K_soln[i] = fsolve(Keppler, 0)[0]
+        return K_soln
+        
+    def find_true_anom (self, E):
+        """Finds the true anomaly from the eccentric 
+        anomaly and eccentricity
 
-        return f_1/omega_orb, np.abs(A_1 + A_2)
+        Args:
+            E (float, np.array): The eccentric anomaly
 
+        Returns:
+            The true anomaly
+        """
+        return 2*np.arctan( ((1+self.e)/(1-self.e))*np.tan(E/2) )
+    
+    def convert_t_to_f (self, t, t_peri=0):
+        """Converts from observation time `t` to
+        true anomaly `f`
+
+        Args:
+            t (float, np.array): The observation time(s)
+            t_peri (float): The time of periastron
+
+        Returns:
+            The true anomaly
+        """
+        M = self.find_mean_anom(t, t_peri)
+        E = self.find_ecce_anom(M)
+        f = self.find_true_anom(E)
+        return f
+    
+
+    def find_bin_sep (self, t, t_peri=0):
+        """Finds the binary separation :math:`D(t)` for the
+        binary at time `t`, given some `t_peri`
+
+        Args:
+            t (float, np.array): The observation time(s)
+            t_peri (float): The time of periastron
+           
+        Returns:
+            The binary separation at time(s) `t`
+        """
+        f = self.convert_t_to_f(t, t_peri)
+        D = self.a*(1-self.e**2)/(1+self.e*np.cos(f))
+        return D
+    
+    
 ###
+
+
