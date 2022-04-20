@@ -1,11 +1,11 @@
-.. _python-resp_coeffs:
+.. _python-Response:
 
-resp_coeffs module
-==================
+Response module
+===============
 
 .. currentmodule:: gyrelc
 
-.. autoclass:: resp_coeffs
+.. autoclass:: Response
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,11 +1,11 @@
-.. _python-atm_coeffs:
+.. _python-Photosphere:
 
-atm_coeffs module
-=================
+Photosphere module
+==================
 
 .. currentmodule:: gyrelc
 
-.. autoclass:: atm_coeffs
+.. autoclass:: Photosphere
    :members:
    :undoc-members:
    :show-inheritance:
