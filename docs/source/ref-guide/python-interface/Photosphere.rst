@@ -8,4 +8,3 @@ Photosphere module
 .. autoclass:: Photosphere
    :members:
    :undoc-members:
-   :show-inheritance:

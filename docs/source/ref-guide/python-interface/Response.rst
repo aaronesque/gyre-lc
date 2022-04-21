@@ -8,4 +8,3 @@ Response module
 .. autoclass:: Response
    :members:
    :undoc-members:
-   :show-inheritance:

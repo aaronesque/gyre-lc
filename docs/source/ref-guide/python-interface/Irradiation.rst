@@ -8,4 +8,3 @@ Irradiation module
 .. autoclass:: Irradiation
    :members:
    :undoc-members:
-   :show-inheritance:

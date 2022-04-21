@@ -8,4 +8,3 @@ Star module
 .. autoclass:: Star
    :members:
    :undoc-members:
-   :show-inheritance:

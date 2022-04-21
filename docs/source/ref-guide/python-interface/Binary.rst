@@ -8,4 +8,3 @@ Binary module
 .. autoclass:: Binary
    :members:
    :undoc-members:
-   :show-inheritance:

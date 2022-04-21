@@ -8,4 +8,3 @@ Observer module
 .. autoclass:: Observer
    :members:
    :undoc-members:
-   :show-inheritance:
