@@ -6,6 +6,12 @@
 How GYRE-lc Works
 #############################
 
+This chapter provides a deeper look into what the GYRE-lc package does and how it works. Fig. 1 shows a class diagram representation of GYRE-lc's architecture, omitting some technical details like most private methods and attributes. 
+
+.. figure:: ./class-diagram.png
+
+   Figure 1. GYRE-lc's architecture is roughly meant to imply a "zooming out" from the photosphere all the way out to the observer.
+
 GYRE-lc takes 
 .. GYRE-tides models forced oscillations of a star in a binary due to its companion's gravitational field :ads_citet:`Sun:2021`. As input for one such calculation, GYRE-tides takes a stellar model produced with `MESA <mesa.sourceforge.net>`_ and applies a forcing potential calculated via user-specified binary parameters (see :ref:`Preparing Your Inputs <python-walkthrough-inputs>`).
 

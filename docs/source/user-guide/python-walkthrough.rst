@@ -14,7 +14,7 @@ Python Walkthrough
 
 This chapter provides a walkthrough of using the GYRE-lc package to calculate a light curve for the eccentric ellipsoidal variable of :math:`{\iota}` Orionis. Fig. 1 shows a visual summary of the user workflow for this, including the class objects you will pass into each other along with your inputs. 
 
-.. figure:: ./gyre-lc-user-flow.png
+.. figure:: ./walkthrough-flowchart.png
 
    Figure 1. GYRE-lc's architecture is roughly meant to imply a "zooming out" from the photosphere all the way out to the observer.
 
