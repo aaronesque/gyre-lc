@@ -16,7 +16,7 @@ This chapter provides a walkthrough of using the GYRE-lc package to calculate a 
 
 .. figure:: ./walkthrough-flowchart.png
 
-   Figure 1. GYRE-lc's architecture is roughly meant to imply a "zooming out" from the photosphere all the way out to the observer.
+   Figure 1. A flowchart describing how a user can create a light curve using GYRE-lc. Notice how the :py:class:`gyrelc.Observer` object, which contains the `flux()` method, takes :py:class:`gyrelc.Binary` as an input, which in turn takes 2 :py:class:`gyrelc.Star` as input. Although both :py:class:`gyrelc.Star` share the same :py:class:`msg.PhotGrid`, they each have their own corresponding tidal response and stellar models.
 
 .. _python-walkthrough-inputs:
 
