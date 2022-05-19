@@ -60,7 +60,7 @@ class Star:
 
         else: raise Exception("Star() must take valid 'mesa_model' or 'pt_mass_model' argument")
 
-        dx = {'Teff': self.params['Teff'], 'logg': self.params['logg']}
+        dx = {'logT': np.log10(self.params['Teff']), 'logg': self.params['logg']}
         self.phot_coeffs = Photosphere(self.resp_coeffs, photgrid, dx)
 
 
@@ -92,6 +92,7 @@ class Star:
         self.params['mass'] = m/M_sol
         self.params['radius'] = r/R_sol
         self.params['luminosity'] = l/L_sol
+        print(self.params)
         return
     
 

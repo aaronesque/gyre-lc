@@ -162,10 +162,12 @@ class Observer:
 
     def eval_fourier_binary (self, inc, omega, t=0, reflection=True):
 
-        omega_orb = self.omega_orb
-
-        f_1, A_1 = self.component[1].eval_fourier(inc, omega)
-        f_2, A_2 = self.component[2].eval_fourier(inc, omega+180)
+        omega_orb = self.system.omega_orb
+        theta, phi = self.convert_coords(inc, omega)
+        f_1, A_1 = self.eval_fourier(self.system.component[1], theta, phi)
+        
+        theta, phi = self.convert_coords(inc, omega+180)
+        f_2, A_2 = self.eval_fourier(self.system.component[2], theta,phi)
 
         #if reflection==True:
         #    rf_1, rA_1 = self.system.eval_fourier_irrad(1, self.filter_x, inc, omega, t, t_peri)
