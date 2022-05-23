@@ -28,6 +28,6 @@ GYRE-lc
    :maxdepth: 2
 
    ref-guide/installation.rst
-   ref-guide/how-gyre-lc-works.rst
+   ref-guide/understanding-gyre-lc.rst
    ref-guide/python-interface.rst
 

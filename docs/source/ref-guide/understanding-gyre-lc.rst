@@ -1,9 +1,9 @@
-.. _how-gyre-lc-works:
+.. _understanding-gyre-lc:
 
 .. gyre-lc documentation master file, created by
 
 #############################
-How GYRE-lc Works
+Understanding GYRE-lc
 #############################
 
 This chapter provides a deeper look into what the GYRE-lc package does and how it works. Fig. 1 shows a class diagram representation of GYRE-lc's architecture, omitting some technical details like most private methods and attributes. 
@@ -31,7 +31,7 @@ The exponential term is the $k$-th Fourier harmonic. Restricting ourselves to sm
 .. math::
    \xi_r(\vec{r}; t) = \sum_{l,m,k} \tilde{\xi}_{r; l,m,k}(r) \; Y^m_l (\theta, \phi) \; e^{-i k \Omega_\textrm{orb} t}
 
-It follows from :ads_citet:`Townsend:2003b` (see :ref:`The Semi-analytical Formalism <how-gyre-lc-works-formalism>`) that we may also expand the radiative luminosity that way into surface luminosity variations:
+It follows from :ads_citet:`Townsend:2003b` (see :ref:`The Semi-analytical Formalism <understanding-formalism>`) that we may also expand the radiative luminosity that way into surface luminosity variations:
 
 .. math::
    \delta L(\vec{r};t)_\textrm{rad} = \widetilde{\delta L}_{\textrm{rad};l,m,k}(r) \; Y^m_l \; e^{-i k \Omega_\textrm{orb} t }
@@ -47,7 +47,7 @@ It follows from :ads_citet:`Townsend:2003b` (see :ref:`The Semi-analytical Forma
 
 GYRE-tides calculates the tide model, i.e. the partial tide amplitudes :math:`\tilde{\xi}_{r;l,m,k}(R)` and surface luminosity variations :math:`\widetilde{\delta L}_{\textrm{rad};l,m,k}(R)`, and writes them to file. A corresponding tide model is then created for the companion's neighbor. Both tide models, along with their corresponding stellar models, are the 4 files required to build a single light curve using GYRE-LC.
 
-.. _how-gyre-lc-works-formalism:
+.. _understanding-formalism:
 
 *********************************
 The Semi-analytical Formalism
