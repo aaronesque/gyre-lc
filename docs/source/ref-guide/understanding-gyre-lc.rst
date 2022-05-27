@@ -9,18 +9,10 @@ Understanding GYRE-lc
 This chapter provides a deeper look into what the GYRE-lc package does and how it works.
 
 **********************************
-Tidally-induced Light Variations
+Tidally-induced Flux Variations
 **********************************
 
-.. _understanding-formalism:
-
-*********************************
-The Semi-analytical Formalism
-*********************************
-
-The semi-analytical formalism for light variations due to tides extends earlier treatments of tides by :ads_citet:`Stamford:1981` and :ads_citet:`Watson:1988` to include the effects of the Coriolis force within the 'traditional approximation of rotation' (TAR; see, e.g. :ads_citep:`Bildsten:1996`; :ads_citealt:`Lee:1997`; :ads_citealt:`Townsend:2003b`; and references therein). This is important because the Coriolis force can act as a waveguide confining oscillations to the equator. This phenomenon may significantly impact a star's observed variability, yet it has not been accounted for in previous studies of eccentric ellipsoidals.
-
-Essentially, the semi-analytical formalism makes the statement that, for any stellar surface perturbation that can be written as a superposition of partial perturbations, we can write the resulting light variations in terms of intensity moments. 
+GYRE-lc represents flux variations due to tides as a sum of intensity moments. It adopts the semi-analytical formalism for light variations described in :ads_citealt:`Townsend_2003b`, which applies to any stellar surface perturbation that can be written as a superposition of partial perturbations.
 
 Accordingly, we can express perturbations to stellar radius :math:`R`, effective temperature :math:`T_\mathrm{eff}`, and surface gravity :math:`g_\eff` in terms of spherical harmonics :math:`\Yml (\theta, \phi)` and perturbation coefficients:
 
@@ -33,7 +25,7 @@ Accordingly, we can express perturbations to stellar radius :math:`R`, effective
     \frac{\delta T_\eff }{T_\eff } (\theta, \phi; t) &= \mathrm{Re} \left[ \Delta_T Y_l^m(\theta, \phi) e^{\ii \sigma t} \right] \\
     \frac{\delta g_\eff}{g_\eff} (\theta, \phi; t) &= \mathrm{Re} \left[ \Delta_g Y_l^m(\theta, \phi) e^{\ii \sigma t} \right] 
 
-Therefore, perturbations :math:`\delta \FF_{\lx}` to the stellar flux :math:`\FF_{\lx}` in some photometric passband :math:`x` are modeled via the differential flux functions :math:`\{ \TT^m_{\lx}, \GG^m_{\lx}, \RR^m_{\lx} \}`, which depend on intensity moments :math:`\II_{\lx}`:
+Therefore, perturbations :math:`\delta \FF_{\lx}` to the stellar flux :math:`\FF_{\lx}` in some photometric passband :math:`x` can be expressed using the differential flux functions :math:`\{ \TT^m_{\lx}, \GG^m_{\lx}, \RR^m_{\lx} \}`, which depend on intensity moments :math:`\II_{\lx}`:
 
 .. math::
    \frac{\delta \FF_{\lx}}{\FF_{\lx}} (\theta_o, \phi_o; t) &= \mathrm{Re} \left[ \left\{ \Delta_R \RR^m_{\lx}(\theta_o, \phi_o) + \Delta_T \TT^m_{\lx}(\theta_o, \phi_o) + \Delta_g \GG^m_{\lx}(\theta_o, \phi_o) \right\} e^{\ii \sigma t} \right] \\
@@ -45,6 +37,12 @@ Therefore, perturbations :math:`\delta \FF_{\lx}` to the stellar flux :math:`\FF
 Here, :math:`\II_x(\mu)` is the specific intensity in passband :math:`x`, emergent from the stellar atmosphere at cosinus :math:`\mu` from the surface normal, and :math:`P_\ell(\mu)` is the Legendre polynomial of degree :math:`\ell`. The perturbation coefficients can be retrieved from the GYRE-tides output through algebra.
 
 The photospheric data required to compute the specific intensities is provided by the spectral synthesis code for stars, MSG. A brief overview of its limitations and functionality follows.
+
+*****
+MSG
+*****
+
+
 
 *************
 GYRE-tides

@@ -271,6 +271,7 @@ class Photosphere:
         self.resp_coeffs = resp_coeffs
         
         self.coeffs = {}
+        print(photgrid, dx)
         self.read_phot_coeffs(photgrid, dx) 
     
     
@@ -279,25 +280,21 @@ class Photosphere:
         depending on the stellar model
         """
 
-        if str(type(photgrid))=="<class 'pymsg.PhotGrid'>":
+        if str(type(photgrid))=="<class 'pymsg.photgrid.PhotGrid'>":
             self.coeffs.update( self.read_phot_coeffs_msg(photgrid, dx) )
         elif isinstance(photgrid, str):
             self.coeffs.update( self.read_phot_coeffs_h5(photgrid, dx) )
-        elif isinstance(photgrid, None):
+        elif photgrid is None:
             raise Exception("Must specify photgrid")
         else: raise Exception(f"Invalid photgrid type")
         
         return
     
 
-    def read_phot_coeffs_msg(self, photgrid, dx):
+    def read_phot_coeffs_msg(self, pg, dx):
         """Creates and stores photometric coefficients from
         MSG for the desired filter
         """
-        # Set atmosphere parameters dict
-        dx = {'logT': np.log10(dx['Teff']), 'logg': dx['logg']}
-        pg = photgrid
-
         # Evaluate photometric data
         I_x_l = {}
         dI_dlnT_x_l = {}
