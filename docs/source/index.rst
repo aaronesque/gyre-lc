@@ -21,6 +21,7 @@ GYRE-lc
    user-guide/preliminaries.rst
    user-guide/quick-start.rst
    user-guide/python-walkthrough.rst
+   user-guide/understanding-gyre-lc.rst
    
 .. toctree::
    :caption: Reference Guide
@@ -28,6 +29,5 @@ GYRE-lc
    :maxdepth: 2
 
    ref-guide/installation.rst
-   ref-guide/understanding-gyre-lc.rst
    ref-guide/python-interface.rst
 
