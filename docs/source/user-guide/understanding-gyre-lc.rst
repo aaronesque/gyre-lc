@@ -6,13 +6,27 @@
 Understanding GYRE-lc
 #############################
 
-This chapter provides a deeper look into what the GYRE-lc package does and how it works.
+This chapter provides a deeper look into what the GYRE-lc package does and how it works. The primary function of GYRE-LC is the rapid forward modeling of light curves for tidal pulsators. 
+
+It is the first light curve synthesizer:
+
+- to be based on the semi-analytical formalism for modeling intensity variations detailed in :ads_citet:`Townsend:2003a` (hereafter referred to as T03), 
+- to derive photospheric data from the spectral synthesis code MSG
+- to use the tidal response output from GYRE-tides :ads_citep:`Sun:2021`
+
+Companion irradiation is modeled using first order approximations according to :ads_citet:`Burkart:2012`, but any flux variation due to eclipsing is ignored. The process for light curve modeling with GYRE-LC involves 3 major steps: 
+
+1. GYRE-tides predicts surface perturbations for each component of a binary.
+2. GYRE-LC deploys the T03 formalism using MSG for photometric intensity moments.
+3. GYRE-LC builds the light curve.
+
+This chapter concerns itself with steps 2 and 3.
 
 **********************************
 Tidally-induced Flux Variations
 **********************************
 
-GYRE-lc represents flux variations due to tides as a sum of intensity moments. It adopts the semi-analytical formalism for light variations described in :ads_citealt:`Townsend:2003b`, which applies to any stellar surface perturbation that can be written as a superposition of partial perturbations.
+In step 2, GYRE-lc represents flux variations due to tides as a sum of intensity moments. It adopts the semi-analytical formalism for light variations described in :ads_citealt:`Townsend:2003b`, which applies to any stellar surface perturbation that can be written as a superposition of partial perturbations.
 
 Accordingly, we can express perturbations to stellar radius :math:`R`, effective temperature :math:`T_\mathrm{eff}`, and surface gravity :math:`g_\eff` in the following terms:
 
@@ -28,7 +42,7 @@ Where :math:`\Yml (\theta, \phi)` are spherical harmonics and the perturbation c
     \Delta_{T_\eff} &= \frac{1}{4} \left( \frac{\widetilde{\delta L}_\mathrm{rad}(R)}{L_\mathrm{rad}(R)} - 2 \frac{\tilde{\xi}_r(R)}{R} \right)\\
     \Delta_{g_\eff} &= (-\omega^2 - 2)\xi_{r_\mathrm{ref}}
 
-and :math:`\omega &= -k\Omega_{orb} - m\Omega_{rot}` in the co-rotating frame.
+and :math:`\omega = -k\Omega_{orb} - m\Omega_{rot}` in the co-rotating frame.
 
 Therefore, perturbations :math:`\delta \FF_{\lx}` to the stellar flux :math:`\FF_{\lx}` in some photometric passband :math:`x` can be expressed using the differential flux functions :math:`\{ \TT^m_{\lx}, \GG^m_{\lx}, \RR^m_{\lx} \}`, which depend on intensity moments :math:`\II_{\lx}`:
 
@@ -44,10 +58,6 @@ Here, :math:`\II_x(\mu)` is the specific intensity in passband :math:`x`, emerge
 The photospheric data required to compute the specific intensities is provided by the spectral synthesis code for stars, MSG. 
 
 
-
-.. *************
-.. GYRE-tides
-.. *************
 
 .. GYRE-tides models forced oscillations of a star in a binary due to its companion's gravitational field :ads_citet:`Sun:2021`. As input for one such calculation, GYRE-tides takes a stellar model produced with `MESA <mesa.sourceforge.net>`_ and applies a forcing potential calculated via user-specified binary parameters (see :ref:`Preparing Your Inputs <python-walkthrough-inputs>`).
 
@@ -80,19 +90,16 @@ The photospheric data required to compute the specific intensities is provided b
 
 .. GYRE-tides calculates the tide model, i.e. the partial tide amplitudes :math:`\tilde{\xi}_{r;l,m,k}(R)` and surface luminosity variations :math:`\widetilde{\delta L}_{\textrm{rad};l,m,k}(R)`, and writes them to file. A corresponding tide model is then created for the companion's neighbor. Both tide models, along with their corresponding stellar models, are the 4 files required to build a single light curve using GYRE-LC.
 
-.. ******
-.. MSG
-.. ******
-
-***************
-Irradiation
-***************
-
-Companion irradiation is modeled using first order approximations according to :ads_citet:`Burkart:2021`, but any flux variation due to eclipsing is ignored.
+.. ***************
+.. Irradiation
+.. ***************
 
 ***************
 Architecture
 ***************
+
+To build the light curve, GYRE-lc adopts a heirarchical architecture. The flux itself is computed at the :py:class:`Observer` level, along with other user-desired observables e.g. the power spectrum. The function :py:function:`Observer.find_flux()` simply takes a user-provided star system, inclination, and argument of periastron with respect to the observer, and returns a sum of the differential fluxes calculated from the intensity moments and perturbation coefficients provided by :py:class:`Star` and :py:class:`Irradiation` from within :py:class:`Binary`. 
+
 Fig. 1 shows a class diagram representation of GYRE-lc's architecture, omitting some technical details like most private methods and attributes. 
 
 .. figure:: ./class-diagram.png
