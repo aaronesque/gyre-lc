@@ -7,4 +7,4 @@ Observer module
 
 .. autoclass:: Observer
    :members:
-   :undoc-members:
+..   :undoc-members:

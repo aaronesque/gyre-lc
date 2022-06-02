@@ -7,4 +7,4 @@ Irradiation module
 
 .. autoclass:: Irradiation
    :members:
-   :undoc-members:
+..   :undoc-members:

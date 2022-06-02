@@ -7,4 +7,4 @@ Binary module
 
 .. autoclass:: Binary
    :members:
-   :undoc-members:
+..   :undoc-members:

@@ -7,4 +7,4 @@ Response module
 
 .. autoclass:: Response
    :members:
-   :undoc-members:
+..   :undoc-members:

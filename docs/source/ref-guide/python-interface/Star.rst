@@ -7,4 +7,4 @@ Star module
 
 .. autoclass:: Star
    :members:
-   :undoc-members:
+..   :undoc-members:
