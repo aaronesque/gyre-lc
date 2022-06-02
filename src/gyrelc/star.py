@@ -92,7 +92,6 @@ class Star:
         self.params['mass'] = m/M_sol
         self.params['radius'] = r/R_sol
         self.params['luminosity'] = l/L_sol
-        print(self.params)
         return
     
 
@@ -271,7 +270,6 @@ class Photosphere:
         self.resp_coeffs = resp_coeffs
         
         self.coeffs = {}
-        print(photgrid, dx)
         self.read_phot_coeffs(photgrid, dx) 
     
     

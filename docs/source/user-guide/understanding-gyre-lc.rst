@@ -41,17 +41,13 @@ Therefore, perturbations :math:`\delta \FF_{\lx}` to the stellar flux :math:`\FF
 
 Here, :math:`\II_x(\mu)` is the specific intensity in passband :math:`x`, emergent from the stellar atmosphere at cosinus :math:`\mu` from the surface normal, and :math:`P_\ell(\mu)` is the Legendre polynomial of degree :math:`\ell`. The perturbation coefficients can be retrieved from the GYRE-tides output through algebra.
 
-The photospheric data required to compute the specific intensities is provided by the spectral synthesis code for stars, MSG. A brief overview of its limitations and functionality follows.
-
-*****
-MSG
-*****
+The photospheric data required to compute the specific intensities is provided by the spectral synthesis code for stars, MSG. 
 
 
 
-*************
-GYRE-tides
-*************
+.. *************
+.. GYRE-tides
+.. *************
 
 .. GYRE-tides models forced oscillations of a star in a binary due to its companion's gravitational field :ads_citet:`Sun:2021`. As input for one such calculation, GYRE-tides takes a stellar model produced with `MESA <mesa.sourceforge.net>`_ and applies a forcing potential calculated via user-specified binary parameters (see :ref:`Preparing Your Inputs <python-walkthrough-inputs>`).
 
@@ -63,14 +59,14 @@ GYRE-tides
 
 .. Here, :math:`{\Phi_{r;l,m,k}}` is the radial component of the forcing potential amplitude, and :math:`{Y^m_l}` is the spherical harmonic of order $m$ and degree $l$.  
 
-The exponential term is the $k$-th Fourier harmonic. Restricting ourselves to small amplitude tides allows us to write the response perturbation as a superposition of many different partial tides:
+.. The exponential term is the $k$-th Fourier harmonic. Restricting ourselves to small amplitude tides allows us to write the response perturbation as a superposition of many different partial tides:
 
-.. math::
-   \xi_r(\vec{r}; t) = \sum_{l,m,k} \tilde{\xi}_{r; l,m,k}(r) \; Y^m_l (\theta, \phi) \; e^{-i k \Omega_\textrm{orb} t}
+.. .. math::
+..    \xi_r(\vec{r}; t) = \sum_{l,m,k} \tilde{\xi}_{r; l,m,k}(r) \; Y^m_l (\theta, \phi) \; e^{-i k \Omega_\textrm{orb} t}
 
-It follows from :ads_citet:`Townsend:2003b` (see :ref:`The Semi-analytical Formalism <understanding-formalism>`) that we may also expand the radiative luminosity that way into surface luminosity variations:
+.. It follows from :ads_citet:`Townsend:2003b` (see :ref:`The Semi-analytical Formalism <understanding-formalism>`) that we may also expand the radiative luminosity that way into surface luminosity variations:
 
-.. math::
+.. .. math::
    \delta L(\vec{r};t)_\textrm{rad} = \widetilde{\delta L}_{\textrm{rad};l,m,k}(r) \; Y^m_l \; e^{-i k \Omega_\textrm{orb} t }
 
 .. It behooves us to probe the practical limitations of this approach. The net tidal force can be characterized by the tidal strength term
@@ -82,15 +78,17 @@ It follows from :ads_citet:`Townsend:2003b` (see :ref:`The Semi-analytical Forma
 
 .. For wide binaries, this assertion easily holds as long as the primary's radius :math:`R` is much smaller than the semimajor axis :math:`a`. For some highly eccentric binaries on the other hand, such as eccentric ellipsoidal variables, a small mass ratio :math:`q=M_2/M` between the secondary and primary stars might be a good enough diagnostic.  We will probe the edge of where our 'weak tides' approach breaks down in a future work.
 
-GYRE-tides calculates the tide model, i.e. the partial tide amplitudes :math:`\tilde{\xi}_{r;l,m,k}(R)` and surface luminosity variations :math:`\widetilde{\delta L}_{\textrm{rad};l,m,k}(R)`, and writes them to file. A corresponding tide model is then created for the companion's neighbor. Both tide models, along with their corresponding stellar models, are the 4 files required to build a single light curve using GYRE-LC.
+.. GYRE-tides calculates the tide model, i.e. the partial tide amplitudes :math:`\tilde{\xi}_{r;l,m,k}(R)` and surface luminosity variations :math:`\widetilde{\delta L}_{\textrm{rad};l,m,k}(R)`, and writes them to file. A corresponding tide model is then created for the companion's neighbor. Both tide models, along with their corresponding stellar models, are the 4 files required to build a single light curve using GYRE-LC.
 
-******
-MSG
-******
+.. ******
+.. MSG
+.. ******
 
 ***************
 Irradiation
 ***************
+
+Companion irradiation is modeled using first order approximations according to :ads_citet:`Burkart:2021`, but any flux variation due to eclipsing is ignored.
 
 ***************
 Architecture
