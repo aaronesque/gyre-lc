@@ -24,7 +24,18 @@ This chapter concerns itself with steps 2-3.
 Tidally-induced Flux Variations
 **********************************
 
-In step 2, GYRE-lc represents flux variations due to tides as a sum of intensity moments. It adopts the semi-analytical formalism for light variations described in :ads_citealt:`Townsend:2003b`, which applies to any stellar surface perturbation that can be written as a superposition of partial perturbations.
+In step 2, GYRE-lc represents flux variations due to tides as a sum of intensity moments. It does this according to the semi-analytical formalism for light variations described in :ads_citealt:`Townsend:2003b`, which states that perturbations to the stellar flux :math:`\delta \FF_{x}` in some photometric passband :math:`x` can be expressed using the differential flux functions :math:`\{ \TT^m_{\lx}, \GG^m_{\lx}, \RR^m_{\lx} \}`, which depend on intensity moments :math:`\II_{\lx}`:
+
+.. math::
+   \frac{\delta \FF_{\lx}}{\FF_{\lx}} (\theta_o, \phi_o; t) &= \mathrm{Re} \left[ \left\{ \Delta_R \RR^m_{\lx}(\theta_o, \phi_o) + \Delta_T \TT^m_{\lx}(\theta_o, \phi_o) + \Delta_g \GG^m_{\lx}(\theta_o, \phi_o) \right\} e^{\ii \sigma t} \right] \\
+   \RR^m_{\lx}(\theta_o,\phi_o) &\equiv \frac{(2+\ell)(1-\ell)}{\II_{0;x}} \II_{\lx} Y^m_l (\theta_o, \phi_o) \\
+   \TT^m_{\lx}(\theta_o,\phi_o) &\equiv \frac{1}{\II_{0;x}} \frac{ \partial \II_{\lx}}{\partial \ln{ T_\eff}} Y^m_l (\theta_o, \phi_o) \\
+   \GG^m_{\lx}(\theta_o,\phi_o) &\equiv\frac{1}{\II_{0;x}} \frac{ \partial \II_{\lx}}{\partial \ln{g}} Y^m_l (\theta_o, \phi_o). \\
+   \II_{\lx} &= \int_0^1 \mu P_l(\mu)\II_x(\mu) d\mu
+
+Here, :math:`\II_x(\mu)` is the specific intensity in passband :math:`x`, emergent from the stellar atmosphere at cosinus :math:`\mu` from the surface normal, and :math:`P_\ell(\mu)` is the Legendre polynomial of degree :math:`\ell`. The perturbation coefficients can be retrieved from the GYRE-tides output through algebra.
+
+.. It applies to stellar surface perturbations that can be written as a superposition of partial perturbations.
 
 Accordingly, we can express perturbations to stellar radius :math:`R`, effective temperature :math:`T_\mathrm{eff}`, and surface gravity :math:`g_\eff` like:
 
