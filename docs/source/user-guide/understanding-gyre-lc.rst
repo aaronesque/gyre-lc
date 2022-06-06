@@ -33,7 +33,14 @@ In step 2, GYRE-lc represents flux variations due to tides as a sum of intensity
    \GG^m_{\lx}(\theta_o,\phi_o) &\equiv\frac{1}{\II_{0;x}} \frac{ \partial \II_{\lx}}{\partial \ln{g}} Y^m_l (\theta_o, \phi_o). \\
    \II_{\lx} &= \int_0^1 \mu P_l(\mu)\II_x(\mu) d\mu
 
-Here, :math:`\II_x(\mu)` is the specific intensity in passband :math:`x`, emergent from the stellar atmosphere at cosinus :math:`\mu` from the surface normal, and :math:`P_\ell(\mu)` is the Legendre polynomial of degree :math:`\ell`. The perturbation coefficients can be retrieved from the GYRE-tides output through algebra.
+Here, :math:`\II_x(\mu)` is the specific intensity in passband :math:`x`, emergent from the stellar atmosphere at cosinus :math:`\mu` from the surface normal, and :math:`P_\ell(\mu)` is the Legendre polynomial of degree :math:`\ell`. :math:`\Yml (\theta, \phi)` are spherical harmonics, and the perturbation coefficients :math:`\Delta` can be retrieved from the GYRE-tides output through algebra:
+
+.. math::
+    \Delta_R &= \frac{\tilde{\xi}_r(R)}{R}\\
+    \Delta_{T_\eff} &= \frac{1}{4} \left( \frac{\widetilde{\delta L}_\mathrm{rad}(R)}{L_\mathrm{rad}(R)} - 2 \frac{\tilde{\xi}_r(R)}{R} \right)\\
+    \Delta_{g_\eff} &= (-\omega^2 - 2)\xi_{r_\mathrm{ref}}
+
+with :math:`\omega = -k\Omega_{orb} - m\Omega_{rot}` in the co-rotating frame.
 
 .. It applies to stellar surface perturbations that can be written as a superposition of partial perturbations.
 
@@ -44,14 +51,6 @@ Accordingly, we can express perturbations to stellar radius :math:`R`, effective
     \frac{\delta T_\eff }{T_\eff } (\theta, \phi; t) &= \mathrm{Re} \left[ \Delta_T Y_l^m(\theta, \phi) e^{\ii \sigma t} \right] \\
     \frac{\delta g_\eff}{g_\eff} (\theta, \phi; t) &= \mathrm{Re} \left[ \Delta_g Y_l^m(\theta, \phi) e^{\ii \sigma t} \right] 
 
-Here, :math:`\Yml (\theta, \phi)` are spherical harmonics and the :math:`\Delta` are perturbation coefficients:
-
-.. math::
-    \Delta_R &= \frac{\tilde{\xi}_r(R)}{R}\\
-    \Delta_{T_\eff} &= \frac{1}{4} \left( \frac{\widetilde{\delta L}_\mathrm{rad}(R)}{L_\mathrm{rad}(R)} - 2 \frac{\tilde{\xi}_r(R)}{R} \right)\\
-    \Delta_{g_\eff} &= (-\omega^2 - 2)\xi_{r_\mathrm{ref}}
-
-with :math:`\omega = -k\Omega_{orb} - m\Omega_{rot}` in the co-rotating frame.
 
 Therefore, perturbations :math:`\delta \FF_{\lx}` to the stellar flux :math:`\FF_{\lx}` in some photometric passband :math:`x` can be expressed using the differential flux functions :math:`\{ \TT^m_{\lx}, \GG^m_{\lx}, \RR^m_{\lx} \}`, which depend on intensity moments :math:`\II_{\lx}`:
 
