@@ -24,11 +24,11 @@ This chapter concerns itself with steps 2-3, but a short summary of GYRE-tides f
 Step 1: GYRE-tides
 ***********************
 
-GYRE-tides models forced oscillations of a star in a binary due to its companion's gravitational field :ads_citet:`Sun:2021`. As input for one such calculation, GYRE-tides takes a stellar model produced with `MESA <mesa.sourceforge.net>`_ and applies a forcing potential calculated via user-specified binary parameters (see :ref:`Preparing Your Inputs <python-walkthrough-inputs>`).
+GYRE-tides models forced oscillations of a star in a binary due to its companion's gravitational field :ads_citet:`Sun:2021`. As input for one such calculation, GYRE-tides takes a stellar model produced with `MESA <mesa.sourceforge.net>`_ and applies a forcing potential calculated via user-specified binary parameters (see :ref:`Python Walkthrough <python-walkthrough>`).
 
 The forcing potential :math:`{\Phi_S}` can be written as an expansion of the gravitational potential at a point on the star's surface into spherical harmonics:
 
-.. math:    
+.. math:: 
    \Phi_S (\vec{r}; t) &= \frac{-q G M}{|\vec{r} - \vec{r}_S|} \\
    &= \sum^\infty_{l=0} \sum^l_{m=-l} \sum^\infty_{k=-\infty} \Phi_{r;l,m,k}(r) \; Y^m_l(\theta, \phi) \; e^{-i k \Omega_\textrm{orb} t}
 
@@ -46,7 +46,7 @@ It follows from :ads_citet:`Townsend:2003b` (see :ref:`The Semi-analytical Forma
 
 It behooves us to probe the practical limitations of this approach. The net tidal force can be characterized by the tidal strength term
 
-.. math
+.. math::
    \epsilon_\mathrm{T} \equiv \left( \frac{R}{a} \right)^3 = \frac{R^3 \Omega_\textrm{orb}^2}{GM}\times \left( \frac{q}{1+q} \right).
 
 For small amplitude tides, :math:`\epsilon_\mathrm{T} << 1`.
