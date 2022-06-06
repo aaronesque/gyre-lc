@@ -37,8 +37,7 @@ Related Links
 Acknowledgments
 *******************
 
-GYRE-lc has been developed with financial support from the following grants:
-
+GYRE-lc has been developed with financial support from the NASA Astrophysics Theory Program grant 80NSSC20K0515.
 
 .. make sure you include the build_spectrum script in the bundle
 

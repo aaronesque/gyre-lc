@@ -6,21 +6,20 @@
 Understanding GYRE-lc
 #############################
 
-This chapter provides a deeper look into what the GYRE-lc package does and how it works. The primary function of GYRE-LC is the rapid forward modeling of light curves for tidal pulsators. 
+This chapter provides a deeper look into what the GYRE-lc package does and how it works. The primary function of GYRE-LC is the rapid forward modeling of light curves for tidal pulsators. It is the first light curve synthesizer:
 
-It is the first light curve synthesizer:
-
-- to be based on the semi-analytical formalism for modeling intensity variations detailed in :ads_citet:`Townsend:2003a` (hereafter referred to as T03), 
-- to derive photospheric data from the spectral synthesis code MSG
-- to use the tidal response output from GYRE-tides :ads_citep:`Sun:2021`
+- to be based on the semi-analytical formalism for modeling intensity variations detailed in :ads_citet:`Townsend:2003b`;
+- to derive photospheric data from the spectral synthesis code MSG;
+- to use the tidal response output from GYRE-tides :ads_citep:`Sun:2021`.
 
 Companion irradiation is modeled using first order approximations according to :ads_citet:`Burkart:2012`, but any flux variation due to eclipsing is ignored. The process for light curve modeling with GYRE-LC involves 3 major steps: 
 
 1. GYRE-tides predicts surface perturbations for each component of a binary.
-2. GYRE-LC deploys the T03 formalism using MSG for photometric intensity moments.
+2. GYRE-LC deploys the :ads_citet:`Townsend:2003b` formalism using MSG for photometric intensity moments.
+*Optional*. GYRE-LC optionally deploys the :ads_citet:`Burkart:2012` formalism for irradiation.
 3. GYRE-LC builds the light curve.
 
-This chapter concerns itself with steps 2 and 3.
+This chapter concerns itself with steps 2-3.
 
 **********************************
 Tidally-induced Flux Variations
