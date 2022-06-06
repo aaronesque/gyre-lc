@@ -32,7 +32,7 @@ The forcing potential :math:`{\Phi_S}` can be written as an expansion of the gra
    \Phi_S (\vec{r}; t) &= \frac{-q G M}{|\vec{r} - \vec{r}_S|} \\
    &= \sum^\infty_{l=0} \sum^l_{m=-l} \sum^\infty_{k=-\infty} \Phi_{r;l,m,k}(r) \; Y^m_l(\theta, \phi) \; e^{-i k \Omega_\textrm{orb} t}
 
-Here, :math:`{\Phi_{r;l,m,k}}` is the radial component of the forcing potential amplitude, and :math:`{Y^m_l}` is the spherical harmonic of order $m$ and degree $l$.  
+Here, :math:`{\Phi_{r;l,m,k}}` is the radial component of the forcing potential amplitude, and :math:`{Y^m_l}` is the spherical harmonic of order :math:`m` and degree :math:`l`.  
 
 The exponential term is the $k$-th Fourier harmonic. Restricting ourselves to small amplitude tides allows us to write the response perturbation as a superposition of many different partial tides:
 
