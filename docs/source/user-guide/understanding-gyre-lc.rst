@@ -15,8 +15,7 @@ This chapter provides a deeper look into what the GYRE-lc package does and how i
 Companion irradiation is modeled using first order approximations according to :ads_citet:`Burkart:2012`, but any flux variation due to eclipsing is ignored. The process for light curve modeling with GYRE-LC involves 3 major steps: 
 
 1. GYRE-tides predicts surface perturbations for each component of a binary.
-2. GYRE-LC deploys the :ads_citet:`Townsend:2003b` formalism using MSG for photometric intensity moments.
-*Optional*. GYRE-LC optionally deploys the :ads_citet:`Burkart:2012` formalism for irradiation.
+2. GYRE-LC deploys the :ads_citet:`Townsend:2003b` formalism using MSG for photometric intensity moments. *Optional:* GYRE-LC may also deploy the :ads_citet:`Burkart:2012` formalism for irradiation.
 3. GYRE-LC builds the light curve.
 
 This chapter concerns itself with steps 2-3.
