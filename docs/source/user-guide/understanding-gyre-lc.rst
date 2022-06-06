@@ -64,7 +64,7 @@ In step 2, GYRE-lc represents flux variations due to tides as a sum of intensity
 In particular, it states that perturbations to the stellar flux :math:`\delta \FF_{x}` in some photometric passband :math:`x` can be expressed using the differential flux functions :math:`\{ \TT^m_{\lx}, \GG^m_{\lx}, \RR^m_{\lx} \}`, which depend on intensity moments :math:`\II_{\lx}`:
 
 .. math::
-   \frac{\delta \FF_{\lx}}{\FF_{\lx}} (\theta_o, \phi_o; t) &= \mathrm{Re} \left[ \left\{ \Delta_R \RR^m_{\lx}(\theta_o, \phi_o) + \Delta_T \TT^m_{\lx}(\theta_o, \phi_o) + \Delta_g \GG^m_{\lx}(\theta_o, \phi_o) \right\} e^{\ii \sigma t} \right] \\
+   \frac{\delta \FF_{\lx}}{\FF_{\lx}} (\theta_o, \phi_o; t) &= \mathrm{Re} \left[ \left\{ \Delta_R \RR^m_{\lx}(\theta_o, \phi_o) + \Delta_T \TT^m_{\lx}(\theta_o, \phi_o) + \Delta_g \GG^m_{\lx}(\theta_o, \phi_o) \right\} e^{-\ii \sigma t} \right] \\
    \RR^m_{\lx}(\theta_o,\phi_o) &\equiv \frac{(2+\ell)(1-\ell)}{\II_{0;x}} \II_{\lx} Y^m_l (\theta_o, \phi_o) \\
    \TT^m_{\lx}(\theta_o,\phi_o) &\equiv \frac{1}{\II_{0;x}} \frac{ \partial \II_{\lx}}{\partial \ln{ T_\eff}} Y^m_l (\theta_o, \phi_o) \\
    \GG^m_{\lx}(\theta_o,\phi_o) &\equiv\frac{1}{\II_{0;x}} \frac{ \partial \II_{\lx}}{\partial \ln{g}} Y^m_l (\theta_o, \phi_o). \\
@@ -94,11 +94,15 @@ The photospheric data required to compute the specific intensities is provided b
 Irradiation
 ***************
 
+Burkart's irradiation formalism describes the additional emergent flux from a stellar atmosphere that is due to radiative heating from an orbiting companion star. It applies to binaries within the current framework, and therefore straightforward to implement. However, 
+
+Our main assumption is that all radiation from the secondary incident upon the primary is immediately reprocessed at the primary’s photosphere and emitted isotropically (i.e., absorption, thermalization, and reemission). This assumption is well justified for KOI-54, since its two component stars are of very similar spectral type. The method below might need to be modified if the components of a binary system had significantly different spectral types, because then some of the incident radiation might instead be scattered.
+
 ***************
 Architecture
 ***************
 
-To build the light curve, GYRE-lc adopts a heirarchical architecture. The flux itself is computed at the :py:class:`Observer` level, along with other user-desired observables e.g. the power spectrum. The function :py:function:`Observer.find_flux()` simply takes a user-provided star system, inclination, and argument of periastron with respect to the observer, and returns a sum of the differential fluxes calculated from the intensity moments and perturbation coefficients provided by :py:class:`Star` and :py:class:`Irradiation` from within :py:class:`Binary`. 
+To build the light curve, GYRE-lc adopts a heirarchical architecture. The flux itself is computed at the :py:class:`Observer` level, along with other user-desired observables e.g. the power spectrum. The function :py:func:`Observer.find_flux()` simply takes a user-provided star system, inclination, and argument of periastron with respect to the observer, and returns a sum of the differential fluxes calculated from the intensity moments and perturbation coefficients provided by :py:class:`Star` and :py:class:`Irradiation` from within :py:class:`Binary`. 
 
 Fig. 1 shows a class diagram representation of GYRE-lc's architecture, omitting some technical details like most private methods and attributes. 
 
