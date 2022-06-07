@@ -78,7 +78,7 @@ In particular, it states that perturbations to the stellar flux :math:`\delta \F
    \frac{\delta \FF_{\lx}}{\FF_{\lx}} (\theta_o, \phi_o; t) &= \mathrm{Re} \left[ \left\{ \Delta_R \RR^m_{\lx}(\theta_o, \phi_o) + \Delta_T \TT^m_{\lx}(\theta_o, \phi_o) + \Delta_g \GG^m_{\lx}(\theta_o, \phi_o) \right\} e^{-\ii \sigma t} \right]
    \end{align}
 
-Here, :math:`\II_x(\mu)` is the specific intensity in passband :math:`x`, emergent from the stellar atmosphere at cosinus :math:`\mu` from the surface normal, and :math:`P_\ell(\mu)` is the Legendre polynomial of degree :math:`\ell`. This math is handled by the :py:class:`Photosphere` class. On the other hand, the *perturbation coefficients* :math:`\Delta` are be retrieved from the GYRE-tides output through algebra in the :py:class:`Response` class:
+Here, :math:`\II_x(\mu)` is the specific intensity in passband :math:`x`, emergent from the stellar atmosphere at cosinus :math:`\mu` from the surface normal, and :math:`P_\ell(\mu)` is the Legendre polynomial of degree :math:`\ell`. :math:`\theta_o` and :math:`\phi_o` are calculated from the inclination to the observer and the argument of periastron, and :math:`\sigma=k\Omega_{orb}` is the  This math is handled by the :py:class:`Photosphere` class. On the other hand, the *perturbation coefficients* :math:`\Delta` are be retrieved from the GYRE-tides output through algebra in the :py:class:`Response` class:
 
 .. math::
     \Delta_R &= \frac{\tilde{\xi}_r(R)}{R}\\
@@ -93,8 +93,9 @@ Each :py:class:`Star` class object includes methods to evaluate the differential
 
 .. figure:: ./class-diagram-star.png
     :width: 50%
+    :align: center
 
-    A :py:class:`Star` instance calls :py:class:`Response` and :py:class:`Photosphere` methods as needed.
+    Fig. 1. A :py:class:`Star` instance calls :py:class:`Response` and :py:class:`Photosphere` methods as needed.
 
 .. .. math::
 ..    \frac{\delta R}{R} (\theta, \phi; t) &= \mathrm{Re} \left[ \Delta_R Y_l^m(\theta, \phi) e^{\ii \sigma t} \right] \\
@@ -115,8 +116,9 @@ Our main assumption is that all radiation from the secondary incident upon the p
 
 .. figure:: ./class-diagram-binary.png
     :width: 50%
-    
-    A :py:class:`Binary` instance contains 2 :py:class:`Star` instances and inherits methods from :py:class:`Irradiation`. 
+    :align: center   
+
+    Fig. 2. A :py:class:`Binary` instance contains 2 :py:class:`Star` instances and inherits methods from :py:class:`Irradiation`. 
 
 .. _step 3:
 
@@ -129,6 +131,8 @@ To build the light curve, GYRE-lc adopts a heirarchical architecture. The flux i
 .. _class-diagram-observer:
 
 .. figure:: ./class-diagram-observer.png
+    :width: 50%
+    :align: center
 
    Figure 3. The :py:class:`Observer` class provides the user with methods for building the light curve, examining Fourier coefficients, and more.
 
@@ -138,6 +142,7 @@ Fig. 4 shows a class diagram representation of GYRE-lc's architecture, omitting 
 .. _class-diagram-architecture:
 
 .. figure:: ./class-diagram.png
+    :align: center
 
    Figure 4. GYRE-lc's architecture is roughly meant to imply a "zooming out" from the photosphere all the way out to the observer.
 
