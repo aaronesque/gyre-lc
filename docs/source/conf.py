@@ -83,7 +83,7 @@ mathjax3_config = {
             'FF': '\mathcal{F}',
             'eff': '\mathrm{eff}',
             'lx': '\ell;x',
-            'Yml': 'Y^m_l',
+            'Yml': 'Y^m_\ell',
             }
     }
 }
