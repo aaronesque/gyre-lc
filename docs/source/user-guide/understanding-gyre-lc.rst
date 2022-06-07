@@ -126,7 +126,9 @@ Regardless, the :py:class:`Binary` class inherits methods from :py:class:`Irradi
 Step 3: Build the Light Curve
 *****************************
 
-To build the light curve, GYRE-lc adopts a heirarchical architecture. The flux itself is computed at the :py:class:`Observer` level, along with other user-desired observables e.g. the power spectrum. The function :py:func:`Observer.find_flux()` simply takes a user-provided star system, inclination, and argument of periastron with respect to the observer, and returns a sum of the differential fluxes calculated from the intensity moments and perturbation coefficients provided by :py:class:`Star` and :py:class:`Irradiation` from within :py:class:`Binary`. 
+Finally, you have everything you need to build the light curve. The :py:class:`Observer` class exists to facilitate user production of flux and other desirables (see :ref:`Fig. 3<class-diagram-observer>`, and must be passed a :py:class:`Binary`, the inclination, and the argument of periastron of the binary with respect to the observer. 
+
+You may then pass a time or timeseries array to :py:func:`Observer.find_flux()`, which returns the sum of differential fluxes calculated from the intensity moments and perturbation coefficients provided by :py:class:`Star` and :py:class:`Irradiation` from within :py:class:`Binary`. 
 
 .. _class-diagram-observer:
 
@@ -136,8 +138,7 @@ To build the light curve, GYRE-lc adopts a heirarchical architecture. The flux i
 
    Figure 3. The :py:class:`Observer` class provides the user with methods for building the light curve, examining Fourier coefficients, and more.
 
-
-Fig. 4 shows a class diagram representation of GYRE-lc's architecture, omitting some technical details like most private methods and attributes. 
+Fig. 4 shows a class diagram representation of GYRE-lc's overall architecture, omitting some technical details like most private (mangled) methods and attributes. 
 
 .. _class-diagram-architecture:
 
