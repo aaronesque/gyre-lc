@@ -69,7 +69,9 @@ html_theme = 'sphinx_rtd_theme' #'alabaster'
 epub_show_urls = 'footnote'
 
 # -- Additional configuration ------------------------------------------------
-
+latex_elements = {
+    'preamble': r'\usepackage{empheq}'
+}
 # MathJax & LaTeX macros
 mathjax3_config = {
     'tex': {
