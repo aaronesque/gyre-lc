@@ -108,7 +108,7 @@ Each :py:class:`Star` class object includes methods to evaluate the differential
 Irradiation
 ***************
 
-Burkart's irradiation formalism describes the additional emergent flux from a stellar atmosphere that is due to radiative heating from an orbiting companion star. It applies to binaries within the current framework, and is therefore straightforward to implement (as in :ref:`Fig. 2<class-diagram-binary>`. However, Burkart's formalism assumes that all incident radiation is immediately reprocessed at the photosphere and emitted isotropically. This assumption only holds for stars of similar spectral types-- otherwise, we can expect a fraction of the incident radiation to be scattered. The decision to include flux contributions from irradiation (with or without a scatter coefficient) is left to the user.
+Burkart's irradiation formalism describes the additional emergent flux from a stellar atmosphere that is due to radiative heating from an orbiting companion star. It applies to binaries within the current framework, and is therefore straightforward to implement (as in :ref:`Fig. 2<class-diagram-binary>`). However, Burkart's formalism assumes that all incident radiation is immediately reprocessed at the photosphere and emitted isotropically. This assumption only holds for stars of similar spectral types-- otherwise, we can expect a fraction of the incident radiation to be scattered. The decision to include flux contributions from irradiation (with or without a scatter coefficient) is left to the user.
 
 Regardless, the :py:class:`Binary` class inherits methods from :py:class:`Irradiation` so the user may experiment with irradiation from either :py:class:`Star` freely.
 
@@ -126,7 +126,7 @@ Regardless, the :py:class:`Binary` class inherits methods from :py:class:`Irradi
 Step 3: Build the Light Curve
 *****************************
 
-Finally, you have everything you need to build the light curve. The :py:class:`Observer` class exists to facilitate user production of flux and other desirables (see :ref:`Fig. 3<class-diagram-observer>`, and must be passed a :py:class:`Binary`, the inclination, and the argument of periastron of the binary with respect to the observer. 
+Finally, you have everything you need to build the light curve. The :py:class:`Observer` class exists to facilitate user production of flux and other desirables (see :ref:`Fig. 3<class-diagram-observer>`), and must be passed a :py:class:`Binary`, the inclination, and the argument of periastron of the binary with respect to the observer. 
 
 You may then pass a time or timeseries array to :py:func:`Observer.find_flux()`, which returns the sum of differential fluxes calculated from the intensity moments and perturbation coefficients provided by :py:class:`Star` and :py:class:`Irradiation` from within :py:class:`Binary`. 
 

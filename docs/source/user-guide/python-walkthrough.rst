@@ -16,7 +16,7 @@ This chapter provides a walkthrough of using the GYRE-lc package to calculate a 
 
 .. figure:: ./walkthrough-flowchart.png
 
-   Figure 1. A flowchart describing how a user can create a light curve using GYRE-lc. Notice how the :py:class:`gyrelc.Observer` object, which contains the `flux()` method, takes :py:class:`gyrelc.Binary` as an input, which in turn takes 2 :py:class:`gyrelc.Star` as input. Although both :py:class:`gyrelc.Star` share the same :py:class:`msg.PhotGrid`, they each have their own corresponding tidal response and stellar models.
+   Figure 1. A flowchart describing how a user can create a light curve using GYRE-lc. Notice how the :py:class:`gyrelc.Observer` object, which contains the :py:func:`find_flux()` method, takes :py:class:`gyrelc.Binary` as an input, which in turn takes 2 :py:class:`gyrelc.Star` as input. Although both :py:class:`gyrelc.Star` share the same :py:class:`msg.PhotGrid`, they each have their own corresponding tidal response and stellar models.
 
 .. _python-walkthrough-inputs:
 
@@ -54,8 +54,8 @@ Lastly, photometric data for each binary component are required. GYRE-lc works b
 
 Before starting Jupyter, download and place the following files in your working directory:
 
-* `sg-demo.h5` from `MSG`_. This is a temperature-gravity grid of low-resolution intensity spectra (based on the solar-metallicity :ads_citet:`Castelli:2003` atmospheres).
-* `kepler.h5` from `$GYRELC_DIR/passbands`. This is a response function corresponding to the the  
+* `sg-demo.h5` from `MSG`_. This is a temperature-gravity grid of low-resolution intensity spectra (based on the solar-metallicity :ads_citet:`Castelli:2003` atmospheres). It's shipped with the MSG installation in `$MSG/data/grids/sg-demo.h5`.
+* `pb-Generic-Johnson.B-Vega` from `MSG`_. This is a Johnson B passband file from the :ref:`table of tar archives <http://www.astro.wisc.edu/~townsend/resource/docs/msg/appendices/passband-files.html>`_ built using the `Spanish Virtual Observatory <https://svo.cab.inta-csic.es/main/index.php>`_ filter and calibration database.
 
 ******************************
 Importing the GYRE-lc Module
@@ -75,12 +75,13 @@ In a new Jupyter notebook, copy and past the following imports::
 
     # Import pymsg
 
-    sys.path.insert(0, os.path.join(os.environ['MSG_DIR'], 'lib'))
+    MSG_DIR = os.environ['MSG_DIR']
+    sys.path.insert(0, os.path.join(MSG_DIR, 'python'))
     import pymsg
 
     # Import gyrelc modules
 
-    sys.path.insert(0, os.path.join(os.environ['GYRELC_DIR'], 'gyrelc'))
+    sys.path.insert(0, os.path.join(os.environ['GYRELC_DIR'], 'src'))
     import gyrelc as lc
 
 The :py:mod:`pymsg` and :py:mod:`gyrelc` modules both require :py:mod:`sys` and :py:mod:`os` to be imported, so we do that first. We also import the :py:mod:`numpy` module, which we use extensively.
@@ -97,9 +98,9 @@ We must now create a photometric grid.
 Creating a PhotGrid
 =========================
 
-With `sg-demo.h5` and `kepler.h5` in the current working directory::
+With `sg-demo.h5` and `pb-Generic-Johnson.B-Vega.h5` in the current working directory::
     
-    pg = pymsg.PhotGrid('sg-demo.h5', 'kepler.h5')
+    pg = pymsg.PhotGrid('sg-demo.h5', 'pb-Generic-Johnson.B-Vega.h5')
 
 Modeling the "heartbeat"
 =========================
@@ -130,25 +131,25 @@ Finally, create a light curve::
 
     # Duration of 'observation' and number of points
     omega_orb = iOri.omega_orb
-    t = np.linspace(0.5/omega_orb, 2.5/omega_orb, num=2000, endpoint=False)
+    t = np.linspace(0/omega_orb, 1/omega_orb, num=2000, endpoint=False)
 
-    # Evaluate the fourier terms
-    flux = obs.find_flux(inc, omega, t)
+    # Evaluate the flux
+    flux = obs.find_flux(t, t_peri=0.25/omega_orb)
 
-An important subtlety: the ``find_flux()`` function *requires* the observation time to be in units of the orbital period. Here, I'm simulating a BRITE-B passband observation of :math:`{\iota}` iOri that consists of 2000 data points over 2 orbital periods, begining at half a period past periastron. 
+An important subtlety: the ``find_flux()`` function *requires* the observation time to be in units of the orbital period. Here, I'm simulating a BRITE-B passband observation of :math:`{\iota}` iOri that consists of 2000 data points over 2 orbital periods, begining at half a period past periastron. I chose the specific time of periastron for presentation purposes only. 
 
 Using :py:mod:`matplotlib`, you may plot your results::
 
     # Plot
 
-    fig, ax = plt.subplots(sharex=True, figsize=(8,4))
+    fig, ax = plt.subplots(figsize=(8,4))
 
     legend_style = {'framealpha':1.0, 'handlelength':1.2, 'handletextpad':0.5, 'fontsize':'small'}
 
-    ax.plot(t*omega_orb, flux, lw=1, label='BRITE-B')
+    ax.plot(t*omega_orb, flux, lw=1, label='B')
     ax.legend(loc=1, **legend_style)
 
-    ax.set_xlim(0.5,2.)
+    ax.set_xlim(0,1)
 
     ax.set_title(f'$\iota$Ori light curve, $\omega$={omega}')
 
