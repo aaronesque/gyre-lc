@@ -39,12 +39,12 @@ Here, :math:`{\Phi_{r;\ell,m,k}}` is the radial component of the forcing potenti
 Restricting ourselves to small amplitude tides allows us to write the response perturbation as a superposition of many different partial tides:
 
 .. math::
-   \xi_r(\vec{r}; t) = \sum_{\ell,m,k} \tilde{\xi}_{r; \ell,m,k}(r) \; \Yml (\theta, \phi) \; e^{-i k \Omega_\textrm{orb} t}
+   \boxed{ \xi_r(\vec{r}; t) = \sum_{\ell,m,k} \tilde{\xi}_{r; \ell,m,k}(r) \; \Yml (\theta, \phi) \; e^{-i k \Omega_\textrm{orb} t} }
 
 It follows from :ads_citet:`Townsend:2003b` that we may also expand the radiative luminosity that way into partial surface luminosity variations:
 
 .. math::
-   \delta L(\vec{r};t)_\textrm{rad} = \widetilde{\delta L}_{\textrm{rad};\ell,m,k}(r) \; \Yml \; e^{-i k \Omega_\textrm{orb} t }
+   \boxed{ \delta L(\vec{r};t)_\textrm{rad} = \widetilde{\delta L}_{\textrm{rad};\ell,m,k}(r) \; \Yml \; e^{-i k \Omega_\textrm{orb} t} }
 
 It behooves us to consider the practical limitations of this approach. The net tidal force can be characterized by the tidal strength term
 
@@ -68,11 +68,15 @@ In step 2, GYRE-lc represents flux variations due to tides as a linear combinati
 In particular, it states that perturbations to the stellar flux :math:`\delta \FF_{x}` in some photometric passband :math:`x` can be expressed using the *differential flux functions* :math:`\{ \TT^m_{\lx}, \GG^m_{\lx}, \RR^m_{\lx} \}`, which depend on intensity moments :math:`\II_{\lx}`:
 
 .. math::
+   :nowrap:
+
+   \begin{align}
    \frac{\delta \FF_{\lx}}{\FF_{\lx}} (\theta_o, \phi_o; t) &= \mathrm{Re} \left[ \left\{ \Delta_R \RR^m_{\lx}(\theta_o, \phi_o) + \Delta_T \TT^m_{\lx}(\theta_o, \phi_o) + \Delta_g \GG^m_{\lx}(\theta_o, \phi_o) \right\} e^{-\ii \sigma t} \right] \\
    \RR^m_{\lx}(\theta_o,\phi_o) &\equiv \frac{(2+\ell)(1-\ell)}{\II_{0;x}} \II_{\lx} \Yml (\theta_o, \phi_o) \\
    \TT^m_{\lx}(\theta_o,\phi_o) &\equiv \frac{1}{\II_{0;x}} \frac{ \partial \II_{\lx}}{\partial \ln{ T_\eff}} \Yml (\theta_o, \phi_o) \\
    \GG^m_{\lx}(\theta_o,\phi_o) &\equiv\frac{1}{\II_{0;x}} \frac{ \partial \II_{\lx}}{\partial \ln{g}} \Yml (\theta_o, \phi_o). \\
    \II_{\lx} &= \int_0^1 \mu P_\ell(\mu)\II_x(\mu) d\mu
+   \end{align}
 
 Here, :math:`\II_x(\mu)` is the specific intensity in passband :math:`x`, emergent from the stellar atmosphere at cosinus :math:`\mu` from the surface normal, and :math:`P_\ell(\mu)` is the Legendre polynomial of degree :math:`\ell`. The perturbation coefficients :math:`\Delta` can be retrieved from the GYRE-tides output through algebra:
 
