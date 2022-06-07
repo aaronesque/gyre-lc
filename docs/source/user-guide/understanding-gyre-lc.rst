@@ -6,25 +6,25 @@
 Understanding GYRE-lc
 #############################
 
-This chapter provides a deeper look into what the GYRE-lc package does and how it works. The primary function of GYRE-LC is the rapid forward modeling of light curves for tidal pulsators. It is the first light curve synthesizer:
+This chapter provides a deeper look into what the GYRE-lc package does and how it works. The primary function of GYRE-lc is the rapid forward modeling of light curves for tidal pulsators. It is the first light curve synthesizer:
 
 - to be based on the semi-analytical formalism for modeling intensity variations detailed in :ads_citet:`Townsend:2003b`;
 - to derive photospheric data from the spectral synthesis code MSG;
 - to use the tidal response output from GYRE-tides :ads_citep:`Sun:2021`.
 
-Companion irradiation is optionally modeled using first order approximations according to :ads_citet:`Burkart:2012`, but any flux variation due to eclipsing is ignored. The process for light curve modeling with GYRE-LC involves 3 major steps: 
+Companion irradiation is optionally modeled using first order approximations according to :ads_citet:`Burkart:2012`, but any flux variation due to eclipsing is ignored. The process for light curve modeling with GYRE-lc involves 3 major steps: 
 
-- :ref:`step 1` - GYRE-tides predicts surface perturbations for each component of a binary.
-- :ref:`step 2` - GYRE-LC deploys the :ads_citet:`Townsend:2003b` formalism using MSG for photometric intensity moments. *Optional:* GYRE-LC deploys the :ads_citet:`Burkart:2012` formalism for irradiation.
-- :ref:`step 3` - GYRE-LC builds the light curve.
+- :ref:`step 1` for each component of a binary using GYRE-tides.
+- :ref:`step 2` through GYRE-lc's deployment of the :ads_citet:`Townsend:2003b` formalism using MSG for photometric intensity moments. *Optional:* GYRE-lc deploys the :ads_citet:`Burkart:2012` formalism for irradiation contributions to the flux.
+- :ref:`step 3` with GYRE-lc.
 
 A short summary of each step follows.
 
 .. _step 1:
 
-*********************
-Step 1: Partial Tides
-*********************
+******************************
+Step 1: Find the Partial Tides
+******************************
 
 GYRE-tides models forced oscillations of a star in a binary due to its companion's gravitational field :ads_citep:`Sun:2021` as *partial tides*. As input for one such calculation, GYRE-tides takes a stellar model produced with `MESA <mesa.sourceforge.net>`_ and applies a forcing potential calculated via user-specified binary parameters (see :ref:`Python Walkthrough <python-walkthrough>`).
 
@@ -59,9 +59,9 @@ GYRE-tides calculates the tide model, i.e. the partial tide amplitudes :math:`\t
 
 .. _step 2:
 
-***************************************
-Step 2: Tidally-induced Flux Variations
-***************************************
+*************************************
+Step 2: Calculate Differential Fluxes
+*************************************
 
 In step 2, GYRE-lc represents flux variations due to tides as a sum of intensity moments. It does this according to the semi-analytical formalism for light variations described in :ads_citealt:`Townsend:2003b`, which applies to stellar perturbations that can be written as a superposition of partial perturbations–any well-converged GIRE-tides models.
 
@@ -104,9 +104,9 @@ Our main assumption is that all radiation from the secondary incident upon the p
 
 .. _step 3:
 
-************************
-Step 3: Architecture
-************************
+*****************************
+Step 3: Build the Light Curve
+*****************************
 
 To build the light curve, GYRE-lc adopts a heirarchical architecture. The flux itself is computed at the :py:class:`Observer` level, along with other user-desired observables e.g. the power spectrum. The function :py:func:`Observer.find_flux()` simply takes a user-provided star system, inclination, and argument of periastron with respect to the observer, and returns a sum of the differential fluxes calculated from the intensity moments and perturbation coefficients provided by :py:class:`Star` and :py:class:`Irradiation` from within :py:class:`Binary`. 
 
