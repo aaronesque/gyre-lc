@@ -55,7 +55,7 @@ Lastly, photometric data for each binary component are required. GYRE-lc works b
 Before starting Jupyter, download and place the following files in your working directory:
 
 * `sg-demo.h5` from `MSG`_. This is a temperature-gravity grid of low-resolution intensity spectra (based on the solar-metallicity :ads_citet:`Castelli:2003` atmospheres). It's shipped with the MSG installation in `$MSG/data/grids/sg-demo.h5`.
-* `pb-Generic-Johnson.B-Vega` from `MSG`_. This is a Johnson B passband file from the :ref:`table of tar archives <http://www.astro.wisc.edu/~townsend/resource/docs/msg/appendices/passband-files.html>`_ built using the `Spanish Virtual Observatory <https://svo.cab.inta-csic.es/main/index.php>`_ filter and calibration database.
+* `pb-Generic-Johnson.B-Vega` from `MSG`_. This is a Johnson B passband file from the `table of tar archives <http://www.astro.wisc.edu/~townsend/resource/docs/msg/appendices/passband-files.html>`_ built using the `Spanish Virtual Observatory <https://svo.cab.inta-csic.es/main/index.php>`_ filter and calibration database.
 
 ******************************
 Importing the GYRE-lc Module
