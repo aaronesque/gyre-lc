@@ -87,7 +87,7 @@ Here, :math:`\II_x(\mu)` is the specific intensity in passband :math:`x`, emerge
 
 with :math:`\omega = -k\Omega_{orb} - m\Omega_{rot}` in the co-rotating frame.
 
-Each :py:class:`Star` class object includes methods to evaluate the differential flux functions and perturbation coefficients on the fly by calling :py:class:`Response` and :py:class:`Photosphere` (see :ref:`Fig. 1 <class-diagram-star>`). The photospheric data that :py:class:`Photosphere` requires to return specific intensities is provided by the spectral synthesis code for stars, MSG, which is why the :py:class:`pymsg.PhotGrid` must be passed to each :py:class:`Star` upon instantiation.
+Each :py:class:`Star` class object includes methods to evaluate the differential flux functions and perturbation coefficients on the fly by calling :py:class:`Response` and :py:class:`Photosphere` (see :ref:`Fig. 1 <class-diagram-star>`). The photospheric data that :py:class:`Photosphere` requires to return specific intensities is provided by MSG, which is why the :py:class:`pymsg.PhotGrid` must be passed to each :py:class:`Star` upon instantiation.
 
 .. _class-diagram-star:
 
@@ -108,9 +108,9 @@ Each :py:class:`Star` class object includes methods to evaluate the differential
 Irradiation
 ***************
 
-Burkart's irradiation formalism describes the additional emergent flux from a stellar atmosphere that is due to radiative heating from an orbiting companion star. It applies to binaries within the current framework, and therefore straightforward to implement. However, 
+Burkart's irradiation formalism describes the additional emergent flux from a stellar atmosphere that is due to radiative heating from an orbiting companion star. It applies to binaries within the current framework, and is therefore straightforward to implement (as in :ref:`Fig. 2<class-diagram-binary>`. However, Burkart's formalism assumes that all incident radiation is immediately reprocessed at the photosphere and emitted isotropically. This assumption only holds for stars of similar spectral types-- otherwise, we can expect a fraction of the incident radiation to be scattered. The decision to include flux contributions from irradiation (with or without a scatter coefficient) is left to the user.
 
-Our main assumption is that all radiation from the secondary incident upon the primary is immediately reprocessed at the primary’s photosphere and emitted isotropically (i.e., absorption, thermalization, and reemission). This assumption is well justified for KOI-54, since its two component stars are of very similar spectral type. The method below might need to be modified if the components of a binary system had significantly different spectral types, because then some of the incident radiation might instead be scattered.
+Regardless, the :py:class:`Binary` class inherits methods from :py:class:`Irradiation` so the user may experiment with irradiation from either :py:class:`Star` freely.
 
 .. _class-diagram-binary:
 
