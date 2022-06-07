@@ -136,17 +136,16 @@ You may then pass a time or timeseries array to :py:func:`Observer.find_flux()`,
     :width: 50%
     :align: center
 
-   Figure 3. The :py:class:`Observer` class provides the user with methods for building the light curve, examining Fourier coefficients, and more.
+    Figure 3. The :py:class:`Observer` class provides the user with methods for building the light curve, examining Fourier coefficients, and more.
 
 Fig. 4 shows a class diagram representation of GYRE-lc's overall architecture, omitting some technical details like most private (mangled) methods and attributes. 
 
 .. _class-diagram-architecture:
 
-.. figure:: ./class-diagram.png
+.. figure:: ./class-diagram-architecture.png
     :align: center
 
-   Figure 4. GYRE-lc's architecture is roughly meant to imply a "zooming out" from the photosphere all the way out to the observer.
-
+    Figure 4. GYRE-lc's architecture is roughly meant to imply a "zooming out" from the photosphere all the way out to the observer.
 
 .. note:: This project is under active development.
 
