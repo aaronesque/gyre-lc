@@ -74,7 +74,13 @@ latex_elements = {
 }
 # MathJax & LaTeX macros
 mathjax3_config = {
+    'loader': {
+        'load': ['[tex]/empheq']
+        },
     'tex': {
+        'packages': {
+            '[+]': ['empheq']
+        },
         'macros': {
             'ii': '\mathrm{i}',
             'dd': '\mathrm{d}',
