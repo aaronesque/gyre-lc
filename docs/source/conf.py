@@ -69,17 +69,17 @@ html_theme = 'sphinx_rtd_theme' #'alabaster'
 epub_show_urls = 'footnote'
 
 # -- Additional configuration ------------------------------------------------
-latex_elements = {
-    'preamble': r'\usepackage{empheq}'
-}
+#latex_elements = {
+#    'preamble': r'\usepackage{mathtools}'
+#}
 # MathJax & LaTeX macros
 mathjax3_config = {
     'loader': {
-        'load': ['[tex]/empheq']
+        'load': ['[tex]/mathtools']
         },
     'tex': {
         'packages': {
-            '[+]': ['empheq']
+            '[+]': ['mathtools']
         },
         'macros': {
             'ii': '\mathrm{i}',
