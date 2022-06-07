@@ -71,11 +71,11 @@ In particular, it states that perturbations to the stellar flux :math:`\delta \F
    :nowrap:
 
    \begin{align}
-   \II_{\lx} &= \int_0^1 \mu P_\ell(\mu)\II_x(\mu) d\mu
+   \II_{\lx} &= \int_0^1 \mu P_\ell(\mu)\II_x(\mu) d\mu \\
    \Aboxed{\RR^m_{\lx}(\theta_o,\phi_o) &\equiv \frac{(2+\ell)(1-\ell)}{\II_{0;x}} \II_{\lx} \Yml (\theta_o, \phi_o)} \\
    \Aboxed{\TT^m_{\lx}(\theta_o,\phi_o) &\equiv \frac{1}{\II_{0;x}} \frac{ \partial \II_{\lx}}{\partial \ln{ T_\eff}} \Yml (\theta_o, \phi_o)} \\
    \Aboxed{\GG^m_{\lx}(\theta_o,\phi_o) &\equiv\frac{1}{\II_{0;x}} \frac{ \partial \II_{\lx}}{\partial \ln{g}} \Yml (\theta_o, \phi_o)} \\
-   \frac{\delta \FF_{\lx}}{\FF_{\lx}} (\theta_o, \phi_o; t) &= \mathrm{Re} \left[ \left\{ \Delta_R \RR^m_{\lx}(\theta_o, \phi_o) + \Delta_T \TT^m_{\lx}(\theta_o, \phi_o) + \Delta_g \GG^m_{\lx}(\theta_o, \phi_o) \right\} e^{-\ii \sigma t} \right] \\
+   \frac{\delta \FF_{\lx}}{\FF_{\lx}} (\theta_o, \phi_o; t) &= \mathrm{Re} \left[ \left\{ \Delta_R \RR^m_{\lx}(\theta_o, \phi_o) + \Delta_T \TT^m_{\lx}(\theta_o, \phi_o) + \Delta_g \GG^m_{\lx}(\theta_o, \phi_o) \right\} e^{-\ii \sigma t} \right]
    \end{align}
 
 Here, :math:`\II_x(\mu)` is the specific intensity in passband :math:`x`, emergent from the stellar atmosphere at cosinus :math:`\mu` from the surface normal, and :math:`P_\ell(\mu)` is the Legendre polynomial of degree :math:`\ell`. This math is handled by the :py:class:`Photosphere` class. On the other hand, the *perturbation coefficients* :math:`\Delta` are be retrieved from the GYRE-tides output through algebra in the :py:class:`Response` class:
@@ -87,11 +87,14 @@ Here, :math:`\II_x(\mu)` is the specific intensity in passband :math:`x`, emerge
 
 with :math:`\omega = -k\Omega_{orb} - m\Omega_{rot}` in the co-rotating frame.
 
-Each :py:class:`Star` class object includes methods to evaluate the differential flux functions and perturbation coefficients on the fly by calling :py:class:`Response` and :py:class:`Photosphere` (see Fig.1). The photospheric data that :py:class:`Photosphere` requires to return specific intensities is provided by the spectral synthesis code for stars, MSG, which is why the :py:class:`pymsg.PhotGrid` must be passed to each :py:class:`Star` upon instantiation.
+Each :py:class:`Star` class object includes methods to evaluate the differential flux functions and perturbation coefficients on the fly by calling :py:class:`Response` and :py:class:`Photosphere` (see :ref:`Fig. 1 <class-diagram-star>`). The photospheric data that :py:class:`Photosphere` requires to return specific intensities is provided by the spectral synthesis code for stars, MSG, which is why the :py:class:`pymsg.PhotGrid` must be passed to each :py:class:`Star` upon instantiation.
+
+.. _class-diagram-star:
 
 .. figure:: ./class-diagram-star.png
+    :width: 50%
 
-   Figure 1. A :py:class:`Star` instance calls :py:class:`Response` and :py:class:`Photosphere` methods as needed.
+    A :py:class:`Star` instance calls :py:class:`Response` and :py:class:`Photosphere` methods as needed.
 
 .. .. math::
 ..    \frac{\delta R}{R} (\theta, \phi; t) &= \mathrm{Re} \left[ \Delta_R Y_l^m(\theta, \phi) e^{\ii \sigma t} \right] \\
@@ -108,9 +111,12 @@ Burkart's irradiation formalism describes the additional emergent flux from a st
 
 Our main assumption is that all radiation from the secondary incident upon the primary is immediately reprocessed at the primary’s photosphere and emitted isotropically (i.e., absorption, thermalization, and reemission). This assumption is well justified for KOI-54, since its two component stars are of very similar spectral type. The method below might need to be modified if the components of a binary system had significantly different spectral types, because then some of the incident radiation might instead be scattered.
 
-.. figure:: ./class-diagram-binary.png
+.. _class-diagram-binary:
 
-   Figure 2. A :py:class:`Binary` instance contains 2 :py:class:`Star` instances and inherits methods from :py:class:`Irradiation`. 
+.. figure:: ./class-diagram-binary.png
+    :width: 50%
+    
+    A :py:class:`Binary` instance contains 2 :py:class:`Star` instances and inherits methods from :py:class:`Irradiation`. 
 
 .. _step 3:
 
@@ -120,12 +126,16 @@ Step 3: Build the Light Curve
 
 To build the light curve, GYRE-lc adopts a heirarchical architecture. The flux itself is computed at the :py:class:`Observer` level, along with other user-desired observables e.g. the power spectrum. The function :py:func:`Observer.find_flux()` simply takes a user-provided star system, inclination, and argument of periastron with respect to the observer, and returns a sum of the differential fluxes calculated from the intensity moments and perturbation coefficients provided by :py:class:`Star` and :py:class:`Irradiation` from within :py:class:`Binary`. 
 
+.. _class-diagram-observer:
+
 .. figure:: ./class-diagram-observer.png
 
    Figure 3. The :py:class:`Observer` class provides the user with methods for building the light curve, examining Fourier coefficients, and more.
 
 
 Fig. 4 shows a class diagram representation of GYRE-lc's architecture, omitting some technical details like most private methods and attributes. 
+
+.. _class-diagram-architecture:
 
 .. figure:: ./class-diagram.png
 
