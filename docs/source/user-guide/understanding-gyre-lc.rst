@@ -26,7 +26,7 @@ A short summary of each step follows.
 Step 1: Find the Partial Tides
 ******************************
 
-GYRE-tides models forced oscillations of a star in a binary due to its companion's gravitational field :ads_citep:`Sun:2021` as *partial tides*. As input for one such calculation, GYRE-tides takes a stellar model produced with `MESA <mesa.sourceforge.net>`_ and applies a forcing potential calculated via user-specified binary parameters (see :ref:`Python Walkthrough <python-walkthrough>`).
+GYRE-tides models forced oscillations of a star in a binary due to its companion's gravitational field :ads_citep:`Sun:2021` as *partial tides*. As input for one such calculation, GYRE-tides takes a stellar model produced with `MESA <mesa.sourceforge.net>`_ and applies a forcing potential calculated via user-specified binary parameters (see :doc:`Python Walkthrough <python-walkthrough>`).
 
 The forcing potential :math:`{\Phi_S}` can be written as an expansion of the gravitational potential at a point on the star's surface into spherical harmonics:
 
@@ -70,13 +70,13 @@ In particular, it states that perturbations to the stellar flux :math:`\delta \F
 .. math::
    :nowrap:
 
-   \begin{align}
+   \begin{empheq}[box=\widefbox]{align}
    \frac{\delta \FF_{\lx}}{\FF_{\lx}} (\theta_o, \phi_o; t) &= \mathrm{Re} \left[ \left\{ \Delta_R \RR^m_{\lx}(\theta_o, \phi_o) + \Delta_T \TT^m_{\lx}(\theta_o, \phi_o) + \Delta_g \GG^m_{\lx}(\theta_o, \phi_o) \right\} e^{-\ii \sigma t} \right] \\
    \RR^m_{\lx}(\theta_o,\phi_o) &\equiv \frac{(2+\ell)(1-\ell)}{\II_{0;x}} \II_{\lx} \Yml (\theta_o, \phi_o) \\
    \TT^m_{\lx}(\theta_o,\phi_o) &\equiv \frac{1}{\II_{0;x}} \frac{ \partial \II_{\lx}}{\partial \ln{ T_\eff}} \Yml (\theta_o, \phi_o) \\
    \GG^m_{\lx}(\theta_o,\phi_o) &\equiv\frac{1}{\II_{0;x}} \frac{ \partial \II_{\lx}}{\partial \ln{g}} \Yml (\theta_o, \phi_o). \\
    \II_{\lx} &= \int_0^1 \mu P_\ell(\mu)\II_x(\mu) d\mu
-   \end{align}
+   \end{empheq}
 
 Here, :math:`\II_x(\mu)` is the specific intensity in passband :math:`x`, emergent from the stellar atmosphere at cosinus :math:`\mu` from the surface normal, and :math:`P_\ell(\mu)` is the Legendre polynomial of degree :math:`\ell`. The perturbation coefficients :math:`\Delta` can be retrieved from the GYRE-tides output through algebra:
 
