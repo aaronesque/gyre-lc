@@ -63,9 +63,9 @@ GYRE-tides calculates the tide model, i.e. the partial tide amplitudes :math:`\t
 Step 2: Calculate Differential Fluxes
 *************************************
 
-In step 2, GYRE-lc represents flux variations due to tides as a sum of intensity moments. It does this according to the semi-analytical formalism for light variations described in :ads_citealt:`Townsend:2003b`, which applies to stellar perturbations that can be written as a superposition of partial perturbations–any well-converged GIRE-tides models.
+In step 2, GYRE-lc represents flux variations due to tides as a linear combination of intensity moments. It does this according to the semi-analytical formalism for light variations described in :ads_citealt:`Townsend:2003b`, which applies to stellar perturbations that can be written as a superposition of partial perturbations–any well-converged GIRE-tides models.
 
-In particular, it states that perturbations to the stellar flux :math:`\delta \FF_{x}` in some photometric passband :math:`x` can be expressed using the differential flux functions :math:`\{ \TT^m_{\lx}, \GG^m_{\lx}, \RR^m_{\lx} \}`, which depend on intensity moments :math:`\II_{\lx}`:
+In particular, it states that perturbations to the stellar flux :math:`\delta \FF_{x}` in some photometric passband :math:`x` can be expressed using the *differential flux functions* :math:`\{ \TT^m_{\lx}, \GG^m_{\lx}, \RR^m_{\lx} \}`, which depend on intensity moments :math:`\II_{\lx}`:
 
 .. math::
    \frac{\delta \FF_{\lx}}{\FF_{\lx}} (\theta_o, \phi_o; t) &= \mathrm{Re} \left[ \left\{ \Delta_R \RR^m_{\lx}(\theta_o, \phi_o) + \Delta_T \TT^m_{\lx}(\theta_o, \phi_o) + \Delta_g \GG^m_{\lx}(\theta_o, \phi_o) \right\} e^{-\ii \sigma t} \right] \\
@@ -83,14 +83,12 @@ Here, :math:`\II_x(\mu)` is the specific intensity in passband :math:`x`, emerge
 
 with :math:`\omega = -k\Omega_{orb} - m\Omega_{rot}` in the co-rotating frame.
 
-.. Accordingly, we can express perturbations to stellar radius :math:`R`, effective temperature :math:`T_\mathrm{eff}`, and surface gravity :math:`g_\eff` like:
+Each :py:class:`Star` object includes methods to evaluate the differential flux functions and perturbation coefficients on the fly. The photospheric data required to compute the specific intensities is provided by the spectral synthesis code for stars, MSG. 
 
 .. .. math::
 ..    \frac{\delta R}{R} (\theta, \phi; t) &= \mathrm{Re} \left[ \Delta_R Y_l^m(\theta, \phi) e^{\ii \sigma t} \right] \\
 ..    \frac{\delta T_\eff }{T_\eff } (\theta, \phi; t) &= \mathrm{Re} \left[ \Delta_T Y_l^m(\theta, \phi) e^{\ii \sigma t} \right] \\
 ..    \frac{\delta g_\eff}{g_\eff} (\theta, \phi; t) &= \mathrm{Re} \left[ \Delta_g Y_l^m(\theta, \phi) e^{\ii \sigma t} \right] 
-
-The photospheric data required to compute the specific intensities is provided by the spectral synthesis code for stars, MSG. 
 
 .. _optional:
 
