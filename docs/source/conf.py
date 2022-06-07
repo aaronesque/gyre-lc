@@ -82,6 +82,7 @@ mathjax3_config = {
             '[+]': ['empheq']
         },
         'macros': {
+            'widefbox': ['\fbox{\hspace{2em}#1\hspace{2em}}', 1],
             'ii': '\mathrm{i}',
             'dd': '\mathrm{d}',
             'RR': '\mathcal{R}',
