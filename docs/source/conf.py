@@ -12,6 +12,7 @@
 #
 import os
 import sys
+import re
 
 sys.path.insert(0, os.path.abspath('exts'))
 sys.path.insert(0, os.path.abspath('../../src/'))
@@ -22,7 +23,7 @@ project = 'GYRE-lc'
 author = 'Aaron Lopez'
 version = 'master'
 release = 'master'
-copyright = '2021, Aaron Lopez'
+copyright = '2022, Aaron Lopez'
 author = 'Aaron Lopez'
 
 
@@ -36,8 +37,12 @@ author = 'Aaron Lopez'
 #bibtex_bibfiles = ['refs.bib']
 #bibtex_reference_style = 'author_year'
 
+# Numbered figures
+numfig = True
+
 extensions = [
         'sphinx.ext.extlinks',
+        'sphinx.ext.intersphinx',
         'sphinx.ext.autodoc',
         'sphinx.ext.mathjax',
         'sphinx.ext.napoleon',
@@ -69,35 +74,52 @@ html_theme = 'sphinx_rtd_theme' #'alabaster'
 epub_show_urls = 'footnote'
 
 # -- Additional configuration ------------------------------------------------
-#latex_elements = {
-#    'preamble': r'\usepackage{mathtools}'
-#}
-# MathJax & LaTeX macros
-mathjax3_config = {
+
+macros = {}
+
+with open('macros.def', encoding='utf-8') as f:
+    line = f.readline()
+    while line:
+        macro, defn = line.rstrip().split('\t')
+        macros[macro] = defn
+        line = f.readline()
+
+mathjax_macros = {}
+
+for macro, defn in macros.items():
+    argnums = re.findall('#(\d)', defn)
+    if argnums:
+        mathjax_macros[macro] = [defn, int(max(argnums))]
+    else:
+        mathjax_macros[macro] = defn
+
+mathjax3_config = { 
     'loader': {
         'load': ['[tex]/mathtools']
-        },
+    },
     'tex': {
         'packages': {
             '[+]': ['mathtools']
         },
-        'macros': {
-            'ii': '\mathrm{i}',
-            'dd': '\mathrm{d}',
-            'RR': '\mathcal{R}',
-            'TT': '\mathcal{T}',
-            'GG': '\mathcal{G}',
-            'II': '\mathcal{I}',
-            'FF': '\mathcal{F}',
-            'eff': '\mathrm{eff}',
-            'lx': '\ell;x',
-            'Yml': 'Y^m_\ell',
-            }
+        'macros': mathjax_macros
     }
+}
+
+latex_macros = {}
+
+# LaTeX config
+latex_elements = {
+    'preamble': '\\usepackage{mathtools}\n'
 }
 
 # Set logo
 html_logo = 'gyre-lc-logo-1.png'
+
+# Set up intersphinx
+intersphinx_mapping = {
+    'numpy': ('http://docs.scipy.org/doc/numpy/', None),
+    'matplotlib': ('https://matplotlib.org/stable/', None)
+}
 
 # Set up extlinks
 extlinks = {'ads': ('https://ui.adsabs.harvard.edu/abs/%s/abstract', '')}
