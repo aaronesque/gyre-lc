@@ -137,7 +137,7 @@ extlinks = {'ads': ('https://ui.adsabs.harvard.edu/abs/%s/abstract', '')}
 
 # Set up autodoc
 autoclass_content = 'class'
-autodoc_member_order = 'groupwise'
+autodoc_member_order = 'bysource'
 
 # Set up napoleon
 napoleon_google_docstring = True
