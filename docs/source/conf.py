@@ -115,7 +115,7 @@ latex_macros = ''
 for macro, defn in macros.items():
     argnums = re.findall('#(\d)', defn)
     if argnums:
-        latex_macros += f'\\def\\{macro}#{int(max(argnums))}{{{defn}}}\n'
+        latex_macros += f'\\def\\{macro}[#{int(max(argnums))}]{{{defn}}}\n'
     else:
         latex_macros += f'\\def\\{macro}{{{defn}}}\n'
 
