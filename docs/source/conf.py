@@ -41,6 +41,7 @@ author = 'Aaron Lopez'
 numfig = True
 
 extensions = [
+        'sphinx_rtd_theme',
         'sphinx.ext.extlinks',
         'sphinx.ext.intersphinx',
         'sphinx.ext.autodoc',
@@ -50,7 +51,7 @@ extensions = [
         ]
 
 # Add any paths that contain templates here, relative to this directory.
-#templates_path = ['_templates']
+templates_path = ['_templates']
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -68,13 +69,17 @@ html_theme = 'sphinx_rtd_theme' #'alabaster'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-#html_static_path = ['_static']
+html_static_path = ['_static']
 
 # -- Options for EPUB output -------------------------------------------------
 epub_show_urls = 'footnote'
 
 # -- Additional configuration ------------------------------------------------
 
+# Set master doc
+master_doc = 'index'
+
+# Mathjax + LaTeX config
 macros = {}
 
 with open('macros.def', encoding='utf-8') as f:
@@ -105,11 +110,17 @@ mathjax3_config = {
     }
 }
 
-latex_macros = {}
+latex_macros = ''
 
-# LaTeX config
+for macro, defn in macros.items():
+    argnums = re.findall('#(\d)', defn)
+    if argnums:
+        latex_macros += f'\\def\\{macro}#{int(max(argnums))}{{{defn}}}\n'
+    else:
+        latex_macros += f'\\def\\{macro}{{{defn}}}\n'
+
 latex_elements = {
-    'preamble': '\\usepackage{mathtools}\n'
+    'preamble': '\\usepackage{mathtools}\n'+latex_macros
 }
 
 # Set logo
