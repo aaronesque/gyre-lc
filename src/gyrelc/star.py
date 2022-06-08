@@ -19,15 +19,6 @@ class Star:
 
     Parameters are taken in as kwargs. To function properly, either 
     `mesa_model` or `mass` (if modeling a point mass) must be taken.
-
-    Attributes:
-        resp_coeffs (dict): A dictionary containing the tidal response
-            coefficients from GYRE-tides output
-        phot_coeffs (dict): A dictionary containing the photometric 
-            coefficients from :py:class:`pymsg.PhotGrid`
-        params (dict): A dictionary containing the stellar parameters
-        model_type (str): Denotes the type of stellar model this is, 
-            'MESA' or 'point mass'
     """
 
     def __init__ (self, mesa_model=None, gyre_model=None, 
@@ -47,33 +38,53 @@ class Star:
         Raises:
             Exception: If an invalid model is provided
         """
-        self.params = {}
+        self._params, self._model_type = self.read_params(mesa_model, pt_mass_model)
+
+        self._resp_coeffs = self.read_response(gyre_model)
+
+        dx = {'logT': np.log10(self.params['Teff']), 'logg': self.params['logg']}
+        self._phot_coeffs = Photosphere(self.resp_coeffs, photgrid, dx)
+
+    @property
+    def params(self):
+        """dict: A dictionary containing the stellar parameters"""
+        return self._params
+
+    @property
+    def model_type(self):
+        """str: Denotes the type of stellar model this is, `MESA` or `point mass`"""
+        return self._model_type
+
+    @property
+    def resp_coeffs(self):
+        """dict: A dictionary containing the tidal response coefficients from
+            GYRE-tides output"""
+        return self._resp_coeffs
+
+    @property
+    def phot_coeffs(self):
+        """dict: A dictionary containing the photometric coefficients from
+            :py:class:`pymsg.PhotGrid`"""
+        return self._phot_coeffs
+
+
+    def read_params(self, mesa_model, pt_mass_model):
+        """Reads and builds stellar parameters from 
+        user-specified MESA or point mass model. Converts
+        to solar units assuming MESA output is CGS.
+        """
         # if mesa model is specified, read mesa params
         if mesa_model is not None:
-            self.model_type = 'MESA'
-            self.read_mesa_params(mesa_model)
-
-            # also check for gyre model for response coefficients
-            if gyre_model is not None:
-                self.resp_coeffs = Response( gyre_model )
-            else: self.resp_coeffs = Response(None)
+            model_type = 'MESA'
+            params = self.read_mesa_params(mesa_model)
 
         # else check for a point mass, read user-specified params
         elif pt_mass_model is not None:
-            # make note of model as point mass type
-            self.model_type = 'point mass'
-            self.read_pt_mass_params(pt_mass_model)
-            #self.model = f'{mass} M_sol'
-
-            # no gyre_model allowed
-            if gyre_model is not None:
-                raise Exception("A point mass cannot experience tides")
-            self.resp_coeffs = Response(None)
-
+            model_type = 'point mass'
+            params = self.read_pt_mass_params(pt_mass_model)
+        
         else: raise Exception("Star() must take valid 'mesa_model' or 'pt_mass_model' argument")
-
-        dx = {'logT': np.log10(self.params['Teff']), 'logg': self.params['logg']}
-        self.phot_coeffs = Photosphere(self.resp_coeffs, photgrid, dx)
+        return params, model_type
 
 
     def read_mesa_params(self, mesa_model):
@@ -82,9 +93,9 @@ class Star:
         assuming MESA output is CGS.
         """
         data = ascii.read(mesa_model, data_start=0, data_end=1)
+        params = {}
 
         # cgs constants
-
         M_sol = 1.989e33
         L_sol = 3.839e33
         R_sol = 6.957e10
@@ -96,21 +107,22 @@ class Star:
         l = data[0][3]
 
         # calculate Teff [K], logg [dex]
-        self.params['Teff'] = (l/(sigma_sb * 4*np.pi*r**2))**0.25
+        params['Teff'] = (l/(sigma_sb * 4*np.pi*r**2))**0.25
         g_surf = G*m/(r**2)
-        self.params['logg'] = np.log10(g_surf)
+        params['logg'] = np.log10(g_surf)
 
-        self.params['units'] = 'SOLAR'
-        self.params['mass'] = m/M_sol
-        self.params['radius'] = r/R_sol
-        self.params['luminosity'] = l/L_sol
-        return
+        params['units'] = 'SOLAR'
+        params['mass'] = m/M_sol
+        params['radius'] = r/R_sol
+        params['luminosity'] = l/L_sol
+        return params
     
 
-    def read_pt_mass_params(self):
+    def read_pt_mass_params(self, pt_mass_model):
         """Checks for user-specified point mass parameters.
         Does unit conversions as needed.
         """
+        params = {}
         # cgs constants
         M_sol = 1.989e33
         L_sol = 3.839e33
@@ -118,59 +130,77 @@ class Star:
         G = 6.674079999999999e-08
         sigma_sb = 5.6703669999999995e-05
         
-        if self.__dict__.get('mass'):
+        if pt_mass_model.get('mass'):
             pass
-        else: self.__dict__['mass'] = 0.
-        if self.__dict__.get('luminosity'):
+        else: params['mass'] = 0.
+        if pt_mass_model.get('luminosity'):
             pass
-        else: self.__dict__['luminosity'] = 0.
-        if self.__dict__.get('radius'):
+        else: params['luminosity'] = 0.
+        if pt_mass_model.get('radius'):
             pass
-        else: self.__dict__['radius'] = 0.
+        else: params['radius'] = 0.
 
-        if self.__dict__.get('units'):
-            if upper(self.__dict__['units'])=='SOLAR':
-                self.__dict__['__mass_units'] = M_sol
-                self.__dict__['__luminosity_units'] = L_sol
-                self.__dict__['__radius_units'] = R_sol
-            elif upper(self.__dict__['units'])=='CGS':
-                self.__dict__['__mass_units'] = 1
-                self.__dict__['__luminosity_units'] = 1
-                self.__dict__['__radius_units'] = 1
+        if pt_mass_model.get('units'):
+            if upper(pt_mass_model['units'])=='SOLAR':
+                params['__mass_units'] = M_sol
+                params['__luminosity_units'] = L_sol
+                params['__radius_units'] = R_sol
+            elif upper(pt_mass_model['units'])=='CGS':
+                params['__mass_units'] = 1
+                params['__luminosity_units'] = 1
+                params['__radius_units'] = 1
             else:
                 raise Exception(f'user-specified `units` unrecognized')
         else: # assume user assumed 'solar'
-            self.__dict__['units'] = 'SOLAR'
-            self.__dict__['__mass_units'] = M_sol
-            self.__dict__['__luminosity_units'] = L_sol
-            self.__dict__['__radius_units'] = R_sol
+            params['units'] = 'SOLAR'
+            params['__mass_units'] = M_sol
+            params['__luminosity_units'] = L_sol
+            params['__radius_units'] = R_sol
 
-        self.__dict__['__mass'] = self.__dict__['mass']*self.__dict__['__mass_units']
-        self.__dict__['__luminosity'] = self.__dict__['luminosity']*self.__dict__['__luminosity_units']
-        self.__dict__['__radius'] = self.__dict__['radius']*self.__dict__['__radius_units']
+        params['mass'] = pt_mass_model['mass']*params['__mass_units']
+        params['luminosity'] = pt_mass_model['luminosity']*params['__luminosity_units']
+        params['radius'] = pt_mass_model['radius']*params['__radius_units']
         
         # calculate Teff [K], logg [dex]
-        if self.__dict__.get('Teff'): 
+        if pt_mass_model.get('Teff'): 
             pass
         else:
             try:
-                self.Teff = (self.luminosity/(sigma_sb * 4*np.pi*self.radius**2))**0.25
+                params['Teff'] = (params['luminosity']/(sigma_sb * 4*np.pi*params['radius']**2))**0.25
             except ZeroDivisionError:
-                self.Teff = 0
+                params['Teff'] = 0
                 print(f'Invalid radius, r={self.radius} <= 0. Teff set to 0.')
         
-        if self.__dict__.get('logg'): 
+        if pt_mass_model.get('logg'): 
             pass
         else:
             try:
-                g_surf = G*self.mass/(self.radius**2)
+                g_surf = G*params['mass']/(params['radius']**2)
             except ZeroDivisionError:
-                self.logg = 0
+                params['logg'] = 0
                 print(f'Invalid radius, r={self.radius} <= 0. log(g) set to 0.')
             else:
-                self.logg = np.log10(g_surf)
+                params['logg'] = np.log10(g_surf)
         
-        return
+        return params
+
+
+    def read_response(self, gyre_model):
+
+        if self._model_type=='MESA':
+            # check for gyre model for response coefficients
+            if gyre_model is not None:
+                resp_coeffs = Response( gyre_model )
+            else: resp_coeffs = Response(None)
+
+        elif self._model_type=='point mass':
+            # no gyre_model allowed
+            if gyre_model is not None:
+                raise Exception("A point mass cannot experience tides")
+            resp_coeffs = Response(None)
+            
+        return resp_coeffs
+
 
 ###
 
