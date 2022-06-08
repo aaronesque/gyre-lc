@@ -88,10 +88,10 @@ class Star:
 
 
     def read_mesa_params(self, mesa_model):
-        """Reads and builds stellar parameters from
-        user-specified MESA model. Converts to solar units
-        assuming MESA output is CGS.
-        """
+        #"""Reads and builds stellar parameters from
+        #user-specified MESA model. Converts to solar units
+        #assuming MESA output is CGS.
+        #"""
         data = ascii.read(mesa_model, data_start=0, data_end=1)
         params = {}
 
@@ -119,9 +119,9 @@ class Star:
     
 
     def read_pt_mass_params(self, pt_mass_model):
-        """Checks for user-specified point mass parameters.
-        Does unit conversions as needed.
-        """
+        #"""Checks for user-specified point mass parameters.
+        #Does unit conversions as needed.
+        #"""
         params = {}
         # cgs constants
         M_sol = 1.989e33
@@ -186,6 +186,9 @@ class Star:
 
 
     def read_response(self, gyre_model):
+        """Reads and builds tidal perturbations from user-specified
+            GYRE-tides pulsation model. 
+        """
 
         if self._model_type=='MESA':
             # check for gyre model for response coefficients
