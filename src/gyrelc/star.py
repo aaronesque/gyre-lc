@@ -33,7 +33,19 @@ class Star:
     def __init__ (self, mesa_model=None, gyre_model=None, 
             photgrid=None, pt_mass_model=None):
         #mass=None, radius=None, luminosity=None, Teff=None, logg=None, units=None):
-        """Constructor method
+        """Constructor method.
+        
+        Args:
+            mesa_model (string): Filename of the MESA model to load
+            gyre_model (string): Filename of the GYRE-tides model to load
+            photgrid (string): :py:class:`pymsg.PhotGrid` instance
+            pt_mass_model (dict): Optional point mass model instead of MESA model
+        
+        Returns:
+            gyrelc.Star: Constructed object representation of a star for GYRE-lc
+
+        Raises:
+            Exception: If an invalid model is provided
         """
         self.params = {}
         # if mesa model is specified, read mesa params
