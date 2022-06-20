@@ -42,7 +42,7 @@ class Star:
 
         self._resp_coeffs = self.read_response(gyre_model)
 
-        dx = {'logT': np.log10(self.params['Teff']), 'logg': self.params['logg']}
+        dx = {'Teff': self.params['Teff'], 'log(g)': self.params['logg']}
         self._phot_coeffs = Photosphere(self.resp_coeffs, photgrid, dx)
 
     @property
