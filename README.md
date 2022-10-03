@@ -7,3 +7,5 @@ GYRE-lc is a Python library for the production of synthetic light curves for tid
 ## Documentation 
 
 See https://gyre-lc.readthedocs.io/en/latest/ for the latest version of documentation. 
+
+![A flowchart describing how a user can create a light curve using GYRE-lc](https://github.com/aaronesque/gyre-lc/docs/source/user-guide/walkthrough-flowchart.png?raw=true)
